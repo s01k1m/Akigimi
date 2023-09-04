@@ -1,0 +1,77 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql
+    container_name: mysql
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - mysql-conf:/etc/mysql/conf.d"
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DB}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PW}
+      - "TZ=Asia/Seoul"
+    ports:
+      - ${MYSQL_PORT}:3306
+    restart: always
+    command:
+      # 위 명령어를 사용하지 않으면, 일부 설정이 latin으로 설정됩니다.
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    networks:
+      - inner
+
+  mysql-salt:
+    image: mysql
+    container_name: mysql-salt
+    volumes:
+      - mysql-salt-data:/var/lib/mysql
+      - mysql-salt-conf:/etc/mysql/conf.d"
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DB}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PW}
+      - "TZ=Asia/Seoul"
+    ports:
+      - ${MYSQL_SALT_PORT}:3306
+    restart: always
+    command:
+      # 위 명령어를 사용하지 않으면, 일부 설정이 latin으로 설정됩니다.
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    networks:
+      - inner
+
+  redis:
+    image: redis
+    container_name: redis
+    volumes:
+      - redis-data:/var/lib/redis
+      - redis-conf:/usr/local/conf/redis.conf
+    labels:
+      - "name=redis"
+      - "mode=standalone"
+    restart: always
+    command: redis-server /usr/local/conf/redis.conf
+    networks:
+      - inner
+    environment:
+      - TZ=Asia/Seoul
+
+networks:
+  inner:
+     external: true
+
+volumes:
+  mysql-data:
+    external: true
+  mysql-conf:
+    external: true
+  mysql-salt-data:
+    external: true
+  mysql-salt-conf:
+    external: true
+  redis-data:
+    external: true
+  redis-conf:
+    external: true
+
