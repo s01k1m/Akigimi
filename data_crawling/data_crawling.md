@@ -14,3 +14,4 @@ https://googlechromelabs.github.io/chrome-for-testing/
 
 ## 참고
 - 현재 데이터 크롤링에 사용하고 있는 버전 : 116.0.5845.96
+- 
