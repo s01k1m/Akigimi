@@ -1,0 +1,13 @@
+.go-to-btn {
+    border-radius: 10px;
+    background: #0049F2;
+    
+    width: 60%;
+    height: 55px;
+ 
+    color: #FFF;
+    font-size: 23px;
+    font-style: normal;
+    font-weight: 800;
+    letter-spacing: 4.6px;
+}
