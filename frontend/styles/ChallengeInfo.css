@@ -1,0 +1,27 @@
+.message {
+    color: #6A5858;
+    /* font-family: Mulish; */
+    font-size: 26px;
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: 0.78px;
+}
+
+.item {
+    color: #2C2C2C;
+    font-size: 31px;
+    letter-spacing: 0.93px;
+}
+
+.date {
+    color: #0049F2;
+    font-size: 35px;
+    letter-spacing: 1.05px;
+}
+
+.day {
+    color: #2C2C2C;
+    font-size: 31px;
+    letter-spacing: 0.93px;
+    margin-bottom: 6px;
+}
