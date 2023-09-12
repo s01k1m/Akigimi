@@ -17,8 +17,7 @@ public class SignUpService {
     private final GetIdTokenAdapter getIdTokenAdapter;
     private final DecodeIdTokenService decodeIdTokenService;
     private final JwtTokenIssuer jwtTokenIssuer;
-    public SignUpServiceResponse signUp(String code) {
-        String rawIdToken = getIdTokenAdapter.getForSignUp(code);
+    public SignUpServiceResponse signUp(String rawIdToken) {
         KakaoIdToken idToken = decodeIdTokenService.decode(rawIdToken);
         String oauthId = idToken.getSub();
         User user = User.builder()

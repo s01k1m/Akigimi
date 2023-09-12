@@ -12,6 +12,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
+    defer-datasource-initialization: true
   datasource:
     url: jdbc:h2:mem:~/testdb;NON_KEYWORDS=USER
     driver-class-name: org.h2.Driver
@@ -21,7 +22,8 @@ spring:
 
   sql:
     init:
-      mode: never
+      mode: always
+
   data:
     redis:
       host: ${REDIS_HOST}
@@ -29,12 +31,12 @@ spring:
 
 kakao:
   iss: ${KAKAO_ISS}
-  login-redirection-url: ${KAKAO_LOGIN_REDIRECTION_URL}
-  signup-redirection-url: ${KAKAO_SIGNUP_REDIRECTION_URL}
+  redirection-url: ${KAKAO_REDIRECTION_URL}
   rest-api-key: ${KAKAO_REST_API_KEY}
   publickey-url: ${KAKAO_PUBLICKEY_URL}
   publickey-myself-url: ${MYSELF_PUBLICKEY_URL}
   idtoken-url: ${KAKAO_IDTOKEN_URL}
+  token-redirect-url: ${KAKAO_JWT_TOKEN_REDIRECT_URL}
 server:
   port: 8080
   servlet:
