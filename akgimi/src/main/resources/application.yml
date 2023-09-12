@@ -1,0 +1,48 @@
+spring:
+  profiles:
+    default: local
+  config:
+    import:
+      - classpath:local-env.properties
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  datasource:
+    url: jdbc:h2:mem:~/testdb;NON_KEYWORDS=USER
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+
+  sql:
+    init:
+      mode: never
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+
+kakao:
+  iss: ${KAKAO_ISS}
+  login-redirection-url: ${KAKAO_LOGIN_REDIRECTION_URL}
+  signup-redirection-url: ${KAKAO_SIGNUP_REDIRECTION_URL}
+  rest-api-key: ${KAKAO_REST_API_KEY}
+  publickey-url: ${KAKAO_PUBLICKEY_URL}
+  publickey-myself-url: ${MYSELF_PUBLICKEY_URL}
+  idtoken-url: ${KAKAO_IDTOKEN_URL}
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+jwt:
+  secretKey: ${JWT_SECRETKEY}
+  accessTokenValidTimeInMinuteUnit: ${JWT_ACCESS_TOKEN_VALID_TIME_IN_MINUTE_UNIT}
+  refreshTokenValidTimeInDayUnit: ${JWT_REFRESH_TOKEN_VALID_TIME_IN_DAY_UNIT}
+  refreshTokenValidTimeInDayUnitInRedis: ${JWT_REFRESH_TOKEN_VALID_TIME_IN_DAY_UNIT_IN_REDIS}
+  tokenRedirectUrl: ${JWT_TOKEN_REDIRECT_URL}
