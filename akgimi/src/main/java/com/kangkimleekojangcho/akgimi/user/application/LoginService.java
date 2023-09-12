@@ -10,6 +10,8 @@ import com.kangkimleekojangcho.akgimi.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class LoginService {
@@ -18,14 +20,13 @@ public class LoginService {
     private final DecodeIdTokenService decodeIdTokenService;
     private final JwtTokenIssuer jwtTokenIssuer;
 
-    public LoginServiceResponse login(String code) {
-        String rawIdToken = getIdTokenAdapter.getForLogin(code);
+    public LoginServiceResponse login(String rawIdToken) {
         KakaoIdToken idToken = decodeIdTokenService.decode(rawIdToken);
         String oauthId = idToken.getSub();
-        User user = userJpaAdapter.findByOauthId(oauthId).orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NOT_USER));
-        Long id = user.getId();
-        String accessToken = jwtTokenIssuer.createAccessToken(id);
-        String refreshToken = jwtTokenIssuer.createRefreshToken(id);
+        User user = userJpaAdapter.findByOauthId(oauthId)
+                .orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NOT_USER));
+        String accessToken = jwtTokenIssuer.createAccessToken(user.getId());
+        String refreshToken = jwtTokenIssuer.createRefreshToken(user.getId());
         return new LoginServiceResponse(accessToken, refreshToken);
     }
 }
