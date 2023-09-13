@@ -3,8 +3,7 @@ package com.kangkimleekojangcho.akgimi.user.application;
 import com.kangkimleekojangcho.akgimi.global.exception.ServerErrorException;
 import com.kangkimleekojangcho.akgimi.global.exception.ServerErrorExceptionCode;
 import com.kangkimleekojangcho.akgimi.global.exception.UnauthorizedException;
-import com.kangkimleekojangcho.akgimi.global.exception.UnauthorizedExceptionCode;
-import com.kangkimleekojangcho.akgimi.user.adapter.out.GetKakaoPublicKeyFromMyselfAdapter;
+import com.kangkimleekojangcho.akgimi.user.application.port.QueryPublicKeyPort;
 import com.kangkimleekojangcho.akgimi.user.domain.KakaoIdToken;
 import com.kangkimleekojangcho.akgimi.user.domain.KakaoPublicKey;
 import io.jsonwebtoken.Claims;
@@ -34,11 +33,11 @@ public class DecodeIdTokenService {
     private String iss;
     @Value("${kakao.rest-api-key}")
     private String restApiKey;
-    private final GetKakaoPublicKeyFromMyselfAdapter getKakaoPublicKeyFromMyselfAdapter;
+    private final QueryPublicKeyPort queryPublicKeyPort;
     private final KakaoPublicKeyGenerator kakaoPublicKeyGenerator;
 
     public KakaoIdToken decode(String rawIdToken) {
-        String rawPublicKey = getKakaoPublicKeyFromMyselfAdapter.get();
+        String rawPublicKey = queryPublicKeyPort.fromMyself();
         List<KakaoPublicKey> kakaoPublicKeyList = kakaoPublicKeyGenerator.generate(rawPublicKey);
         String kid = getKid(rawIdToken);
         KakaoPublicKey targetPublicKey = findTargetPublicKey(kakaoPublicKeyList, kid);

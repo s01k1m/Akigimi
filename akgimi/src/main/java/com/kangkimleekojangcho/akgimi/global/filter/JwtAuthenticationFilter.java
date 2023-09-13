@@ -5,7 +5,7 @@ import com.kangkimleekojangcho.akgimi.global.exception.UnauthorizedException;
 import com.kangkimleekojangcho.akgimi.global.exception.UnauthorizedExceptionCode;
 import com.kangkimleekojangcho.akgimi.jwt.application.CreateJwtTokenService;
 import com.kangkimleekojangcho.akgimi.jwt.application.ExtractTokenStringService;
-import com.kangkimleekojangcho.akgimi.user.adapter.out.FindTokenInBlackListAdapter;
+import com.kangkimleekojangcho.akgimi.user.application.port.QueryBlackListPort;
 import com.kangkimleekojangcho.akgimi.user.domain.JwtToken;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -33,7 +33,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public static final String AUTHORIZATION = "Authorization";
     private final ExtractTokenStringService extractTokenStringService;
     private final CreateJwtTokenService createJwtTokenService;
-    private final FindTokenInBlackListAdapter findTokenInBlackListAdapter;
+    private final QueryBlackListPort queryBlackListPort;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -46,7 +46,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (accessToken.isExpired(new Date())) {
             throw new UnauthorizedException(UnauthorizedExceptionCode.TOKEN_EXPIRED);
         }
-        if (accessToken.isAccessToken() && findTokenInBlackListAdapter.find(tokenString)) {
+        if (accessToken.isAccessToken() && queryBlackListPort.find(tokenString)) {
             throw new UnauthorizedException(UnauthorizedExceptionCode.LOGOUT_TOKEN);
         }
         shouldNotReceiveAccessTokenWhenPathIsAccessTokenReissurancePath(requestUriValue, accessToken);

@@ -1,17 +1,15 @@
 package com.kangkimleekojangcho.akgimi.user.application;
 
-import com.kangkimleekojangcho.akgimi.user.adapter.out.GetIdTokenAdapter;
+import com.kangkimleekojangcho.akgimi.user.application.port.QueryIdTokenPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class GetIdTokenService {
-    private final GetIdTokenAdapter getIdTokenAdapter;
+    private final QueryIdTokenPort queryIdTokenPort;
 
     public String getIdToken(String code){
-        return getIdTokenAdapter.get(code);
+        return queryIdTokenPort.get(code);
     }
-
-
 }
