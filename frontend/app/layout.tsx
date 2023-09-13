@@ -2,6 +2,7 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import { useEffect } from 'react'
 import styled from 'styled-components';
 
 const inter = Inter({ subsets: ['latin'] })
@@ -21,16 +22,30 @@ const FixedWidth = styled.div`
     width: 100%;
   }
 `;
+
+// 모바일 세로 사이즈에 맞게 주소창 제외하고 세로 화면 계산하여 맞추기
+function setScreenSize() {
+  let vh = window.innerHeight;
+  if (document.querySelector("#layout")) {
+    document.querySelector("#layout").style.setProperty("height", `${vh}px`);
+    console.log(document.querySelector("#layout").style);
+  }
+}
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  
+  useEffect(() => {
+    setScreenSize();
+  }, []);
   return (
     <html lang="en">
       <body className={inter.className}>
       <Centering>
-      <FixedWidth>
+      <FixedWidth id="layout">
         {children}
       </FixedWidth>
     </Centering>
