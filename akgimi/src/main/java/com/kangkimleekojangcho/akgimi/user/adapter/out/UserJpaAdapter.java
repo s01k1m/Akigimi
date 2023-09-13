@@ -1,14 +1,18 @@
 package com.kangkimleekojangcho.akgimi.user.adapter.out;
 
+import com.kangkimleekojangcho.akgimi.user.application.port.CommandUserDbPort;
+import com.kangkimleekojangcho.akgimi.user.application.port.QueryUserDbPort;
+import com.kangkimleekojangcho.akgimi.user.application.port.UserDbPort;
 import com.kangkimleekojangcho.akgimi.user.domain.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class UserJpaAdapter {
+class UserJpaAdapter implements QueryUserDbPort, CommandUserDbPort {
     private final UserJpaRepository userJpaRepository;
 
     public Optional<User> findByOauthId(String oauthId) {

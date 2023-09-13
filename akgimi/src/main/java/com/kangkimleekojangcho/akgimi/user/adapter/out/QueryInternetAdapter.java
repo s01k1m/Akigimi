@@ -2,6 +2,7 @@ package com.kangkimleekojangcho.akgimi.user.adapter.out;
 
 import com.kangkimleekojangcho.akgimi.global.exception.ServerErrorException;
 import com.kangkimleekojangcho.akgimi.global.exception.ServerErrorExceptionCode;
+import com.kangkimleekojangcho.akgimi.user.application.port.QueryInternetPort;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class GetDataFromInternetAdapter {
+class QueryInternetAdapter implements QueryInternetPort {
 
     public String get(String url) {
         try {
