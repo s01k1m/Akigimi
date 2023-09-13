@@ -5,7 +5,7 @@ const FeedTap = () => {
         <div>
             <div className="radio-input">
             <label>
-            <input value="value-1" name="value-radio" id="value-1" type="radio" checked  />
+            <input value="value-1" name="value-radio" id="value-1" type="radio" checked />
             <span>친구 아끼머</span>
             </label>
             <label>
