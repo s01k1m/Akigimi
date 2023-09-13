@@ -24,7 +24,21 @@
     letter-spacing: 2.5px;
     width: 100%;
 }
-.go-to-buy {
+
+.button-common-small {
+    padding: 11px 18px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    color: #FFF;
+    font-size: 25px;
+    font-style: normal;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    width: 80%;
+}
+
+.blue-btn {
     background: #0049F2;
 }
 
@@ -59,4 +73,20 @@
 
 .background-6 {
     background: linear-gradient(181deg, #AEAEAE 0.5%, rgba(217, 217, 217, 0.00) 71.06%);
+}
+
+.logo {
+    color: #202632;
+    font-size: 25px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 5px;
+    border-radius: 10px;
+    background: #D9D9D9;
+    display: flex;
+    width: 55%;
+    height: 38px;
+    justify-content: center;
+    align-items: center;
 }

@@ -6,16 +6,11 @@
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
     ],
-    "/main/page": [
+    "/writereceipt/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/main/page.css",
-      "static/chunks/app/main/page.js"
-    ],
-    "/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/page.js"
+      "static/css/app/writereceipt/page.css",
+      "static/chunks/app/writereceipt/page.js"
     ]
   }
 }
