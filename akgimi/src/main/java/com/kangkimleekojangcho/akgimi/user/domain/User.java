@@ -15,16 +15,16 @@ public class User {
 
     private String oauthId;
     @Enumerated(value = EnumType.STRING)
-    private OauthProvider oauthProvider;
+    private OidcProvider oidcProvider;
 
     @Enumerated(value = EnumType.STRING)
     private UserState userState;
 
     @Builder
-    public User(Long id, String oauthId, OauthProvider oauthProvider, UserState userState) {
+    public User(Long id, String oauthId, OidcProvider oidcProvider, UserState userState) {
         this.id = id;
         this.oauthId = oauthId;
-        this.oauthProvider = oauthProvider;
+        this.oidcProvider = oidcProvider;
         this.userState = userState;
     }
 

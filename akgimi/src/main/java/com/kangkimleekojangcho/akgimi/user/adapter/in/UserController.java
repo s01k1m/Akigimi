@@ -65,11 +65,4 @@ public class UserController {
         AddDataForPendingUserServiceResponse response = addDataForPendingUserService.addDataForPendingUser(userId, request.toServiceRequest());
         return ResponseFactory.success(response);
     }
-
-    private String makeTokenRedirectUrl(String accessToken, String refreshToken, boolean isSignUp) {
-        return String.format("%s/access-token=%s&refresh-token=%s&is-signup=%s", kakaoTokenRedirectUrl, accessToken, refreshToken, isSignUp);
-    }
-    private String makeTokenRedirectUrl(String accessToken, String refreshToken) {
-        return String.format("%s/access-token=%s&refresh-token=%s", kakaoTokenRedirectUrl, accessToken, refreshToken);
-    }
 }
