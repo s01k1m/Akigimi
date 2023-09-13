@@ -5,7 +5,7 @@ const GoToBuyBtn = () => {
     return (
         <div>
             <button 
-                className="button-common go-to-buy"
+                className="button-common blue-btn"
                 onClick={() => router.push('/withdraw')}
             >
                 사러가기
