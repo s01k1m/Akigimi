@@ -29,14 +29,14 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ServerErrorException.class)
     public ResponseEntity<FailResponse> serverErrorException(ServerErrorException e) {
-        log.info("서버 에러 예외 발생! << code: {}", e.getCode());
+        log.error("서버 에러 예외 발생! << code: {}", e.getCode());
         e.printStackTrace();
         return ResponseFactory.failWithServerError();
     }
 
     @ExceptionHandler(SignatureException.class)
     public ResponseEntity<FailResponse> signatureException(SignatureException e) {
-        log.info("유효하지 않은 토큰 입력!");
+        log.error("유효하지 않은 토큰 입력!");
         return ResponseFactory.fail(new UnauthorizedException(UnauthorizedExceptionCode.INVALID_TOKEN));
     }
 

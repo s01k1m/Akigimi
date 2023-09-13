@@ -49,20 +49,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (accessToken.isAccessToken() && queryBlackListPort.find(tokenString)) {
             throw new UnauthorizedException(UnauthorizedExceptionCode.LOGOUT_TOKEN);
         }
-        shouldNotReceiveAccessTokenWhenPathIsAccessTokenReissurancePath(requestUriValue, accessToken);
-        shouldNotReceiveRefreshTokenWhenPathIsNotAccessTokenReissurancePath(requestUriValue, accessToken);
+        shouldNotUseApplicationWhenUserHasRefreshToken(requestUriValue, accessToken);
+        shouldNotReissueWhenUserHasRefreshToken(requestUriValue, accessToken);
         filterChain.doFilter(request, response);
     }
 
     // Access Token 재발급 요청 api 인데, access token을 전달했을 경우인지 체크
-    private void shouldNotReceiveRefreshTokenWhenPathIsNotAccessTokenReissurancePath(String path, JwtToken jwtToken) {
+    private void shouldNotReissueWhenUserHasRefreshToken(String path, JwtToken jwtToken) {
         if (!doesUserRequestReassuranceOfAccessToken(path) && jwtToken.isRefreshToken()) {
             throw new UnauthorizedException(UnauthorizedExceptionCode.NOT_ACCESS_TOKEN);
         }
     }
 
     // 재발급 요청이 아닌데 refresh token을 전달했을 경우인지 체크
-    private void shouldNotReceiveAccessTokenWhenPathIsAccessTokenReissurancePath(String path, JwtToken jwtToken) {
+    private void shouldNotUseApplicationWhenUserHasRefreshToken(String path, JwtToken jwtToken) {
         if (doesUserRequestReassuranceOfAccessToken(path) && jwtToken.isAccessToken()) {
             throw new UnauthorizedException(UnauthorizedExceptionCode.NOT_REFRESH_TOKEN);
         }

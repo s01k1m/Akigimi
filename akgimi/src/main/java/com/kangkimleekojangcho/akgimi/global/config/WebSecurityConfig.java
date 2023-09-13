@@ -39,7 +39,6 @@ public class WebSecurityConfig {
         return new MvcRequestMatcher.Builder(introspector);
     }
 
-    // 인가가 필요한 리소스 설정
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc) throws Exception {
         http
@@ -47,28 +46,12 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // JWT 쓸 때 사용
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .addFilterBefore(jwtExceptionHandlerFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
         ;
         return http.build();
-    }
-
-    @RequiredArgsConstructor
-    static class Pass{
-        public final String pattern;
-        public final HttpMethod method;
-    }
-    List<MvcRequestMatcher> pass(MvcRequestMatcher.Builder mvc) {
-        List<Pass> passes = List.of
-                (new Pass("/user/login", HttpMethod.GET),
-                new Pass("/user/signup", HttpMethod.GET));
-        return passes.stream().map(pass -> {
-            MvcRequestMatcher pattern = mvc.pattern(pass.pattern);
-            pattern.setMethod(pass.method);
-            return pattern;
-        }).toList();
     }
 
     @Bean

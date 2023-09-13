@@ -58,9 +58,9 @@ class QueryInternetAdapter implements QueryInternetPort {
                 bw.write(sb.toString());
                 bw.flush();
             }
-//            if (conn.getResponseCode() != 200) {
-//                throw new IOException();
-//            }
+            if (conn.getResponseCode() != 200) {
+                throw new IOException();
+            }
             return getBody(conn);
         }catch(IOException e){
             throw new ServerErrorException(ServerErrorExceptionCode.NETWORK_ERROR);
