@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "account")
-public class Account {
+public class Account extends BaseTimeEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,6 +25,6 @@ public class Account {
 
     private Boolean isDeleted;
 
-    private Boolean isRegisteredPassword;
+    private Boolean isPasswordRegistered;
 
 }
