@@ -53,7 +53,7 @@ public class UserController {
     }
 
 
-    @GetMapping("/kakao/signup")
+    @PostMapping("/kakao/signup")
     public ResponseEntity<SuccessResponse<SignUpServiceResponse>> signup(@RequestBody @Valid SignUpRequest request) {
         SignUpServiceResponse response = signUpService.signUp(request.getIdToken());
         return ResponseFactory.success(response);
