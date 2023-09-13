@@ -15,11 +15,9 @@ public class Transfer {
     private Long amount;
 
     @ManyToOne
-    @JoinColumn(name = "account_id")
     private Account sendAccount;
 
     @ManyToOne
-    @JoinColumn(name ="account_id")
     private Account receiveAccount;
 
     private LocalDateTime transferDateTime;
