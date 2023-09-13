@@ -13,7 +13,6 @@ public class Salt {
     private String value;
 
     @OneToOne
-    @JoinColumn(name = "account_id")
     private Account account;
 
 }
