@@ -5,6 +5,13 @@
     background: #EEE;
 }
 
+.feed-receipt {
+    width: 100%;
+    height: 25vh;
+    border-radius: 5px;
+    background: #EEE;
+}
+
 .receipt-message {
     color: #202632;
     font-size: 25px;
