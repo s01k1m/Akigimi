@@ -26,7 +26,7 @@ public record CreateFeedRequest(
 
     public CreateFeedServiceRequest toServiceRequest() {
         return CreateFeedServiceRequest.builder()
-                .meaningItem(this.meaningItem)
+                .notPurchasedItem(this.meaningItem)
                 .akgimPlace(this.akgimPlace)
                 .content(this.content)
                 .isOpen(this.isOpen)

@@ -1,5 +1,6 @@
 package com.kangkimleekojangcho.akgimi.sns.adapter.in;
 
+import com.kangkimleekojangcho.akgimi.common.domain.application.SubtractUserIdFromAccessTokenService;
 import com.kangkimleekojangcho.akgimi.global.exception.UnauthorizedException;
 import com.kangkimleekojangcho.akgimi.global.exception.UnauthorizedExceptionCode;
 import com.kangkimleekojangcho.akgimi.global.response.ResponseFactory;
@@ -22,14 +23,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class FeedController {
 
     private final CreateFeedService createFeedService;
-    private final
+    private final SubtractUserIdFromAccessTokenService userIdFromAccessTokenService;
+
     @PostMapping("/feed")
-    public ResponseEntity<SuccessResponse<CreateFeedRequest>> createFeed(
+    ResponseEntity<SuccessResponse<CreateFeedRequest>> createFeed(
             @Valid @RequestBody CreateFeedRequest createFeedRequest,
             HttpServletRequest servletRequest
     ) {
-        Long userId = ((JwtToken) servletRequest.getAttribute("accessToken")).getUserId();
-        createFeedService.createFeed(createFeedRequest.toServiceRequest());
+        Long userId = userIdFromAccessTokenService.subtract(servletRequest);
+        createFeedService.createFeed(createFeedRequest.toServiceRequest(), userId);
         return ResponseFactory.success(createFeedRequest);
     }
 

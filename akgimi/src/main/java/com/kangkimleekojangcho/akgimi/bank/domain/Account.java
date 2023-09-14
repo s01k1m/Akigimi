@@ -1,5 +1,7 @@
 package com.kangkimleekojangcho.akgimi.bank.domain;
 
+import com.kangkimleekojangcho.akgimi.global.exception.BadRequestException;
+import com.kangkimleekojangcho.akgimi.global.exception.BadRequestExceptionCode;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -35,4 +37,16 @@ public class Account extends BaseTimeEntity{
 
     private Boolean isPasswordRegistered;
 
+    public Long withdraw(Long withdrawalAmount) {
+        Long result = balance-withdrawalAmount;
+        if(result<0) throw new BadRequestException(BadRequestExceptionCode.LACK_OF_ACCOUNT_BALANCE);
+        balance = result;
+        return result;
+    }
+
+    public void deposit(Long remain) {
+        Long result = balance + remain;
+        if(result<0) throw new BadRequestException(BadRequestExceptionCode.EXCEED_MAXIMUM_BALANCE);
+        balance = result;
+    }
 }

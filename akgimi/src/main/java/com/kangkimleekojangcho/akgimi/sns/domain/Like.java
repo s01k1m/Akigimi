@@ -16,10 +16,10 @@ public class Like {
     private Long likeId;
 
     @JoinColumn(name="feed_id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Feed feed;
 
     @JoinColumn(name="user_id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 }

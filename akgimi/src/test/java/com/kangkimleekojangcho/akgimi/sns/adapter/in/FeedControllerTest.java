@@ -1,6 +1,7 @@
 package com.kangkimleekojangcho.akgimi.sns.adapter.in;
 
 import com.kangkimleekojangcho.akgimi.ControllerTestSupport;
+import com.kangkimleekojangcho.akgimi.common.domain.application.SubtractUserIdFromAccessTokenService;
 import com.kangkimleekojangcho.akgimi.sns.adapter.in.request.CreateFeedRequest;
 import com.kangkimleekojangcho.akgimi.sns.application.CreateFeedService;
 import org.junit.jupiter.api.DisplayName;
@@ -23,6 +24,8 @@ class FeedControllerTest extends ControllerTestSupport {
 
     @MockBean
     private CreateFeedService createFeedService;
+    @MockBean
+    private SubtractUserIdFromAccessTokenService subtractUserIdFromAccessTokenService;
 
     @DisplayName("[happy]유저가 올바른 정보를 입력했을 때 정확한 파싱결과를 도출한다.")
     @Test
@@ -77,7 +80,7 @@ class FeedControllerTest extends ControllerTestSupport {
     private static Stream<Arguments> generateData() {
         return Stream.of(
                 Arguments.of(" ", 1000L, "akgimPlace", "photo", "content", true),
-                Arguments.of("meaningItem", -10L, "akgimPlace", "photo", "content", true),
+                Arguments.of("notPurchasedItem", -10L, "akgimPlace", "photo", "content", true),
                 Arguments.of("   ", 1000L, "   ", "photo", "content", true)
         );
     }
