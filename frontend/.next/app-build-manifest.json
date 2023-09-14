@@ -1,16 +1,21 @@
 {
   "pages": {
+    "/feed/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/feed/page.css",
+      "static/chunks/app/feed/page.js"
+    ],
     "/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
     ],
-    "/writereceipt/page": [
+    "/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/writereceipt/page.css",
-      "static/chunks/app/writereceipt/page.js"
+      "static/chunks/app/page.js"
     ]
   }
 }
