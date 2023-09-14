@@ -5,10 +5,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kangkimleekojangcho.akgimi.product.domain.Product;
 import com.kangkimleekojangcho.akgimi.user.domain.User;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Challenge {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,7 +21,6 @@ public class Challenge {
 
     @ManyToOne
     @JoinColumn(name="user_id")
-    @JsonIgnore
     private User user;
 
     @OneToOne
