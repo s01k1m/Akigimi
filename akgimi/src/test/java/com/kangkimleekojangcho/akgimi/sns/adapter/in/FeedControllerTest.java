@@ -1,14 +1,17 @@
 package com.kangkimleekojangcho.akgimi.sns.adapter.in;
 
 import com.kangkimleekojangcho.akgimi.ControllerTestSupport;
-import com.kangkimleekojangcho.akgimi.global.response.SuccessResponseMessage;
 import com.kangkimleekojangcho.akgimi.sns.adapter.in.request.CreateFeedRequest;
 import com.kangkimleekojangcho.akgimi.sns.application.CreateFeedService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+
+import java.util.stream.Stream;
 
 import static com.kangkimleekojangcho.akgimi.global.response.SuccessResponseMessage.message;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -45,4 +48,37 @@ class FeedControllerTest extends ControllerTestSupport {
                 .andExpect(jsonPath("$.message").value(message.getValue()));
     }
 
+    @ParameterizedTest
+    @DisplayName("[bad]유저가 잘못된 정보를 입력했을 때 올바른 오류를 반환한다.")
+    @MethodSource("generateData")
+    void requestValidationTest(String meaningItem, Long saving, String akgimPlace,
+                               String photo, String content, Boolean isOpen) throws Exception {
+        System.out.println(meaningItem);
+        //given
+        CreateFeedRequest request = CreateFeedRequest.builder()
+                .meaningItem(meaningItem)
+                .akgimPlace(akgimPlace)
+                .content(content)
+                .isOpen(isOpen)
+                .photo(photo)
+                .saving(saving)
+                .build();
+
+        //when then
+        mockMvc.perform(
+                        post("/feed")
+                                .content(objectMapper.writeValueAsString(request))
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
+    private static Stream<Arguments> generateData() {
+        return Stream.of(
+                Arguments.of(" ", 1000L, "akgimPlace", "photo", "content", true),
+                Arguments.of("meaningItem", -10L, "akgimPlace", "photo", "content", true),
+                Arguments.of("   ", 1000L, "   ", "photo", "content", true)
+        );
+    }
 }
