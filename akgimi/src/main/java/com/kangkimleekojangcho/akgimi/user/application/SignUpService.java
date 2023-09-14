@@ -24,6 +24,7 @@ public class SignUpService {
                 .oauthId(oauthId)
                 .oidcProvider(OidcProvider.KAKAO)
                 .userState(UserState.PENDING)
+                .kakaoProfileNickname(idToken.getNickname())
                 .build();
         user = commandUserDbPort.save(user);
         Long id = user.getId();
