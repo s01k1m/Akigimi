@@ -5,6 +5,20 @@
     background: #EEE;
 }
 
+.feed-receipt {
+<<<<<<< HEAD
+  width: 80%;
+  height: 35vh;
+  border-radius: 5px;
+  background-color: #F5F5F5;
+=======
+    width: 100%;
+    height: 25vh;
+    border-radius: 5px;
+    background: #EEE;
+>>>>>>> c62e5b92d9954bfeb8a5375a9498b1db5d1f3d0e
+}
+
 .receipt-message {
     color: #202632;
     font-size: 25px;
