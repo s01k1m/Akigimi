@@ -43,14 +43,7 @@ export default function RootLayout({
 
   return (
     <html lang="ko-KR" suppressHydrationWarning={true}>
-      <head>
-        {/*  Kakao 로그인 script를 등록 */}
-        <script
-          src="https://developers.kakao.com/sdk/js/kakao.js"
-          integrity="sha384-dpu02ieKC6NUeKFoGMOKz6102CLEWi9+5RQjWSV0ikYSFFd8M3Wp2reIcquJOemx"
-          crossOrigin="anonymous"
-        ></script>
-      </head>
+      <head></head>
       <body className={inter.className} suppressHydrationWarning={true}>
         <Centering>
           <FixedWidth id="layout">{children}</FixedWidth>

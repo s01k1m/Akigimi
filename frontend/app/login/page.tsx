@@ -8,10 +8,11 @@ export default function Login() {
         <Image
           src="/logo.png"
           alt="로고 사진"
-          width="0"
-          height="0"
-          sizes="100vw"
-          className="w-full h-auto"
+          width={400} // 실제 이미지의 가로 크기로 설정하세요
+          height={483} // 실제 이미지의 세로 크기로 설정하세요
+          layout="responsive" // 이미지 크기를 유지하도록 설정
+          // className="w-full h-auto height-auto"
+          priority
         ></Image>
       </div>
 
