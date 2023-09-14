@@ -583,53 +583,26 @@ video {
 .mt-\[62px\] {
   margin-top: 62px;
 }
-.mb-\[3vh\] {
-  margin-bottom: 3vh;
-}
-.mb-\[4vh\] {
-  margin-bottom: 4vh;
-}
-.mb-\[5vh\] {
-  margin-bottom: 5vh;
-}
-.mb-\[7vh\] {
-  margin-bottom: 7vh;
-}
-.mb-\[8vh\] {
-  margin-bottom: 8vh;
-}
-.mb-\[9vh\] {
-  margin-bottom: 9vh;
+.mb-\[vh\] {
+  margin-bottom: vh;
 }
 .mb-\[10vh\] {
   margin-bottom: 10vh;
 }
-.mb-\[100vh\] {
-  margin-bottom: 100vh;
-}
-.mb-\[12vh\] {
-  margin-bottom: 12vh;
-}
-.mb-\[13vh\] {
-  margin-bottom: 13vh;
-}
-.mb-\[14vh\] {
-  margin-bottom: 14vh;
-}
 .mb-\[15vh\] {
   margin-bottom: 15vh;
 }
-.mb-\[vh\] {
-  margin-bottom: vh;
-}
-.mb-\[1\] {
-  margin-bottom: 1;
+.mb-\[13vh\] {
+  margin-bottom: 13vh;
 }
 .flex {
   display: flex;
 }
 .hidden {
   display: none;
+}
+.h-10 {
+  height: 2.5rem;
 }
 .h-\[100\%\] {
   height: 100%;
@@ -666,6 +639,12 @@ video {
 }
 .w-full {
   width: 100%;
+}
+.min-w-\[\] {
+  min-width: ;
+}
+.min-w-\[400px\] {
+  min-width: 400px;
 }
 .max-w-\[270px\] {
   max-width: 270px;
