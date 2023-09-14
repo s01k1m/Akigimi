@@ -1,5 +1,6 @@
 package com.kangkimleekojangcho.akgimi.user.adapter.in;
 
+import com.kangkimleekojangcho.akgimi.bank.application.GenerateWithdrawalAccountService;
 import com.kangkimleekojangcho.akgimi.common.domain.application.SubtractUserIdFromAccessTokenService;
 import com.kangkimleekojangcho.akgimi.global.exception.BadRequestException;
 import com.kangkimleekojangcho.akgimi.global.exception.BadRequestExceptionCode;
