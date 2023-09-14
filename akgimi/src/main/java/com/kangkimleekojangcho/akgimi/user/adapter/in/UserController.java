@@ -1,5 +1,7 @@
 package com.kangkimleekojangcho.akgimi.user.adapter.in;
 
+import com.kangkimleekojangcho.akgimi.global.exception.BadRequestException;
+import com.kangkimleekojangcho.akgimi.global.exception.BadRequestExceptionCode;
 import com.kangkimleekojangcho.akgimi.global.response.ResponseFactory;
 import com.kangkimleekojangcho.akgimi.global.response.SuccessResponse;
 import com.kangkimleekojangcho.akgimi.user.adapter.in.request.AddDataForPendingUserRequest;
@@ -8,6 +10,7 @@ import com.kangkimleekojangcho.akgimi.user.adapter.in.request.SignUpRequest;
 import com.kangkimleekojangcho.akgimi.user.application.*;
 import com.kangkimleekojangcho.akgimi.user.application.response.AddDataForPendingUserServiceResponse;
 import com.kangkimleekojangcho.akgimi.user.application.response.LoginServiceResponse;
+import com.kangkimleekojangcho.akgimi.user.application.response.RecommendNicknamesServiceResponse;
 import com.kangkimleekojangcho.akgimi.user.application.response.SignUpServiceResponse;
 import com.kangkimleekojangcho.akgimi.user.domain.JwtToken;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,6 +33,8 @@ public class UserController {
     private final AddDataForPendingUserService addDataForPendingUserService;
     private final GetIdTokenService getIdTokenService;
     private final CheckDuplicateNicknameService checkDuplicateNicknameService;
+    private final InputNicknameService inputNicknameService;
+    private final RecommendNicknamesService recommendNicknamesService;
 
     @Value("${kakao.redirection-url}")
     String kakaoRedirectUrl;
@@ -66,8 +72,23 @@ public class UserController {
     }
 
     @GetMapping("/user/nickname/duplicate")
-    public ResponseEntity<SuccessResponse<Boolean>> checkDuplicateNickname(@RequestParam("nickname") String nickname){
+    public ResponseEntity<SuccessResponse<Boolean>> checkDuplicateNickname(@RequestParam("nickname") String nickname) {
         boolean response = checkDuplicateNicknameService.check(nickname);
+        return ResponseFactory.success(response);
+    }
+
+    @PostMapping("/user/nickname")
+    public ResponseEntity<SuccessResponse<Boolean>> inputNickname(@RequestParam("nickname") String nickname, HttpServletRequest servletRequest) {
+        long userId = ((JwtToken) servletRequest.getAttribute("accessToken")).getUserId();
+        if(nickname==null) throw new BadRequestException(BadRequestExceptionCode.INVALID_INPUT);
+        inputNicknameService.input(userId, nickname);
+        return ResponseFactory.success(true);
+    }
+
+    @GetMapping("/user/nickname/recommend")
+    public ResponseEntity<SuccessResponse<RecommendNicknamesServiceResponse>> recommendNicknames(HttpServletRequest servletRequest) {
+        long userId = ((JwtToken) servletRequest.getAttribute("accessToken")).getUserId();
+        RecommendNicknamesServiceResponse response = recommendNicknamesService.recommend(userId);
         return ResponseFactory.success(response);
     }
 }
