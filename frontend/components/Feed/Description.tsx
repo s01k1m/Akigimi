@@ -31,7 +31,7 @@ const Description: React.FC<DescriptionProps> = ({ isLiked, description }) => {
             )}
             </div>
 
-            <div className="blue-btn max-w-[270px] mb-[1vh]"> 
+            <div className="max-w-[270px] mb-[1vh]"> 
                 {description}
             </div>
         </div>
