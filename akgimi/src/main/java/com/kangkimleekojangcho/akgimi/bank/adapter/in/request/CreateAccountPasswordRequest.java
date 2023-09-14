@@ -6,6 +6,6 @@ import lombok.Getter;
 @Getter
 public class CreateAccountPasswordRequest {
     private Bank bank;
-    private String AccountNumber;
-    private String Password;
+    private String accountNumber;
+    private String password;
 }

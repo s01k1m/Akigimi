@@ -5,6 +5,6 @@ import lombok.Getter;
 
 @Getter
 public class CreateAccountRequest {
-    private String AccountType;
+    private String accountType;
     private Bank bank;
 }
