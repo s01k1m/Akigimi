@@ -9,6 +9,9 @@ public enum RecommendNicknamePrefix {
     노력하는,
     열심히_하는,
     잘생긴,
+    돌아다니는,
+    부끄러운,
+    어지러운,
     ;
     @Override
     public String toString() {
