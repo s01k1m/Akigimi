@@ -2,22 +2,21 @@ package com.kangkimleekojangcho.akgimi.global.config;
 
 import com.kangkimleekojangcho.akgimi.global.filter.JwtAuthenticationFilter;
 import com.kangkimleekojangcho.akgimi.global.filter.JwtExceptionHandlerFilter;
-import lombok.Getter;
+import com.kangkimleekojangcho.akgimi.jwt.application.CreateJwtTokenService;
+import com.kangkimleekojangcho.akgimi.jwt.application.ExtractTokenStringService;
+import com.kangkimleekojangcho.akgimi.user.application.port.QueryBlackListPort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -31,12 +30,21 @@ import java.util.List;
 @Log4j2
 @RequiredArgsConstructor
 public class WebSecurityConfig {
-    private final JwtExceptionHandlerFilter jwtExceptionHandlerFilter;
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final ExtractTokenStringService extractTokenStringService;
+    private final CreateJwtTokenService createJwtTokenService;
+    private final QueryBlackListPort queryBlackListPort;
 
     @Bean
     public MvcRequestMatcher.Builder mvc(HandlerMappingIntrospector introspector) {
         return new MvcRequestMatcher.Builder(introspector);
+    }
+
+    public JwtExceptionHandlerFilter jwtExceptionHandlerFilter() {
+        return new JwtExceptionHandlerFilter();
+    }
+
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+        return new JwtAuthenticationFilter(extractTokenStringService,createJwtTokenService,queryBlackListPort);
     }
 
     @Bean
@@ -48,8 +56,8 @@ public class WebSecurityConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                .addFilterBefore(jwtExceptionHandlerFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtExceptionHandlerFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
         ;
         return http.build();
     }
