@@ -1,11 +1,15 @@
 import FeedTap from "@/components/Feed/FeedTap"
-import FeedItem from "@/components/Feed/FeedItem"
+import FeedList from "@/components/Feed/FeedList"
 
 const Feed = () => {
     return (
         <div>
             <FeedTap />
-            <FeedItem />
+            <div className="flex justify-center">
+                <div>
+                    <FeedList />  
+                </div>
+            </div>
         </div>
     )
 }
