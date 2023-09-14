@@ -14,11 +14,16 @@ public class User {
     private Long id;
 
     private String oauthId;
+
+    @Column(unique = true)
+    private String nickname;
+
     @Enumerated(value = EnumType.STRING)
     private OidcProvider oidcProvider;
 
     @Enumerated(value = EnumType.STRING)
     private UserState userState;
+    private String kakaoProfileNickname;
 
     @Builder
     public User(Long id, String oauthId, OidcProvider oidcProvider, UserState userState) {
@@ -34,5 +39,9 @@ public class User {
 
     public boolean isSignUpSccessfully() {
         return UserState.ACTIVE.equals(this.userState);
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 }
