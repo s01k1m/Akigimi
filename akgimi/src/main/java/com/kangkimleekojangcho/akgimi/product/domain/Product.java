@@ -21,4 +21,5 @@ public class Product {
     private String url;
     private Integer price;
     private boolean isDeleted;
+    //TODO: private Category category;
 }
