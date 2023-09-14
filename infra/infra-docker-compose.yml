@@ -50,6 +50,8 @@ services:
     labels:
       - "name=redis"
       - "mode=standalone"
+    ports:
+      - ${REDIS_PORT}:6379
     restart: always
     command: redis-server /usr/local/conf/redis.conf
     networks:
