@@ -6,6 +6,12 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public class NotFoundException extends HttpBusinessException {
     private final NotFoundExceptionCode code;
+    private String customMessage;
+
+    public NotFoundException(NotFoundExceptionCode code, String customMessage) {
+        this.code = code;
+        this.customMessage = customMessage;
+    }
 
     @Override
     public String getCode() {
@@ -14,9 +20,11 @@ public class NotFoundException extends HttpBusinessException {
 
     @Override
     public String getMessage() {
-        return code.getDescriptionMessage();
+        if(customMessage==null){
+            return code.getDescriptionMessage();
+        }
+        return customMessage;
     }
-
     @Override
     public int getStatusCode() {
         return HttpStatus.NOT_FOUND.value();

@@ -6,6 +6,12 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public class UnauthorizedException extends HttpBusinessException {
     private final UnauthorizedExceptionCode code;
+    private String customMessage;
+
+    public UnauthorizedException(UnauthorizedExceptionCode code, String customMessage) {
+        this.code = code;
+        this.customMessage = customMessage;
+    }
 
     @Override
     public String getCode() {
@@ -14,7 +20,10 @@ public class UnauthorizedException extends HttpBusinessException {
 
     @Override
     public String getMessage() {
-        return code.getDescriptionMessage();
+        if(customMessage==null){
+            return code.getDescriptionMessage();
+        }
+        return customMessage;
     }
 
     @Override
