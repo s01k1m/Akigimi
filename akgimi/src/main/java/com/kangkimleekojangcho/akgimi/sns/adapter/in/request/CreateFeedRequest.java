@@ -10,34 +10,22 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
-@NoArgsConstructor(access=AccessLevel.PROTECTED)
-public class CreateFeedRequest {
+@Builder
+public record CreateFeedRequest (
+        @NotBlank(message = "미닝템을 입력해주세요.")
+        String meaningItem,
 
-    @NotBlank(message = "미닝템을 입력해주세요.")
-    private String meaningItem;
+        @Positive(message = "아끼신 금액을 정확히 입력해주세요.")
+        Long saving,
 
-    @Positive(message = "아끼신 금액을 정확히 입력해주세요.")
-    @Max(value = Long.MAX_VALUE, message = "아끼신 금액을 정확히 입력해주세요")
-    private Long saving;
+        String akgimPlace,
 
-    private String akgimPlace;
+        String photo,
 
-    private String photo;
+        @Lob
+        String content,
 
-    @Lob
-    private String content;
+        Boolean isOpen
+){
 
-    private Boolean isOpen;
-
-    @Builder
-    public CreateFeedRequest(String meaningItem, @NotNull Long saving, String akgimPlace,
-                             String photo, String content, Boolean isOpen) {
-        this.meaningItem = meaningItem;
-        this.saving = saving;
-        this.akgimPlace = akgimPlace;
-        this.photo = photo;
-        this.content = content;
-        this.isOpen = isOpen;
-    }
 }

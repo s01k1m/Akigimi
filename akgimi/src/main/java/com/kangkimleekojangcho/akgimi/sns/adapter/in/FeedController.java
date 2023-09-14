@@ -18,7 +18,7 @@ public class FeedController {
 
     @PostMapping("/feed")
     public ResponseEntity<SuccessResponse<CreateFeedRequest>> createFeed(@Valid @RequestBody CreateFeedRequest request) {
-        log.info(request.getAkgimPlace());
+        log.info(request.akgimPlace());
         return ResponseFactory.success(request);
     }
 
