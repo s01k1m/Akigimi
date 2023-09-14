@@ -1,9 +1,16 @@
 package com.kangkimleekojangcho.akgimi.bank.domain;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table(name = "account")
+@Getter
+@SuperBuilder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Account extends BaseTimeEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,7 +22,8 @@ public class Account extends BaseTimeEntity{
 
     private AccountType accountType;
 
-    private String bank;
+    @Enumerated(EnumType.STRING)
+    private Bank bank;
 
     private String accountNumber;
 
