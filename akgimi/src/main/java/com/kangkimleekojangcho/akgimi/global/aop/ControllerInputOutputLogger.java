@@ -14,7 +14,7 @@ import java.lang.reflect.Method;
 @Slf4j
 @Aspect
 @Component
-public class InputOutputLogger {
+public class ControllerInputOutputLogger {
 
     // 모든 컨트롤러에 AOP 적용
     @Pointcut("execution(* com.kangkimleekojangcho.akgimi..controller.*.*(..))")
