@@ -1,10 +1,7 @@
 "use client";
 import * as React from "react";
 import styled from "styled-components";
-import { GetServerSideProps, NextPage } from "next";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { kakaoInit } from "@/utils/kakaoinit";
 import Image from "next/image";
 import Link from "next/link";
 import axios from "axios";
@@ -24,11 +21,7 @@ const KakaoLoginButton = () => {
       .get("/api/kakao/loginurl")
       .then((response) => {
         loginUrl = response.data.data;
-
         setIsLoading(false);
-      })
-      .then(() => {
-        console.log(loginUrl);
       })
       .catch((error) => {
         console.error("HTTP 요청 중 오류 발생:", error);
@@ -36,7 +29,6 @@ const KakaoLoginButton = () => {
   };
   useEffect(() => {
     getLoginURL();
-    console.log("useEEFECT");
   }, []);
 
   return (
