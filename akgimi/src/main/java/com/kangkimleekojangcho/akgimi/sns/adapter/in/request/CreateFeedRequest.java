@@ -1,17 +1,13 @@
 package com.kangkimleekojangcho.akgimi.sns.adapter.in.request;
 
+import com.kangkimleekojangcho.akgimi.sns.application.request.CreateFeedServiceRequest;
 import jakarta.persistence.Lob;
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import lombok.AccessLevel;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Builder
-public record CreateFeedRequest (
+public record CreateFeedRequest(
         @NotBlank(message = "미닝템을 입력해주세요.")
         String meaningItem,
 
@@ -26,6 +22,16 @@ public record CreateFeedRequest (
         String content,
 
         Boolean isOpen
-){
+) {
 
+    public CreateFeedServiceRequest toServiceRequest() {
+        return CreateFeedServiceRequest.builder()
+                .meaningItem(this.meaningItem)
+                .akgimPlace(this.akgimPlace)
+                .content(this.content)
+                .isOpen(this.isOpen)
+                .photo(this.photo)
+                .saving(this.saving)
+                .build();
+    }
 }
