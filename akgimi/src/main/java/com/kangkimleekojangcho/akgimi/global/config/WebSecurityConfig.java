@@ -58,7 +58,7 @@ public class WebSecurityConfig {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         // cross-origin 요청이 허가되는 url
-        configuration.setAllowedOrigins(List.of("*"));
+        configuration.setAllowedOriginPatterns(List.of("*"));
         //허용할 헤더 설정
         configuration.addAllowedHeader("*");
         //허용할 http method
