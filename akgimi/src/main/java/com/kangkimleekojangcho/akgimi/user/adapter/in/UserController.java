@@ -1,5 +1,6 @@
 package com.kangkimleekojangcho.akgimi.user.adapter.in;
 
+import com.kangkimleekojangcho.akgimi.common.domain.application.SubtractUserIdFromAccessTokenService;
 import com.kangkimleekojangcho.akgimi.global.exception.BadRequestException;
 import com.kangkimleekojangcho.akgimi.global.exception.BadRequestExceptionCode;
 import com.kangkimleekojangcho.akgimi.global.response.ResponseFactory;
@@ -9,18 +10,12 @@ import com.kangkimleekojangcho.akgimi.user.adapter.in.request.LoginRequest;
 import com.kangkimleekojangcho.akgimi.user.adapter.in.request.SignUpRequest;
 import com.kangkimleekojangcho.akgimi.user.application.*;
 import com.kangkimleekojangcho.akgimi.user.application.response.*;
-import com.kangkimleekojangcho.akgimi.user.domain.JwtToken;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.sql.ast.tree.predicate.BooleanExpressionPredicate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,6 +28,7 @@ public class UserController {
     private final InputNicknameService inputNicknameService;
     private final RecommendNicknamesService recommendNicknamesService;
     private final GenerateWithdrawalAccountService generateWithdrawalAccountService;
+    private final SubtractUserIdFromAccessTokenService subtractUserIdFromAccessTokenService;
 
     @Value("${kakao.redirection-url}")
     String kakaoRedirectUrl;
@@ -64,7 +60,7 @@ public class UserController {
 
     @PostMapping("/user/extrainfo")
     public ResponseEntity<SuccessResponse<AddDataForPendingUserServiceResponse>> addDataForPendingUser(@RequestBody @Valid AddDataForPendingUserRequest request, HttpServletRequest servletRequest) {
-        Long userId = ((JwtToken) servletRequest.getAttribute("accessToken")).getUserId();
+        Long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
         AddDataForPendingUserServiceResponse response = addDataForPendingUserService.addDataForPendingUser(userId, request.toServiceRequest());
         return ResponseFactory.success(response);
     }
@@ -77,7 +73,7 @@ public class UserController {
 
     @PostMapping("/user/nickname")
     public ResponseEntity<SuccessResponse<Boolean>> inputNickname(@RequestParam("nickname") String nickname, HttpServletRequest servletRequest) {
-        long userId = ((JwtToken) servletRequest.getAttribute("accessToken")).getUserId();
+        Long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
         if(nickname==null) throw new BadRequestException(BadRequestExceptionCode.INVALID_INPUT);
         inputNicknameService.input(userId, nickname);
         return ResponseFactory.success(true);
@@ -85,14 +81,14 @@ public class UserController {
 
     @GetMapping("/user/nickname/recommend")
     public ResponseEntity<SuccessResponse<RecommendNicknamesServiceResponse>> recommendNicknames(HttpServletRequest servletRequest) {
-        long userId = ((JwtToken) servletRequest.getAttribute("accessToken")).getUserId();
+        Long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
         RecommendNicknamesServiceResponse response = recommendNicknamesService.recommend(userId);
         return ResponseFactory.success(response);
     }
 
     @GetMapping("/user/generated-withdrawal-account")
     public ResponseEntity<SuccessResponse<GenerateWithdrawalAccountServiceResponse>> generateWithdrawalAccount(HttpServletRequest servletRequest) {
-        Long userId = ((JwtToken) servletRequest.getAttribute("accessToken")).getUserId();
+        Long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
         GenerateWithdrawalAccountServiceResponse response = generateWithdrawalAccountService.generate(userId);
         return ResponseFactory.success(response);
     }
