@@ -15,7 +15,8 @@ public class Account extends BaseTimeEntity{
 
     private AccountType accountType;
 
-    private String bank;
+    @Enumerated(EnumType.STRING)
+    private Bank bank;
 
     private String accountNumber;
 
