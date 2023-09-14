@@ -76,14 +76,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         List<RequestMatcher> permitList = List.of(
-                new AntPathRequestMatcher("/kakao/login", HttpMethod.GET.name()),
-                new AntPathRequestMatcher("/kakao/signup", HttpMethod.GET.name()),
+                new AntPathRequestMatcher("/kakao/login", HttpMethod.POST.name()),
+                new AntPathRequestMatcher("/kakao/signup", HttpMethod.POST.name()),
                 new AntPathRequestMatcher("/kakao/loginurl", HttpMethod.GET.name()),
                 new AntPathRequestMatcher("/user/signup", HttpMethod.POST.name()),
                 new AntPathRequestMatcher("/kakao/signupurl", HttpMethod.GET.name()),
                 new AntPathRequestMatcher("/publickeys", HttpMethod.GET.name()),
                 new AntPathRequestMatcher("/kakao/idtoken", HttpMethod.GET.name()),
-                new AntPathRequestMatcher("/develop/login", HttpMethod.GET.name())
+                new AntPathRequestMatcher("/develop/login", HttpMethod.GET.name()),
+                new AntPathRequestMatcher("/user/nickname/duplicate", HttpMethod.GET.name())
         );
         OrRequestMatcher skipList = new OrRequestMatcher(permitList);
         return skipList.matches(request);
