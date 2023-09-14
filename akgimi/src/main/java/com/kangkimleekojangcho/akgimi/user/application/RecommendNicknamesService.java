@@ -5,6 +5,7 @@ import com.kangkimleekojangcho.akgimi.global.exception.BadRequestExceptionCode;
 import com.kangkimleekojangcho.akgimi.user.application.port.QueryUserDbPort;
 import com.kangkimleekojangcho.akgimi.user.application.port.RandomNumberPort;
 import com.kangkimleekojangcho.akgimi.user.application.response.RecommendNicknamesServiceResponse;
+import com.kangkimleekojangcho.akgimi.user.domain.Nickname;
 import com.kangkimleekojangcho.akgimi.user.domain.RecommendNicknamePrefix;
 import com.kangkimleekojangcho.akgimi.user.domain.User;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,8 @@ public class RecommendNicknamesService {
         String prefix = RecommendNicknamePrefix.pick(randomIdx);
         User user = userDbPort.findById(userId).orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NOT_USER));
         String kakaoProfileNickname = user.getKakaoProfileNickname();
-        return new RecommendNicknamesServiceResponse(prefix + ' ' + kakaoProfileNickname); // 추천하는 닉네임이 이미 겹치는 경우, 이를 해결할 로직이 필요함. (뒤에 랜덤한 숫자를 붙이는 식으로 하면 어떨까?) TODO
+        String randomPostfix = randomNumberPort.generateDigit(10);
+        Nickname nickname = new Nickname(prefix + ' ' + kakaoProfileNickname + randomPostfix);
+        return new RecommendNicknamesServiceResponse(nickname.getValue()); // 추천하는 닉네임이 이미 겹치는 경우, 이를 해결할 로직이 필요함. (뒤에 랜덤한 숫자를 붙이는 식으로 하면 어떨까?) TODO
     }
 }
