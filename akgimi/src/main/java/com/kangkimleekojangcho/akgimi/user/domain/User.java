@@ -14,6 +14,9 @@ public class User {
     private Long id;
 
     private String oauthId;
+
+    private String nickname;
+
     @Enumerated(value = EnumType.STRING)
     private OidcProvider oidcProvider;
 

@@ -8,4 +8,6 @@ public interface QueryUserDbPort {
     Optional<User> findById(long userId);
 
     Optional<User> findByOauthId(String oauthId);
+
+    boolean existsByNickname(String nickname);
 }

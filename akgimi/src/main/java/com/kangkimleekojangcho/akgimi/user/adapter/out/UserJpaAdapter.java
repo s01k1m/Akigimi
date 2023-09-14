@@ -17,6 +17,11 @@ class UserJpaAdapter implements QueryUserDbPort, CommandUserDbPort {
         return userJpaRepository.findByOauthId(oauthId);
     }
 
+    @Override
+    public boolean existsByNickname(String nickname) {
+        return userJpaRepository.existsByNickname(nickname);
+    }
+
     public User save(User user) {
         return userJpaRepository.save(user);
     }
