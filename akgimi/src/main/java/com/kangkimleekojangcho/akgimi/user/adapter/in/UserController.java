@@ -8,10 +8,7 @@ import com.kangkimleekojangcho.akgimi.user.adapter.in.request.AddDataForPendingU
 import com.kangkimleekojangcho.akgimi.user.adapter.in.request.LoginRequest;
 import com.kangkimleekojangcho.akgimi.user.adapter.in.request.SignUpRequest;
 import com.kangkimleekojangcho.akgimi.user.application.*;
-import com.kangkimleekojangcho.akgimi.user.application.response.AddDataForPendingUserServiceResponse;
-import com.kangkimleekojangcho.akgimi.user.application.response.LoginServiceResponse;
-import com.kangkimleekojangcho.akgimi.user.application.response.RecommendNicknamesServiceResponse;
-import com.kangkimleekojangcho.akgimi.user.application.response.SignUpServiceResponse;
+import com.kangkimleekojangcho.akgimi.user.application.response.*;
 import com.kangkimleekojangcho.akgimi.user.domain.JwtToken;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -35,6 +32,7 @@ public class UserController {
     private final CheckDuplicateNicknameService checkDuplicateNicknameService;
     private final InputNicknameService inputNicknameService;
     private final RecommendNicknamesService recommendNicknamesService;
+    private final GenerateWithdrawalAccountService generateWithdrawalAccountService;
 
     @Value("${kakao.redirection-url}")
     String kakaoRedirectUrl;
@@ -89,6 +87,13 @@ public class UserController {
     public ResponseEntity<SuccessResponse<RecommendNicknamesServiceResponse>> recommendNicknames(HttpServletRequest servletRequest) {
         long userId = ((JwtToken) servletRequest.getAttribute("accessToken")).getUserId();
         RecommendNicknamesServiceResponse response = recommendNicknamesService.recommend(userId);
+        return ResponseFactory.success(response);
+    }
+
+    @GetMapping("/user/generated-withdrawal-account")
+    public ResponseEntity<SuccessResponse<GenerateWithdrawalAccountServiceResponse>> generateWithdrawalAccount(HttpServletRequest servletRequest) {
+        Long userId = ((JwtToken) servletRequest.getAttribute("accessToken")).getUserId();
+        GenerateWithdrawalAccountServiceResponse response = generateWithdrawalAccountService.generate(userId);
         return ResponseFactory.success(response);
     }
 }

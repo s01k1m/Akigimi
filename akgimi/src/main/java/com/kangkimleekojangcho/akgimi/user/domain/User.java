@@ -6,7 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Entity(name = "users")
+@Entity
+@Table(name = "users")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
@@ -26,12 +27,16 @@ public class User {
     private String kakaoProfileNickname;
 
     @Builder
-    public User(Long id, String oauthId, OidcProvider oidcProvider, UserState userState) {
+    public User(Long id, String oauthId, String nickname, OidcProvider oidcProvider, UserState userState, String kakaoProfileNickname) {
         this.id = id;
         this.oauthId = oauthId;
+        this.nickname = nickname;
         this.oidcProvider = oidcProvider;
         this.userState = userState;
+        this.kakaoProfileNickname = kakaoProfileNickname;
     }
+
+
 
     public void signUp() {
         this.userState = UserState.ACTIVE;
