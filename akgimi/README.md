@@ -26,3 +26,4 @@
 - port의 경우 query와 command를 분할합니다. ex) `UserQuery` , `UserCommand`
 - 세부적인 config가 필요한 경우 맞는 도메인에 config 폴더를 새롭게 생성해주세요.
   - ex) `bank/config/BankConfig.java`
+- Controller는 도메인당 하나로 가져갑니다.
