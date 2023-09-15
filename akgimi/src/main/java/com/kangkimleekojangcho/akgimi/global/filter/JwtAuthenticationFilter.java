@@ -28,7 +28,6 @@ import java.util.List;
 
 @Log4j2
 @RequiredArgsConstructor
-@Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public static final String AUTHORIZATION = "Authorization";
     private final ExtractTokenStringService extractTokenStringService;
