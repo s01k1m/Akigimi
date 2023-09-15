@@ -17,7 +17,11 @@ public enum BadRequestExceptionCode {
     DUPLICATE_NICKNAME("008", "닉네임이 중복됩니다."),
     NO_ONE_PICTURE("009", "클라이언트로부터 입력 받은 사진이 한 장이 아닙니다."),
     NOT_IMAGE_FORMAT("010", "이미지 파일 포맷이 아닙니다."),
-    NO_RESOURCE("011","자원이 존재하지 않습니다");
+    NO_RESOURCE("011","자원이 존재하지 않습니다"),
+    NOT_PARTICIPATE_IN_CHALLENGE("012", "유저가 현재 챌린지에 참여중이지 않습니다."),
+    NO_BANK_ACCOUNT("013", "존재하지 않는 계좌입니다."),
+    LACK_OF_ACCOUNT_BALANCE("014","계좌의 잔고가 부족합니다."),
+    EXCEED_MAXIMUM_BALANCE("015", "계좌에 입금 가능한 최대 금액을 초과하였습니다.");
     private final String code;
     private final String descriptionMessage;
 }

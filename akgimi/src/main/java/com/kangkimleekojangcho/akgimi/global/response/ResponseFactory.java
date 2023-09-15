@@ -11,11 +11,13 @@ import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
 
+import static com.kangkimleekojangcho.akgimi.global.response.SuccessResponseMessage.message;
+
 @RequiredArgsConstructor
 public class ResponseFactory {
 
     public static <T> ResponseEntity<SuccessResponse<T>> success(T data) {
-        SuccessResponse<T> successResponse = new SuccessResponse<>("요청에 성공하였습니다.", data);
+        SuccessResponse<T> successResponse = new SuccessResponse<>(message.getValue(), data);
         return new ResponseEntity<>(successResponse, HttpStatus.OK);
     }
 
