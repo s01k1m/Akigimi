@@ -13,7 +13,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-@Component
 @RequiredArgsConstructor
 @Log4j2
 public class JwtExceptionHandlerFilter extends OncePerRequestFilter {
