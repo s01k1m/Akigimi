@@ -3,12 +3,13 @@ package com.kangkimleekojangcho.akgimi.sns.application;
 import com.kangkimleekojangcho.akgimi.bank.application.port.QueryAccountDbPort;
 import com.kangkimleekojangcho.akgimi.bank.domain.Account;
 import com.kangkimleekojangcho.akgimi.bank.domain.AccountType;
-import com.kangkimleekojangcho.akgimi.challenge.application.port.ChallengeQueryDbPort;
+import com.kangkimleekojangcho.akgimi.challenge.application.port.QueryChallengeDbPort;
 import com.kangkimleekojangcho.akgimi.challenge.domain.Challenge;
 import com.kangkimleekojangcho.akgimi.global.exception.BadRequestException;
 import com.kangkimleekojangcho.akgimi.global.exception.BadRequestExceptionCode;
-import com.kangkimleekojangcho.akgimi.sns.application.port.FeedCommandDbPort;
+import com.kangkimleekojangcho.akgimi.sns.application.port.CommandFeedDbPort;
 import com.kangkimleekojangcho.akgimi.sns.application.request.CreateFeedServiceRequest;
+import com.kangkimleekojangcho.akgimi.sns.domain.Feed;
 import com.kangkimleekojangcho.akgimi.user.application.port.QueryUserDbPort;
 import com.kangkimleekojangcho.akgimi.user.domain.User;
 import lombok.AccessLevel;
@@ -23,17 +24,17 @@ public class CreateFeedService {
 
     private final QueryUserDbPort queryUserDbPort;
     private final QueryAccountDbPort queryAccountDbPort;
-    private final FeedCommandDbPort feedCommandDbPort;
-    private final ChallengeQueryDbPort challengeQueryDbPort;
+    private final CommandFeedDbPort commandFeedDbPort;
+    private final QueryChallengeDbPort queryChallengeDbPort;
 
-    public void createFeed(CreateFeedServiceRequest createFeedServiceRequest, Long userId) {
+    public Long createFeed(CreateFeedServiceRequest createFeedServiceRequest, Long userId) {
 
         //1. 유저 확인하기
         User user = queryUserDbPort.findById(userId)
                 .orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NOT_USER));
 
         //2. 챌린지 기록 가져오기
-        Challenge challenge = challengeQueryDbPort.findInProgressChallengeByUserId(userId)
+        Challenge challenge = queryChallengeDbPort.findInProgressChallengeByUserId(userId)
                 .orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NOT_PARTICIPATE_IN_CHALLENGE));
 
         //3. 통장 계좌 확인.
@@ -44,11 +45,12 @@ public class CreateFeedService {
                 .orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NO_BANK_ACCOUNT));
 
         //TODO: s3 이미지 저장
-
         //feedback 저장
-        feedCommandDbPort.save(createFeedServiceRequest.toEntity(depositAccount, user, challenge));
+        Feed feed = commandFeedDbPort.save(createFeedServiceRequest.toEntity(depositAccount, user, challenge));
 
         //5. 마지막으로 통장 계좌에 저장
         depositAccount.deposit(createFeedServiceRequest.saving());
+
+        return feed.getFeedId();
     }
 }

@@ -4,7 +4,7 @@ import com.kangkimleekojangcho.akgimi.challenge.domain.Challenge;
 
 import java.util.Optional;
 
-public interface ChallengeQueryDbPort {
+public interface QueryChallengeDbPort {
 
     Optional<Challenge> findInProgressChallengeByUserId(Long userId);
 }

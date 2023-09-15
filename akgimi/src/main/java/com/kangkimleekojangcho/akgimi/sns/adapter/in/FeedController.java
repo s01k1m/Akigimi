@@ -23,12 +23,12 @@ public class FeedController {
     private final SubtractUserIdFromAccessTokenService userIdFromAccessTokenService;
 
     @PostMapping("/feed")
-    ResponseEntity<SuccessResponse<CreateFeedRequest>> createFeed(
+    ResponseEntity<SuccessResponse<Long>> createFeed(
             @Valid @RequestBody CreateFeedRequest createFeedRequest,
             HttpServletRequest servletRequest
     ) {
         Long userId = userIdFromAccessTokenService.subtract(servletRequest);
-        createFeedService.createFeed(createFeedRequest.toServiceRequest(), userId);
-        return ResponseFactory.success(createFeedRequest);
+        Long result = createFeedService.createFeed(createFeedRequest.toServiceRequest(), userId);
+        return ResponseFactory.success(result);
     }
 }
