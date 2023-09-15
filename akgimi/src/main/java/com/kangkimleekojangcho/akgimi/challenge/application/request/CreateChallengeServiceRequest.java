@@ -11,12 +11,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateChallengeServiceRequest {
-    private Integer ChallengePeriod;
+    private Integer challengePeriod;
     private Long itemId;
 
     public static CreateChallengeServiceRequest from(CreateChallengeRequest request){
         return CreateChallengeServiceRequest.builder()
-                .ChallengePeriod(request.getChallengePeriod())
+                .challengePeriod(request.getChallengePeriod())
                 .itemId(request.getItemId())
                 .build();
     }
