@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface QueryAccountDbPort {
 
     Optional<Account> findAccountByAccountTypeAndUserId(AccountType deposit, Long userId);
+
+    Optional<Account> findById(Long accountId);
 }

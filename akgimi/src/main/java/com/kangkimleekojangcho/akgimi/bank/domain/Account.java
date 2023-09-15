@@ -50,4 +50,8 @@ public class Account extends BaseTimeEntity{
         if(result<0) throw new BadRequestException(BadRequestExceptionCode.EXCEED_MAXIMUM_BALANCE);
         balance = result;
     }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }
