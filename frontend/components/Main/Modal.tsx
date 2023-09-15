@@ -1,6 +1,6 @@
 const Modal = () => {
     return (
-        <div className="h-full w-[60vw]">
+        <div className="">
             <div className="h-[215px] bg-white rounded-2xl drop-shadow-lg">
                 <p className="modal-big-text">{'잘생긴 김솔'}님,</p>
                 <div className="modal-big-text">출금계좌의 잔액을</div>

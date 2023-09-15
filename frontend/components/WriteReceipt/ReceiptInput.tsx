@@ -1,6 +1,7 @@
 import '@/styles/WriteReceipt.css'
 import '@/styles/MainPageButton.css'
 import ReceiptCircle from './ReceiptCircle'
+import Modal from '../Main/Modal'
 
 const ReceiptInput = () => {
     return (
@@ -28,7 +29,7 @@ const ReceiptInput = () => {
             <div className='flex justify-center mt-2'>
                 <button type="submit" className="button-common-small blue-btn">기록 남기기</button>
             </div>
-          
+            {/* <Modal /> */}
         </div>
         
         </>
