@@ -1,5 +1,6 @@
 package com.kangkimleekojangcho.akgimi.user.adapter.in;
 
+import com.kangkimleekojangcho.akgimi.bank.application.GenerateWithdrawalAccountService;
 import com.kangkimleekojangcho.akgimi.common.domain.application.SubtractUserIdFromAccessTokenService;
 import com.kangkimleekojangcho.akgimi.global.exception.BadRequestException;
 import com.kangkimleekojangcho.akgimi.global.exception.BadRequestExceptionCode;
@@ -55,13 +56,6 @@ public class UserController {
     @PostMapping("/kakao/signup")
     public ResponseEntity<SuccessResponse<SignUpServiceResponse>> signup(@RequestBody @Valid SignUpRequest request) {
         SignUpServiceResponse response = signUpService.signUp(request.getIdToken());
-        return ResponseFactory.success(response);
-    }
-
-    @PostMapping("/user/extrainfo")
-    public ResponseEntity<SuccessResponse<AddDataForPendingUserServiceResponse>> addDataForPendingUser(@RequestBody @Valid AddDataForPendingUserRequest request, HttpServletRequest servletRequest) {
-        Long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
-        AddDataForPendingUserServiceResponse response = addDataForPendingUserService.addDataForPendingUser(userId, request.toServiceRequest());
         return ResponseFactory.success(response);
     }
 
