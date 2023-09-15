@@ -59,13 +59,6 @@ public class UserController {
         return ResponseFactory.success(response);
     }
 
-    @PostMapping("/user/extrainfo")
-    public ResponseEntity<SuccessResponse<AddDataForPendingUserServiceResponse>> addDataForPendingUser(@RequestBody @Valid AddDataForPendingUserRequest request, HttpServletRequest servletRequest) {
-        Long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
-        AddDataForPendingUserServiceResponse response = addDataForPendingUserService.addDataForPendingUser(userId, request.toServiceRequest());
-        return ResponseFactory.success(response);
-    }
-
     @GetMapping("/user/nickname/duplicate")
     public ResponseEntity<SuccessResponse<Boolean>> checkDuplicateNickname(@RequestParam("nickname") String nickname) {
         boolean response = checkDuplicateNicknameService.check(nickname);

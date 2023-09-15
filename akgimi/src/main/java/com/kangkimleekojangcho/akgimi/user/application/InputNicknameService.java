@@ -19,6 +19,8 @@ public class InputNicknameService {
         Nickname nickname = new Nickname(rawNickname);
         User user = queryUserDbPort.findById(userId).orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NOT_USER));
         user.setNickname(nickname.getValue());
-        // 그럴 때 어떻게 대처해야 하는지 알아보고, try-catch로 묶어야 함 TODO
+        if(queryUserDbPort.existsByNickname(nickname.getValue())){
+            throw new BadRequestException(BadRequestExceptionCode.INVALID_INPUT, "이미 존재하는 닉네임입니다.");
+        }
     }
 }
