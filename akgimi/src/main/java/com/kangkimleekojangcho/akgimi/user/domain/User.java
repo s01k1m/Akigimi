@@ -27,13 +27,13 @@ public class User {
     private String kakaoProfileNickname;
 
     @Builder
-    public User(Long id, String oauthId, String nickname, OidcProvider oidcProvider, UserState userState, String kakaoProfileNickname) {
+    public User(Long id, String oauthId, String nickname, OidcProvider oidcProvider, UserState userState, KakaoNickname kakaoProfileNickname) {
         this.id = id;
         this.oauthId = oauthId;
         this.nickname = nickname;
         this.oidcProvider = oidcProvider;
         this.userState = userState;
-        this.kakaoProfileNickname = kakaoProfileNickname;
+        this.kakaoProfileNickname = kakaoProfileNickname.getValue();
     }
 
 
