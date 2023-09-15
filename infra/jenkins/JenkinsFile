@@ -1,0 +1,34 @@
+pipeline {
+    agent any
+    environment {
+        // The MY_KUBECONFIG environment variable will be assigned
+        // the value of a temporary file.  For example:
+        //   /home/user/.jenkins/workspace/cred_test@tmp/secretFiles/546a5cf3-9b56-4165-a0fd-19e2afe6b31f/kubeconfig.txt
+        ENV = credentials('back-env')
+    }
+    stages {
+        stage('Git clone') {
+            steps {
+                echo 'Backend Code를 Clone해옵니다.'
+                git branch: 'develop', changelog: false, poll: false, url: 'https://jenkins:4_jqDa6wRvdkgWnyzAJu@lab.ssafy.com/s09-fintech-finance-sub2/S09P22A110.git'
+            }
+        }
+        stage('Inject env file') {
+            steps {
+                echo 'env 파일을 akgimi/resources 폴더 안에 넣습니다.'
+                sh '''cp $ENV ./akgimi/resources'''
+            }
+        }
+        stage('Build'){
+            steps{
+                echo 'Backend Code를 Build합니다.'
+                withGradle {
+                sh '''  cd ./akgimi;
+                        chmod +x ./gradlew;
+                        ./gradlew build;
+                        '''
+                }
+            }
+        }
+    }
+}
