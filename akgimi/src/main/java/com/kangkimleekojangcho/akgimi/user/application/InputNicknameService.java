@@ -16,11 +16,13 @@ public class InputNicknameService {
     private final QueryUserDbPort queryUserDbPort;
     @Transactional
     public void input(long userId, String rawNickname) {
-        Nickname nickname = new Nickname(rawNickname);
+        // Nickname 기본적인 유효성 검사를 해야 함.
+        // Nickname 클래스의 생성자에게 유효성 검사를 맡긴다.
         User user = queryUserDbPort.findById(userId).orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NOT_USER));
-        user.setNickname(nickname.getValue());
+        Nickname nickname = new Nickname(rawNickname);
         if(queryUserDbPort.existsByNickname(nickname.getValue())){
             throw new BadRequestException(BadRequestExceptionCode.INVALID_INPUT, "이미 존재하는 닉네임입니다.");
         }
+        user.setNickname(nickname.getValue());
     }
 }
