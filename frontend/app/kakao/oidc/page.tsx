@@ -39,7 +39,6 @@ export default function Login() {
     let data = {
       idToken: id_token,
     };
-    console.log(data);
     await axios
       .post("/api/kakao/login", JSON.stringify(data), {
         // json을 json타입의 text로 변환
@@ -48,18 +47,12 @@ export default function Login() {
         },
       })
       .then((response) => {
-        console.log(response);
-        // TODO: 회원이므로 6자리 로그인으로 페이지 전환해야됨
-        console.log(response.data);
         const access_token = response.data.data.accessToken;
         const refresh_token = response.data.data.refreshToken;
-        console.log(access_token);
-        console.log(refresh_token);
         window.localStorage.setItem("access_token", access_token);
         window.localStorage.setItem("refresh_token", refresh_token);
-        console.log("access_token:", access_token); // Log the access_token
-        console.log("refresh_token:", refresh_token); // Log the refresh_token
         console.log("우리 회원 맞아요");
+        // TODO: 회원이므로 6자리 로그인으로 페이지 전환해야됨
       })
       .catch((error) => {
         // 회원이 아니면 400 Bad Request를 반환하므로 회원가입으로 페이지 전환해야됨
@@ -82,15 +75,10 @@ export default function Login() {
         },
       })
       .then((response) => {
-        console.log(response.data);
         const access_token = response.data.data.accessToken;
         const refresh_token = response.data.data.refreshToken;
-        console.log(access_token);
-        console.log(refresh_token);
         window.localStorage.setItem("access_token", access_token);
         window.localStorage.setItem("refresh_token", refresh_token);
-        console.log("access_token:", access_token); // Log the access_token
-        console.log("refresh_token:", refresh_token); // Log the refresh_token
         console.log("JWT 발급해줄게요");
         // redirect("/login/register");
       })
@@ -99,9 +87,9 @@ export default function Login() {
       });
   };
 
-  const getExtraInfo = async () => {
-    // header에 Authorization Bearer {{ACCESS_TOKEN}}
-  };
+  // const getExtraInfo = async () => {
+  //   // header에 Authorization Bearer {{ACCESS_TOKEN}}
+  // };
   useEffect(() => {
     getLoginURL();
   }, [token_request_url]);
