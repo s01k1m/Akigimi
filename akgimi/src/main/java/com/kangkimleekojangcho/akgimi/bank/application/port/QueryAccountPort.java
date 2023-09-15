@@ -1,4 +1,7 @@
 package com.kangkimleekojangcho.akgimi.bank.application.port;
 
-public interface QueryAccountPort {
-}
+import com.kangkimleekojangcho.akgimi.bank.domain.Account;
+import lombok.RequiredArgsConstructor;
+
+import java.util.Optional;
+

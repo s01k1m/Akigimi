@@ -1,15 +1,13 @@
 package com.kangkimleekojangcho.akgimi.product.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Getter
+@Builder
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Product {
     @Id

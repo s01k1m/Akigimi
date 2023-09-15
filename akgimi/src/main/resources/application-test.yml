@@ -1,6 +1,4 @@
 spring:
-  profiles:
-    active: test
   jpa:
     hibernate:
       ddl-auto: create
@@ -13,6 +11,9 @@ spring:
     driver-class-name: org.h2.Driver
     username: sa
     password:
+  sql:
+    init:
+      mode: never
 server:
   port: 8080
   servlet:
