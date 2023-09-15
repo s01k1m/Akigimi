@@ -5,15 +5,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kangkimleekojangcho.akgimi.product.domain.Product;
 import com.kangkimleekojangcho.akgimi.user.domain.User;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Challenge {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +26,7 @@ public class Challenge {
     @OneToOne
     private Product product;
 
-    private Integer accumulatedAccount;
+    private Integer accumulatedAmount;
     private boolean achievementState;
     private LocalDate achievementDate;
     private Integer challengePeriod;
