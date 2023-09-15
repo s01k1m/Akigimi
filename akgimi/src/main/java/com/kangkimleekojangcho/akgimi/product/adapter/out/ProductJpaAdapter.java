@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class CommandProductJpaAdapter implements CommandProductDbPort {
+public class ProductJpaAdapter implements CommandProductDbPort {
 
     private final ProductJpaRepository productJpaRepository;
 

@@ -15,8 +15,8 @@ import java.util.List;
 
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity(name="feed")
 public class Feed extends BaseTimeEntity {
 
@@ -48,5 +48,5 @@ public class Feed extends BaseTimeEntity {
     private Challenge challenge;
 
     @OneToMany(mappedBy = "feed", fetch = FetchType.LAZY)
-    List<Like> like;
+    private List<Like> like;
 }

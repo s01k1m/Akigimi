@@ -1,5 +1,6 @@
 package com.kangkimleekojangcho.akgimi.bank.adapter.out;
 
+import com.kangkimleekojangcho.akgimi.bank.application.port.CommandAccountDbPort;
 import com.kangkimleekojangcho.akgimi.bank.application.port.QueryAccountDbPort;
 import com.kangkimleekojangcho.akgimi.bank.domain.Account;
 import com.kangkimleekojangcho.akgimi.bank.domain.AccountType;
@@ -10,11 +11,17 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class QueryAccountJpaAdapter implements QueryAccountDbPort {
+public class AccountJpaAdapter implements CommandAccountDbPort, QueryAccountDbPort {
+
     private final AccountJpaRepository accountJpaRepository;
 
     @Override
     public Optional<Account> findAccountByAccountTypeAndUserId(AccountType deposit, Long userId) {
-        return accountJpaRepository.findAccountByAccountTypeAndUserId(deposit, userId);
+        return accountJpaRepository.findByAccountTypeAndUserId(deposit, userId);
+    }
+
+    @Override
+    public Account save(Account account) {
+        return accountJpaRepository.save(account);
     }
 }

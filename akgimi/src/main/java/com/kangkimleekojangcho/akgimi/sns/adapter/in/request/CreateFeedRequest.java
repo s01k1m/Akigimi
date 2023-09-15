@@ -18,7 +18,6 @@ public record CreateFeedRequest(
 
         String photo,
 
-        @Lob
         String content,
 
         Boolean isOpen
@@ -27,9 +26,9 @@ public record CreateFeedRequest(
     public CreateFeedServiceRequest toServiceRequest() {
         return CreateFeedServiceRequest.builder()
                 .notPurchasedItem(this.meaningItem)
-                .akgimPlace(this.akgimPlace)
+                .akgimiPlace(this.akgimPlace)
                 .content(this.content)
-                .isOpen(this.isOpen)
+                .isPublic(this.isOpen)
                 .photo(this.photo)
                 .saving(this.saving)
                 .build();

@@ -13,13 +13,13 @@ public record CreateFeedServiceRequest(
 
         Long saving,
 
-        String akgimPlace,
+        String akgimiPlace,
 
         String photo,
         @Lob
         String content,
 
-        Boolean isOpen
+        Boolean isPublic
 ) {
 
     public Feed toEntity(Account depositAccount, User user, Challenge challenge) {
@@ -27,9 +27,9 @@ public record CreateFeedServiceRequest(
                 .user(user)
                 .challenge(challenge)
                 .accumulatedAmount(depositAccount.getBalance())
-                .place(akgimPlace)
+                .place(akgimiPlace)
                 .price(saving)
-                .isPublic(isOpen)
+                .isPublic(isPublic)
                 .isDeleted(false)
                 .notPurchasedItem(notPurchasedItem)
                 .content(content)
