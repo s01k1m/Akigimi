@@ -7,10 +7,14 @@ const config: Config = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    letterSpacing: {
+      widest: "3.4px",
+    },
     extend: {
       colors: {
         grey0: "#757575",
         grey1: "#EEEEEE",
+        tossblue: "#0049F2",
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

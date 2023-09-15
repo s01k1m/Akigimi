@@ -18,7 +18,7 @@ const Centering = styled.div`
 `;
 const FixedWidth = styled.div`
   width: 500px;
-  min-height: 840px;
+  min-height: 700px;
   @media (max-width: 500px) {
     /* 화면 너비가 500px 이하가 되면 요소 너비를 100%로 고정*/
     width: 100%;
@@ -46,7 +46,9 @@ export default function RootLayout({
       <head></head>
       <body className={inter.className} suppressHydrationWarning={true}>
         <Centering>
-          <FixedWidth id="layout">{children}</FixedWidth>
+          <FixedWidth id="layout" className="border-2 border-amber-300">
+            {children}
+          </FixedWidth>
         </Centering>
       </body>
     </html>
