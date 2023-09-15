@@ -2,10 +2,7 @@ package com.kangkimleekojangcho.akgimi.user.application;
 
 import com.kangkimleekojangcho.akgimi.user.application.port.CommandUserDbPort;
 import com.kangkimleekojangcho.akgimi.user.application.response.SignUpServiceResponse;
-import com.kangkimleekojangcho.akgimi.user.domain.KakaoIdToken;
-import com.kangkimleekojangcho.akgimi.user.domain.OidcProvider;
-import com.kangkimleekojangcho.akgimi.user.domain.User;
-import com.kangkimleekojangcho.akgimi.user.domain.UserState;
+import com.kangkimleekojangcho.akgimi.user.domain.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +21,7 @@ public class SignUpService {
                 .oauthId(oauthId)
                 .oidcProvider(OidcProvider.KAKAO)
                 .userState(UserState.PENDING)
+                .kakaoProfileNickname(new KakaoNickname(idToken.getNickname()))
                 .build();
         user = commandUserDbPort.save(user);
         Long id = user.getId();

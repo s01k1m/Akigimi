@@ -9,6 +9,18 @@ public enum RecommendNicknamePrefix {
     노력하는,
     열심히_하는,
     잘생긴,
+    돌아다니는,
+    부끄러운,
+    어지러운,
+    심란한,
+    배고픈,
+    피곤한,
+    야근하는,
+    조퇴하는,
+    집_가는,
+    정신_없는,
+    누워_있는,
+
     ;
     @Override
     public String toString() {
