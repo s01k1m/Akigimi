@@ -21,6 +21,11 @@ public class AccountJpaAdapter implements CommandAccountDbPort, QueryAccountDbPo
     }
 
     @Override
+    public Optional<Account> findById(Long accountId) {
+        return accountJpaRepository.findById(accountId);
+    }
+
+    @Override
     public Account save(Account account) {
         return accountJpaRepository.save(account);
     }

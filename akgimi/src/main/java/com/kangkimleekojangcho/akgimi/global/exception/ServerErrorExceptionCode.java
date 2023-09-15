@@ -16,6 +16,7 @@ public enum ServerErrorExceptionCode {
     S3_BAD_CONNECTION("008", "S3에 연결할 수 없습니다."),
     CANNOT_RECOMMEND_NICKNAME("009", "닉네임을 추천할 수 없습니다."),
     CANNOT_GENERATE_RANDOM_NICKNAME("010", "랜덤한 닉네임을 더 이상 만들 수 없습니다."),
+    CANNOT_HASH("010","해시할 수 없습니다"),
     ;
     private final String code;
     private final String descriptionMessage;

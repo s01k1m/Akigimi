@@ -13,6 +13,7 @@ import com.kangkimleekojangcho.akgimi.product.domain.Product;
 import com.kangkimleekojangcho.akgimi.sns.application.port.QueryFeedDbPort;
 import com.kangkimleekojangcho.akgimi.sns.application.request.CreateFeedServiceRequest;
 import com.kangkimleekojangcho.akgimi.user.application.port.CommandUserDbPort;
+import com.kangkimleekojangcho.akgimi.user.domain.KakaoNickname;
 import com.kangkimleekojangcho.akgimi.user.domain.User;
 import com.kangkimleekojangcho.akgimi.user.domain.UserState;
 import org.junit.jupiter.api.BeforeEach;
@@ -93,7 +94,7 @@ class CreateFeedServiceTest extends ServiceIntegrationTestSupport {
     }
     private void prepareForCreateFeed() {
         User user = User.builder()
-                .kakaoProfileNickname("카카오프로필")
+                .kakaoProfileNickname(new KakaoNickname("카카오프로필"))
                 .userState(UserState.ACTIVE)
                 .nickname("돌아다니는 카카오")
                 .oauthId("abcde")
