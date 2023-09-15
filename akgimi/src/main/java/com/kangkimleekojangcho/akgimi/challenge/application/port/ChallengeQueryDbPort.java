@@ -2,10 +2,9 @@ package com.kangkimleekojangcho.akgimi.challenge.application.port;
 
 import com.kangkimleekojangcho.akgimi.challenge.domain.Challenge;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
-public interface ChallengeQueryPort {
+public interface ChallengeQueryDbPort {
 
     Optional<Challenge> findInProgressChallengeByUserId(Long userId);
 }

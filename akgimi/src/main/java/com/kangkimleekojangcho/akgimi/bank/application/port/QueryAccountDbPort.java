@@ -5,7 +5,7 @@ import com.kangkimleekojangcho.akgimi.bank.domain.AccountType;
 
 import java.util.Optional;
 
-public interface QueryAccountPort {
+public interface QueryAccountDbPort {
 
     Optional<Account> findAccountByAccountTypeAndUserId(AccountType deposit, Long userId);
 }
