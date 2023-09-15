@@ -39,8 +39,9 @@ public class BankController {
             throw new BadRequestException(BadRequestExceptionCode.INVALID_INPUT);
         Bank bank = request.getBank();
         String accountType = request.getAccountType();
-        CreateAccountServiceResponse createAccountServiceResponse = createAccountService.createAccount(userId, accountType, bank);
-        return ResponseFactory.success(createAccountServiceResponse);
+//        CreateAccountServiceResponse createAccountServiceResponse = createAccountService.createAccount(userId, accountType, bank);
+//        return ResponseFactory.success(createAccountServiceResponse);
+        return null;
     }
 
 

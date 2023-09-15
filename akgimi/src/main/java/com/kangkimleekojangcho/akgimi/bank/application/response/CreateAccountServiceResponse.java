@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Builder
 public class CreateAccountServiceResponse {
-    private final String accountNumger;
+    private final String accountNumber;
     private final Boolean isPasswordRegistered;
 
 }
