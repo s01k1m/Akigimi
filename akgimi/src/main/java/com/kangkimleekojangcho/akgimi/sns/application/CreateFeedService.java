@@ -1,9 +1,9 @@
 package com.kangkimleekojangcho.akgimi.sns.application;
 
-import com.kangkimleekojangcho.akgimi.bank.application.port.QueryAccountPort;
+import com.kangkimleekojangcho.akgimi.bank.application.port.QueryAccountDbPort;
 import com.kangkimleekojangcho.akgimi.bank.domain.Account;
 import com.kangkimleekojangcho.akgimi.bank.domain.AccountType;
-import com.kangkimleekojangcho.akgimi.challenge.application.port.ChallengeQueryPort;
+import com.kangkimleekojangcho.akgimi.challenge.application.port.ChallengeQueryDbPort;
 import com.kangkimleekojangcho.akgimi.challenge.domain.Challenge;
 import com.kangkimleekojangcho.akgimi.global.exception.BadRequestException;
 import com.kangkimleekojangcho.akgimi.global.exception.BadRequestExceptionCode;
@@ -22,9 +22,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class CreateFeedService {
 
     private final QueryUserDbPort queryUserDbPort;
-    private final QueryAccountPort queryAccountPort;
+    private final QueryAccountDbPort queryAccountDbPort;
     private final FeedCommandDbPort feedCommandDbPort;
-    private final ChallengeQueryPort challengeQueryPort;
+    private final ChallengeQueryDbPort challengeQueryDbPort;
 
     public void createFeed(CreateFeedServiceRequest createFeedServiceRequest, Long userId) {
 
@@ -33,14 +33,14 @@ public class CreateFeedService {
                 .orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NOT_USER));
 
         //2. 챌린지 기록 가져오기
-        Challenge challenge = challengeQueryPort.findInProgressChallengeByUserId(userId)
+        Challenge challenge = challengeQueryDbPort.findInProgressChallengeByUserId(userId)
                 .orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NOT_PARTICIPATE_IN_CHALLENGE));
 
         //3. 통장 계좌 확인.
-        Account withdrawAccount = queryAccountPort.findAccountByAccountTypeAndUserId(AccountType.WITHDRAW, userId)
+        Account withdrawAccount = queryAccountDbPort.findAccountByAccountTypeAndUserId(AccountType.WITHDRAW, userId)
                 .orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NO_BANK_ACCOUNT));
-        Long remain = withdrawAccount.withdraw(createFeedServiceRequest.saving());
-        Account depositAccount = queryAccountPort.findAccountByAccountTypeAndUserId(AccountType.DEPOSIT, userId)
+        withdrawAccount.withdraw(createFeedServiceRequest.saving());
+        Account depositAccount = queryAccountDbPort.findAccountByAccountTypeAndUserId(AccountType.DEPOSIT, userId)
                 .orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NO_BANK_ACCOUNT));
 
         //TODO: s3 이미지 저장
@@ -50,6 +50,5 @@ public class CreateFeedService {
 
         //5. 마지막으로 통장 계좌에 저장
         depositAccount.deposit(createFeedServiceRequest.saving());
-
     }
 }

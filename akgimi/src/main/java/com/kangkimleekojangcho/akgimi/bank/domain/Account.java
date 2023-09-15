@@ -2,6 +2,7 @@ package com.kangkimleekojangcho.akgimi.bank.domain;
 
 import com.kangkimleekojangcho.akgimi.global.exception.BadRequestException;
 import com.kangkimleekojangcho.akgimi.global.exception.BadRequestExceptionCode;
+import com.kangkimleekojangcho.akgimi.user.domain.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -18,9 +19,9 @@ public class Account extends BaseTimeEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //@ManyToOne
-    //@JoinColumn(name = "user_id")
-    //private User user;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     private AccountType accountType;
 
