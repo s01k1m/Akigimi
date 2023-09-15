@@ -3,9 +3,19 @@ package com.kangkimleekojangcho.akgimi.global.exception;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
-@RequiredArgsConstructor
+
 public class BadRequestException extends HttpBusinessException {
     private final BadRequestExceptionCode code;
+    private String customMessage;
+
+    public BadRequestException(BadRequestExceptionCode code) {
+        this.code = code;
+    }
+
+    public BadRequestException(BadRequestExceptionCode code, String customMessage) {
+        this.code = code;
+        this.customMessage = customMessage;
+    }
 
     @Override
     public String getCode() {
@@ -14,7 +24,10 @@ public class BadRequestException extends HttpBusinessException {
 
     @Override
     public String getMessage() {
-        return code.getDescriptionMessage();
+        if(customMessage==null){
+            return code.getDescriptionMessage();
+        }
+        return customMessage;
     }
 
     @Override
