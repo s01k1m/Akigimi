@@ -1,11 +1,13 @@
 import '@/styles/WriteReceipt.css'
 import '@/styles/MainPageButton.css'
+import ReceiptCircle from './ReceiptCircle'
 
 const ReceiptInput = () => {
     return (
         <>
-            <div className='flex flex-col items-center'>
-                <div className='logo mb-3'>AKGIMI</div>
+        <div>
+            <div className='flex flex-col items-center bg-[#EEE] w-[70vw] max-w-[330px] min-w-[300px]'>
+                <div className='logo mb-3 mt-6'>AKGIMI</div>
                 <form className='flex flex-col items-center'>
                     <input type="text" placeholder="끼밍템을 입력해주세요" />
                     <input type="number" placeholder="가격을 입력해주세요"/>
@@ -18,9 +20,16 @@ const ReceiptInput = () => {
                         <p className='pe-4'>공개 여부</p>
                         <input type="checkbox" className="switch" />
                     </div>
-                    <button type="submit" className="button-common-small blue-btn mt-4">기록 남기기</button>
                 </form>
             </div>
+            <div className='flex justify-center z-0 -mt-4'>
+                <ReceiptCircle />
+            </div>
+            <div className='flex justify-center mt-2'>
+                <button type="submit" className="button-common-small blue-btn">기록 남기기</button>
+            </div>
+          
+        </div>
         
         </>
     )
