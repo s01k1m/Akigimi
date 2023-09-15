@@ -17,7 +17,7 @@ import java.lang.reflect.Method;
 public class ControllerInputOutputLogger {
 
     // 모든 컨트롤러에 AOP 적용
-    @Pointcut("execution(* com.kangkimleekojangcho.akgimi..controller.*.*(..))")
+    @Pointcut("execution(* com.kangkimleekojangcho.akgimi..in.*.*(..))")
     private void cut(){}
 
     /**
