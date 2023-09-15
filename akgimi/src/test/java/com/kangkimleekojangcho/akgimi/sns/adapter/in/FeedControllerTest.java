@@ -79,8 +79,8 @@ class FeedControllerTest extends ControllerTestSupport {
 
     private static Stream<Arguments> generateData() {
         return Stream.of(
-                Arguments.of(" ", 1000L, "akgimPlace", "photo", "content", true),
-                Arguments.of("notPurchasedItem", -10L, "akgimPlace", "photo", "content", true),
+                Arguments.of(" ", 1000L, "akgimiPlace", "photo", "content", true),
+                Arguments.of("notPurchasedItem", -10L, "akgimiPlace", "photo", "content", true),
                 Arguments.of("   ", 1000L, "   ", "photo", "content", true)
         );
     }

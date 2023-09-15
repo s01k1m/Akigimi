@@ -35,7 +35,5 @@ public class Challenge extends BaseTimeEntity {
     private Integer challengePeriod;
     private LocalDate challengeStartDate;
     private LocalDate challengeEndDate;
-
-    @Column
     private boolean isInProgress;
 }
