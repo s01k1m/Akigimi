@@ -34,7 +34,26 @@ const KakaoLoginButton = () => {
   return (
     <Wrapper>
       {isLoading ? (
-        <>로딩중</>
+        <Button.Container>
+          <Button.ButtonList>
+            <Button.KakaoButton className="animate-pulse ">
+              <Image
+                src="/kakao logo.png"
+                alt="카카오 로고 사진"
+                width="20"
+                height="20"
+                style={{
+                  display: "inline-block",
+                  position: "absolute",
+                  left: 14,
+                  margin: "3px 0",
+                  height: "auto",
+                }}
+              ></Image>
+              <Button.ButtonText></Button.ButtonText>
+            </Button.KakaoButton>
+          </Button.ButtonList>
+        </Button.Container>
       ) : (
         <Button.Container>
           <Button.ButtonList>
