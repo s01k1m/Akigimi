@@ -15,6 +15,6 @@ public class GenerateWithdrawalAccountServiceResponse {
     }
 
     public static GenerateWithdrawalAccountServiceResponse from(Account account) {
-        return new GenerateWithdrawalAccountServiceResponse(account.getBank().name(), "sample-account");
+        return new GenerateWithdrawalAccountServiceResponse(account.getBank().name(), account.getAccountNumber());
     }
 }
