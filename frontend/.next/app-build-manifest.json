@@ -1,9 +1,10 @@
 {
   "pages": {
-    "/page": [
+    "/myreceipt/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/page.js"
+      "static/css/app/myreceipt/page.css",
+      "static/chunks/app/myreceipt/page.js"
     ],
     "/layout": [
       "static/chunks/webpack.js",

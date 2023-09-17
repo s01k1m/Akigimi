@@ -1,0 +1,12 @@
+#my-receipt div {
+    color: #000;
+    font-size: 25px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 5px;
+}
+
+#my-receipt div span {
+    color: #0049F2;
+}
