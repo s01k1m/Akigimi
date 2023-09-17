@@ -2,7 +2,13 @@ import FeedItem from "./FeedItem"
 import { useState } from "react"
 import axios from "axios"
 
-const FeedList = () => {
+type selectedProps =  {
+    selectedValue: string
+}
+
+const FeedList: React.FC<selectedProps> = ({ selectedValue }) => {
+    // selectedValue 선택 된 값 파라미터로 넘기기
+    
     // const [feedData, setFeedData] = useState<[]>()
     // const token = sessionStorage.getItem('token')
     // // 피드 정보 api 호출하기
