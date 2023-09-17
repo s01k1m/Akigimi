@@ -2,9 +2,11 @@
 import '@/styles/WriteReceipt.css'
 import '@/styles/MainPageButton.css'
 import ReceiptCircle from './ReceiptCircle'
-import { ChangeEvent, useState, useRef } from 'react'
+import { ChangeEvent, useState, useRef, useEffect } from 'react'
 import { AiOutlineFileAdd } from 'react-icons/ai'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
+import axios from 'axios'
 // import Modal from '../Main/Modal'
 
 const ReceiptInput = () => {
@@ -17,30 +19,72 @@ const ReceiptInput = () => {
         isOpened: ''
     })
     
-    const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    // input 값에 변화가 생기면 FormData에 담아주기
+    const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target
-        if (name === 'photo') {
-            const file = value
-           
-        }
         
         setFormData({
             ...formData,
             [name]: value,
         });
+        // 글자수 세기
+        setInputCount(e.target.value.length);
     }
     
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-        console.log(formData)
-    }
     
-    // 사진 추가
+    // 사진 input (원래 input 창을 숨기고 새로운 모양을 만들었음)
     const fileRef: any = useRef<HTMLInputElement>(null);
     const handleClick = () => {
         fileRef?.current?.click();
     };
     
+    // 사진 url로 변경하여 미리보기 띄우기
+    const [imgSrc, setImgSrc] = useState<string>("")
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0]
+        if (!file) return
+        const fileReader = new FileReader()
+        fileReader.readAsDataURL(file)
+        fileReader.onload = (e) => {
+            if (typeof e.target?.result === 'string') {
+                setImgSrc(e.target?.result)
+            }
+        }
+    }
+    
+    // imgSrc 가 변하면 FormData의 photo값 변경
+    useEffect(() => {
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            photo: imgSrc
+        }))
+    }, [imgSrc])
+    
+    // form 제출
+    const router = useRouter()
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        
+        console.log(formData)
+        
+        // 제출 api 추가 (api 완료되면 다시)
+        await axios
+        .post('feeds', formData)
+        .then((response) => {
+            console.log('response', response)
+        })
+        .then(() => {
+            // feed 페이지로 이동
+            router.push('/feed')
+        })
+        .catch((error) => {
+            console.error('error')
+        })
+        
+        
+    }
+    // content 글자수 세기
+    const [inputCount, setInputCount] = useState<number>(0)
 
     return (
         <>
@@ -74,19 +118,22 @@ const ReceiptInput = () => {
                         <input 
                             type="" 
                             name="photo"
-                            value={formData.photo}
                             className='h-[100px] relative' 
                             disabled
                             />
                         <div className='absolute'>
                             <AiOutlineFileAdd size={40} color="gray" onClick={handleClick} />
                         </div>
-                        {/* <Image 
-                            src={imageUrl}
-                            alt=""
-                            width={50}
-                            height={50}
-                        /> */}
+                        <div className='absolute'>
+                            {imgSrc ? (
+                                <Image 
+                                src={imgSrc}
+                                alt=""
+                                width={100}
+                                height={100}
+                            />
+                            ) : null} 
+                        </div>
                         
                     </div>
                     {/* 사진 첨부 form hidden  ref 전달*/}
@@ -94,33 +141,37 @@ const ReceiptInput = () => {
                         ref={fileRef}
                         type="file" 
                         name='photo'
-                        onChange={e => onUpload(e)}
+                        onChange={handleChange}
                         accept="image/*"
                         hidden
                         />
-                    <input 
+                    {/* content 입력 */}
+                    <textarea 
                         type="text" 
                         name="content"
                         value={formData.content}
                         onChange={handleInputChange}
-                        className='h-[100px]' 
+                        className='h-[100px]'
+                        cols={19}
+                        rows={20} 
+                        maxLength={200}
                         placeholder='내용을 입력해주세요'
                         />
-                    <div className='flex mt-1 mb-8 pe-28'>
-                        {/* 공개 여부 토글 */}
-                        <p className='pe-4'>공개 여부</p>
-                        <input 
-                            type="checkbox" 
-                            name="isOpened"
-                            value={formData.isOpened}
-                            onClick={( e: ChangeEvent<HTMLInputElement>) => {
-                                const checkedValue: boolean = e.target.checked
-                                console.log(checkedValue)
-                                handleInputChange({ target: {name: "isOpened", value: checkedValue }})
-                            }}
-                            className="switch" 
-                        />  
-                    </div>
+                        <div className='flex justify-between mt-2 mb-6'>
+                            {/* 공개 여부 토글 */}
+                            <p className='pe-4'>공개 여부</p>
+                            <input 
+                                type="checkbox" 
+                                name="isOpened"
+                                value={formData.isOpened}
+                                onClick={( e: ChangeEvent<HTMLInputElement>) => {
+                                    const checkedValue: boolean = e.target.checked
+                                    handleInputChange({ target: {name: "isOpened", value: checkedValue }})
+                                }}
+                                className="switch me-2" 
+                            />
+                            <div className='ms-2'>{inputCount}/200</div>  
+                        </div>
                 </form>
             </div>
             <div className='flex justify-center z-0 -mt-4'>
