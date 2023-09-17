@@ -7,9 +7,10 @@ import { AiOutlineFileAdd } from 'react-icons/ai'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
-// import Modal from '../Main/Modal'
+import Modal from './Modal'
 
 const ReceiptInput = () => {
+    const [isOpened, setIsOpened] = useState<boolean>(false)
     const [formData, setFormData] = useState({
         notPurchasedItem: '',
         saving: '',
@@ -79,6 +80,8 @@ const ReceiptInput = () => {
         })
         .catch((error) => {
             console.error('error')
+            // 잔액이 부족한 경우 모달창 띄우기
+            // setIsOpened(true)
         })
         
         
@@ -146,8 +149,7 @@ const ReceiptInput = () => {
                         hidden
                         />
                     {/* content 입력 */}
-                    <textarea 
-                        type="text" 
+                    <textarea
                         name="content"
                         value={formData.content}
                         onChange={handleInputChange}
@@ -180,7 +182,15 @@ const ReceiptInput = () => {
             <div className='flex justify-center mt-2'>
                 <button type="button" className="button-common-small blue-btn" onClick={handleSubmit}>기록 남기기</button>
             </div>
-            {/* <Modal /> */}
+            {/* 추후 기능 */}
+            <div className='sticky bottom-0'>
+                {isOpened ? (
+                    <Modal change={500} /> 
+                ) : (
+                    null
+                )}
+                
+            </div>
         </div>
         
         </>
