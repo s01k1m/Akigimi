@@ -4,7 +4,7 @@ import * as React from "react";
 import { useEffect } from "react";
 import { redirect } from "next/navigation";
 
-let id_token = "";
+let id_token: string | null = "";
 
 const urlStr = window.location.href;
 const url = new URL(urlStr);
@@ -47,8 +47,8 @@ export default function Login() {
         },
       })
       .then((response) => {
-        const access_token = response.data.data.accessToken;
-        const refresh_token = response.data.data.refreshToken;
+        const access_token: string = response.data.data.accessToken;
+        const refresh_token: string = response.data.data.refreshToken;
         window.localStorage.setItem("access_token", access_token);
         window.localStorage.setItem("refresh_token", refresh_token);
         console.log("우리 회원 맞아요");
@@ -75,8 +75,8 @@ export default function Login() {
         },
       })
       .then((response) => {
-        const access_token = response.data.data.accessToken;
-        const refresh_token = response.data.data.refreshToken;
+        const access_token: string = response.data.data.accessToken;
+        const refresh_token: string = response.data.data.refreshToken;
         window.localStorage.setItem("access_token", access_token);
         window.localStorage.setItem("refresh_token", refresh_token);
         console.log("JWT 발급해줄게요");
