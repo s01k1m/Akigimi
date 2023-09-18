@@ -39,6 +39,8 @@ public class Feed extends BaseTimeEntity {
 
     private Boolean isDeleted;
 
+    private String imageUrl;
+
     @ManyToOne
     @JoinColumn(name="user_id")
     private User user;
