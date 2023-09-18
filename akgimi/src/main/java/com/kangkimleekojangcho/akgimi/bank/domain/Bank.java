@@ -16,4 +16,5 @@ public enum Bank {
     public static int howMany() {
         return Bank.values().length;
     }
+
 }
