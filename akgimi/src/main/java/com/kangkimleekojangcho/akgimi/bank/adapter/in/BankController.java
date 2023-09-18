@@ -92,6 +92,5 @@ public class BankController {
         if (accountType == null) throw new BadRequestException(BadRequestExceptionCode.INVALID_INPUT);
         CheckDepositWithDrawServiceResponse response = checkDepositWithdrawService.checkDepositWithdraw(userId, accountType);
         return ResponseFactory.success(response);
-
     }
 }

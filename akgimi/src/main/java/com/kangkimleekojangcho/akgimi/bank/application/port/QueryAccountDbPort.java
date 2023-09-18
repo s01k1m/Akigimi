@@ -15,4 +15,6 @@ public interface QueryAccountDbPort {
     Optional<Account> findByUserAndAccountType(User user, AccountType accountType);
 
     Optional<Account> findByAccountNumber(String accountNumber, AccountType accountType);
+
+    Optional<Account> findByUserIdAndAccountTypeAndAccountNumber(Long userId, AccountType accountType, String accountNumber);
 }
