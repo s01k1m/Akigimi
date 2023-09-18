@@ -4,6 +4,7 @@ import com.kangkimleekojangcho.akgimi.bank.adapter.in.request.CreateAccountPassw
 import com.kangkimleekojangcho.akgimi.bank.adapter.in.request.CreateAccountRequest;
 import com.kangkimleekojangcho.akgimi.bank.adapter.in.request.MakeTransferRequest;
 import com.kangkimleekojangcho.akgimi.bank.application.*;
+import com.kangkimleekojangcho.akgimi.bank.application.request.CreateAccountPasswordServiceRequest;
 import com.kangkimleekojangcho.akgimi.bank.application.request.CreateAccountServiceRequest;
 import com.kangkimleekojangcho.akgimi.bank.application.response.CheckBalanceServiceResponse;
 import com.kangkimleekojangcho.akgimi.bank.application.response.CheckDepositWithDrawServiceResponse;
@@ -55,10 +56,8 @@ public class BankController {
         long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
         if (request.getPassword() == null || request.getBank() == null || request.getAccountNumber() == null)
             throw new BadRequestException(BadRequestExceptionCode.INVALID_INPUT);
-        Bank bank = request.getBank();
-        String accountNumber = request.getAccountNumber();
-        String password = request.getPassword();
-        CreateAccountPasswordServiceResponse createAccountPasswordServiceResponse = createAccountPasswordService.createAccountPassword(userId, bank, accountNumber, password);
+        CreateAccountPasswordServiceRequest createAccountPasswordServiceRequest = request.toServiceRequest();
+        CreateAccountPasswordServiceResponse createAccountPasswordServiceResponse = createAccountPasswordService.createAccountPassword(userId, createAccountPasswordServiceRequest);
         return ResponseFactory.success(createAccountPasswordServiceResponse);
 
     }
