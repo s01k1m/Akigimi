@@ -114,7 +114,7 @@ class CreateFeedServiceTest extends ServiceIntegrationTestSupport {
         Challenge challenge = Challenge.builder()
                 .challengeStartDate(LocalDate.now())
                 .challengeEndDate(LocalDate.now().plusDays(30))
-                .accumulatedAccount(300000)
+                .accumulatedAmount(300000)
                 .achievementDate(null)
                 .achievementState(false)
                 .isInProgress(true)
