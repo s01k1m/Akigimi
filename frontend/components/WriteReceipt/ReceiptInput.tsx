@@ -28,8 +28,11 @@ const ReceiptInput = () => {
             ...formData,
             [name]: value,
         });
+        
         // 글자수 세기
-        setInputCount(e.target.value.length);
+        if (e.target.placeholder === '내용을 입력해주세요') {
+            setInputCount(e.target.value.length)
+        }
     }
     
     
@@ -153,15 +156,13 @@ const ReceiptInput = () => {
                         name="content"
                         value={formData.content}
                         onChange={handleInputChange}
-                        className='h-[100px]'
-                        cols={19}
-                        rows={20} 
+                        className='h-[100px] w-[100%]'
                         maxLength={200}
                         placeholder='내용을 입력해주세요'
                         />
-                        <div className='flex justify-between mt-2 mb-6'>
+                        <div className='flex justify-between mt-2 mb-6 w-[100%]'>
                             {/* 공개 여부 토글 */}
-                            <p className='pe-4'>공개 여부</p>
+                            <p>공개 여부</p>
                             <input 
                                 type="checkbox" 
                                 name="isOpened"
