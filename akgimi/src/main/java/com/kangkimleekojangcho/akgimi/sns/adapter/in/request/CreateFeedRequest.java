@@ -4,6 +4,8 @@ import com.kangkimleekojangcho.akgimi.sns.application.request.CreateFeedServiceR
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import lombok.Builder;
+import lombok.ToString;
+import org.springframework.web.multipart.MultipartFile;
 
 @Builder
 public record CreateFeedRequest(
@@ -14,11 +16,8 @@ public record CreateFeedRequest(
         Long saving,
 
         String akgimiPlace,
-
-        String photo,
-
         String content,
-
+        MultipartFile photo,
         Boolean isOpen
 ) {
 
@@ -28,8 +27,9 @@ public record CreateFeedRequest(
                 .akgimiPlace(this.akgimiPlace)
                 .content(this.content)
                 .isPublic(this.isOpen)
-                .photo(this.photo)
+                .photo(photo)
                 .saving(this.saving)
                 .build();
     }
+
 }

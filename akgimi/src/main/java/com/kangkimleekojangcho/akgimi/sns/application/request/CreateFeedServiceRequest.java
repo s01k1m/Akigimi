@@ -6,6 +6,7 @@ import com.kangkimleekojangcho.akgimi.sns.domain.Feed;
 import com.kangkimleekojangcho.akgimi.user.domain.User;
 import jakarta.persistence.Lob;
 import lombok.Builder;
+import org.springframework.web.multipart.MultipartFile;
 
 @Builder
 public record CreateFeedServiceRequest(
@@ -14,8 +15,7 @@ public record CreateFeedServiceRequest(
         Long saving,
 
         String akgimiPlace,
-
-        String photo,
+        MultipartFile photo,
         @Lob
         String content,
 
