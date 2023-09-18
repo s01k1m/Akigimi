@@ -18,10 +18,14 @@ public class HashAdapter implements HashPort {
     public String hash(String value, String salt){
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
-            byte[] hashBytes = md.digest(value.getBytes());
+            String temp = value + salt;
+            md.update(temp.getBytes());
+            byte[] hashBytes = md.digest();
             return Base64.getEncoder().encodeToString(hashBytes);
         } catch (NoSuchAlgorithmException e) {
             throw new ServerErrorException(ServerErrorExceptionCode.CANNOT_HASH);
         }
     }
+
+
 }
