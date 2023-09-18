@@ -4,6 +4,7 @@ import com.kangkimleekojangcho.akgimi.bank.adapter.in.request.CreateAccountPassw
 import com.kangkimleekojangcho.akgimi.bank.adapter.in.request.CreateAccountRequest;
 import com.kangkimleekojangcho.akgimi.bank.adapter.in.request.MakeTransferRequest;
 import com.kangkimleekojangcho.akgimi.bank.application.*;
+import com.kangkimleekojangcho.akgimi.bank.application.request.CreateAccountServiceRequest;
 import com.kangkimleekojangcho.akgimi.bank.application.response.CheckBalanceServiceResponse;
 import com.kangkimleekojangcho.akgimi.bank.application.response.CheckDepositWithDrawServiceResponse;
 import com.kangkimleekojangcho.akgimi.bank.application.response.CreateAccountPasswordServiceResponse;
@@ -29,8 +30,7 @@ public class BankController {
     private final CheckBalanceService checkBalanceService;
     private final CheckDepositWithdrawService checkDepositWithdrawService;
     private final SubtractUserIdFromAccessTokenService subtractUserIdFromAccessTokenService;
-    private final GenerateDepositAccountService generateDepositAccountService;
-    private final GenerateWithdrawAccountService generateWithdrawAccountService;
+    private final GenereateAccountService generateAccountService;
     // 새 계좌 생성
     @PostMapping("/account/new")
     public ResponseEntity<SuccessResponse<CreateAccountServiceResponse>> createAccount(
@@ -39,20 +39,10 @@ public class BankController {
         long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
         if (request.getAccountType() == null || request.getBank() == null)
             throw new BadRequestException(BadRequestExceptionCode.INVALID_INPUT);
-        System.out.println(request.getBank());
-        System.out.println(request.getAccountType());
         Bank bank = request.getBank();
         AccountType accountType = request.getAccountType();
-        if(accountType != AccountType.DEPOSIT && accountType != AccountType.WITHDRAW){
-            throw new BadRequestException(BadRequestExceptionCode.INVALID_INPUT);
-        }
-        CreateAccountServiceResponse createAccountServiceResponse = CreateAccountServiceResponse.builder().build();
-        if(accountType == AccountType.DEPOSIT){
-            createAccountServiceResponse = generateDepositAccountService.create(userId, bank);
-        }
-        if(accountType == AccountType.WITHDRAW){
-            createAccountServiceResponse = generateWithdrawAccountService.create(userId, bank);
-        }
+        CreateAccountServiceRequest serviceRequest = new CreateAccountServiceRequest(bank,accountType);
+        CreateAccountServiceResponse createAccountServiceResponse = generateAccountService.create(userId,serviceRequest);
         return ResponseFactory.success(createAccountServiceResponse);
     }
 

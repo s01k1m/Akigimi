@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class SavePasswordService {
     private final QueryUserDbPort queryUserDbPort;
-    private final QueryAccountDbPort queryAccountPort;
+    private final QueryAccountDbPort queryAccountDbPort;
     private final GenerateSaltPort generateSaltPort;
     private final HashPort hashPort;
     private final CommandSaltPort commandSaltPort;
@@ -26,7 +26,7 @@ public class SavePasswordService {
     public void save(Long userId, SavePasswordServiceRequest serviceRequest) {
         String rawSalt = generateSaltPort.generate();
         String hashed = hashPort.hash(serviceRequest.getPassword(), rawSalt);
-        Account account = queryAccountPort.findById(serviceRequest.getAccountId()).orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.INVALID_INPUT, "존재하지 않는 계좌입니다."));
+        Account account = queryAccountDbPort.findById(serviceRequest.getAccountId()).orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.INVALID_INPUT, "존재하지 않는 계좌입니다."));
         account.setPassword(hashed);
         Salt salt = new Salt(account, rawSalt);
         commandSaltPort.save(salt);

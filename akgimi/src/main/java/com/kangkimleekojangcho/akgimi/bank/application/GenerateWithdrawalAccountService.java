@@ -14,10 +14,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class GenerateWithdrawalAccountService {
     private final QueryUserDbPort queryUserDbPort;
-    private final CreateAccountService createAccountService;
     private final RandomNumberPort randomNumberPort;
     private final GenerateRandomAccountNumberService generateRandomAccountNumberService;
-    private final CommandAccountDbPort commandAccountPort;
+    private final CommandAccountDbPort commandAccountDbPort;
     public GenerateWithdrawalAccountServiceResponse generate(Long userId) {
         Bank bank = Bank.pick(randomNumberPort.generate(0, Bank.howMany()));
         String accountNumber = generateRandomAccountNumberService.generate();
