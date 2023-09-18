@@ -4,10 +4,12 @@ import com.kangkimleekojangcho.akgimi.bank.adapter.in.request.CreateAccountPassw
 import com.kangkimleekojangcho.akgimi.bank.adapter.in.request.CreateAccountRequest;
 import com.kangkimleekojangcho.akgimi.bank.adapter.in.request.MakeTransferRequest;
 import com.kangkimleekojangcho.akgimi.bank.application.*;
+import com.kangkimleekojangcho.akgimi.bank.application.request.CreateAccountServiceRequest;
 import com.kangkimleekojangcho.akgimi.bank.application.response.CheckBalanceServiceResponse;
 import com.kangkimleekojangcho.akgimi.bank.application.response.CheckDepositWithDrawServiceResponse;
 import com.kangkimleekojangcho.akgimi.bank.application.response.CreateAccountPasswordServiceResponse;
 import com.kangkimleekojangcho.akgimi.bank.application.response.CreateAccountServiceResponse;
+import com.kangkimleekojangcho.akgimi.bank.domain.AccountType;
 import com.kangkimleekojangcho.akgimi.bank.domain.Bank;
 import com.kangkimleekojangcho.akgimi.common.domain.application.SubtractUserIdFromAccessTokenService;
 import com.kangkimleekojangcho.akgimi.global.exception.BadRequestException;
@@ -23,31 +25,33 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class BankController {
 
-    private final CreateAccountService createAccountService;
     private final CreateAccountPasswordService createAccountPasswordService;
     private final MakeTransferService makeTransferService;
     private final CheckBalanceService checkBalanceService;
     private final CheckDepositWithdrawService checkDepositWithdrawService;
     private final SubtractUserIdFromAccessTokenService subtractUserIdFromAccessTokenService;
-
-
+    private final GenereateAccountService generateAccountService;
     // 새 계좌 생성
     @PostMapping("/account/new")
-    public ResponseEntity<SuccessResponse<CreateAccountServiceResponse>> createAccount(@RequestBody CreateAccountRequest request, HttpServletRequest servletRequest) {
+    public ResponseEntity<SuccessResponse<CreateAccountServiceResponse>> createAccount(
+            @RequestBody CreateAccountRequest request,
+            HttpServletRequest servletRequest) {
         long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
         if (request.getAccountType() == null || request.getBank() == null)
             throw new BadRequestException(BadRequestExceptionCode.INVALID_INPUT);
         Bank bank = request.getBank();
-        String accountType = request.getAccountType();
-//        CreateAccountServiceResponse createAccountServiceResponse = createAccountService.createAccount(userId, accountType, bank);
-//        return ResponseFactory.success(createAccountServiceResponse);
-        return null;
+        AccountType accountType = request.getAccountType();
+        CreateAccountServiceRequest serviceRequest = new CreateAccountServiceRequest(bank,accountType);
+        CreateAccountServiceResponse createAccountServiceResponse = generateAccountService.create(userId,serviceRequest);
+        return ResponseFactory.success(createAccountServiceResponse);
     }
 
 
     // 새 계좌 비밀번호 확인
     @PostMapping("/account/new/password")
-    public ResponseEntity<SuccessResponse<CreateAccountPasswordServiceResponse>> createAccountPassword(@RequestBody CreateAccountPasswordRequest request, HttpServletRequest servletRequest) {
+    public ResponseEntity<SuccessResponse<CreateAccountPasswordServiceResponse>> createAccountPassword(
+            @RequestBody CreateAccountPasswordRequest request,
+            HttpServletRequest servletRequest) {
         long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
         if (request.getPassword() == null || request.getBank() == null || request.getAccountNumber() == null)
             throw new BadRequestException(BadRequestExceptionCode.INVALID_INPUT);
@@ -61,7 +65,8 @@ public class BankController {
 
     // 계좌 이체
     @PostMapping("/account/deposit")
-    public ResponseEntity<SuccessResponse<Boolean>> makeTransfer(@RequestBody MakeTransferRequest request, HttpServletRequest servletRequest) {
+    public ResponseEntity<SuccessResponse<Boolean>> makeTransfer(
+            @RequestBody MakeTransferRequest request, HttpServletRequest servletRequest) {
         long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
         if (request.getType() == null || request.getAmount() <= 0 || request.getUserPassowrd() == null)
             throw new BadRequestException(BadRequestExceptionCode.INVALID_INPUT);
