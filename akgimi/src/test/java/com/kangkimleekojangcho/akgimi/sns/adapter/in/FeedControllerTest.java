@@ -32,8 +32,8 @@ class FeedControllerTest extends ControllerTestSupport {
     void parsingRequestTest() throws Exception {
         //given
         CreateFeedRequest request = CreateFeedRequest.builder()
-                .meaningItem("미닝템")
-                .akgimPlace("place")
+                .notPurchasedItem("끼밍템")
+                .akgimiPlace("place")
                 .content("content")
                 .isOpen(true)
                 .photo("https://hello.world")
@@ -56,11 +56,10 @@ class FeedControllerTest extends ControllerTestSupport {
     @MethodSource("generateData")
     void requestValidationTest(String meaningItem, Long saving, String akgimPlace,
                                String photo, String content, Boolean isOpen) throws Exception {
-        System.out.println(meaningItem);
         //given
         CreateFeedRequest request = CreateFeedRequest.builder()
-                .meaningItem(meaningItem)
-                .akgimPlace(akgimPlace)
+                .notPurchasedItem(meaningItem)
+                .akgimiPlace(akgimPlace)
                 .content(content)
                 .isOpen(isOpen)
                 .photo(photo)
