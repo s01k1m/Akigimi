@@ -7,6 +7,7 @@ import com.kangkimleekojangcho.akgimi.common.domain.application.SubtractUserIdFr
 import com.kangkimleekojangcho.akgimi.global.response.ResponseFactory;
 import com.kangkimleekojangcho.akgimi.global.response.SuccessResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +26,7 @@ public class ChallengeController {
     @PostMapping
     public ResponseEntity<SuccessResponse<CreateChallengeServiceResponse>> createChallenge(
             HttpServletRequest servletRequest,
-            @RequestBody CreateChallengeRequest request){
+            @Valid @RequestBody CreateChallengeRequest request){
         Long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
         CreateChallengeServiceResponse response = createChallengeService.create(userId, request.toServiceRequest());
         return ResponseFactory.success(response);
