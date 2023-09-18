@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateChallengeServiceRequest {
+public final class CreateChallengeServiceRequest {
     private Integer challengePeriod;
     private Long itemId;
 
