@@ -6,4 +6,5 @@ public interface CommandAccountDbPort {
 
     Account save(Account account);
 
+    void savePassword(Account account, String password);
 }
