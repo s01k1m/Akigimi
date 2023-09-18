@@ -29,7 +29,7 @@ public class Challenge extends BaseTimeEntity {
     @OneToOne
     private Product product;
 
-    private Integer accumulatedAccount;
+    private Integer accumulatedAmount;
     private boolean achievementState;
     private LocalDate achievementDate;
     private Integer challengePeriod;
