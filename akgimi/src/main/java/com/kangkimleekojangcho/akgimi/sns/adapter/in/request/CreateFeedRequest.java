@@ -1,20 +1,19 @@
 package com.kangkimleekojangcho.akgimi.sns.adapter.in.request;
 
 import com.kangkimleekojangcho.akgimi.sns.application.request.CreateFeedServiceRequest;
-import jakarta.persistence.Lob;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import lombok.Builder;
 
 @Builder
 public record CreateFeedRequest(
-        @NotBlank(message = "미닝템을 입력해주세요.")
-        String meaningItem,
+        @NotBlank(message = "아낀 물품에 대한 이름을 입력해주세요.")
+        String notPurchasedItem,
 
-        @Positive(message = "아끼신 금액을 정확히 입력해주세요.")
+        @Positive(message = "아끼신 금액은 0 이상이어야 합니다.")
         Long saving,
 
-        String akgimPlace,
+        String akgimiPlace,
 
         String photo,
 
@@ -25,8 +24,8 @@ public record CreateFeedRequest(
 
     public CreateFeedServiceRequest toServiceRequest() {
         return CreateFeedServiceRequest.builder()
-                .notPurchasedItem(this.meaningItem)
-                .akgimiPlace(this.akgimPlace)
+                .notPurchasedItem(this.notPurchasedItem)
+                .akgimiPlace(this.akgimiPlace)
                 .content(this.content)
                 .isPublic(this.isOpen)
                 .photo(this.photo)
