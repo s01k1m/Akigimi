@@ -1,16 +1,16 @@
 {
   "pages": {
-    "/myreceipt/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/myreceipt/page.css",
-      "static/chunks/app/myreceipt/page.js"
-    ],
     "/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
+    ],
+    "/myreceipt/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/myreceipt/page.css",
+      "static/chunks/app/myreceipt/page.js"
     ]
   }
 }

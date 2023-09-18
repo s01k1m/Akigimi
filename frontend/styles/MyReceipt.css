@@ -10,3 +10,24 @@
 #my-receipt div span {
     color: #0049F2;
 }
+
+.receipt-saving {
+    color: #0049F2;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.black {
+    color: #202632;
+}
+
+.receipt-date {
+    color: #000;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 2px;
+}
