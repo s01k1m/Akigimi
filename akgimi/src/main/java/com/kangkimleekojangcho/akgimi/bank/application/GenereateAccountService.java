@@ -1,7 +1,8 @@
 package com.kangkimleekojangcho.akgimi.bank.application;
 
-import com.kangkimleekojangcho.akgimi.bank.application.port.CommandAccountPort;
-import com.kangkimleekojangcho.akgimi.bank.application.port.QueryAccountPort;
+import com.kangkimleekojangcho.akgimi.bank.application.port.CommandAccountDbPort;
+import com.kangkimleekojangcho.akgimi.bank.application.port.QueryAccountDbPort;
+import com.kangkimleekojangcho.akgimi.bank.application.request.CreateAccountServiceRequest;
 import com.kangkimleekojangcho.akgimi.bank.application.response.CreateAccountServiceResponse;
 import com.kangkimleekojangcho.akgimi.bank.domain.Account;
 import com.kangkimleekojangcho.akgimi.bank.domain.AccountType;
@@ -18,29 +19,30 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class GenerateDepositAccountService {
+public class GenereateAccountService {
+
     private final QueryUserDbPort queryUserDbPort;
-    private final QueryAccountPort queryAccountPort;
-    private final CommandAccountPort commandAccountPort;
+    private final QueryAccountDbPort queryAccountDbPort;
+    private final CommandAccountDbPort commandAccountDbPort;
     private final RandomNumberPort randomNumberPort;
-    public CreateAccountServiceResponse create(long userId, Bank bank) {
+    public CreateAccountServiceResponse create(long userId, CreateAccountServiceRequest request) {
         User user = queryUserDbPort.findById(userId)
                 .orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NOT_USER));
-        Optional<Account> account = queryAccountPort.findByUserAndAccountType(user, AccountType.DEPOSIT);
+        Optional<Account> account = queryAccountDbPort.findByUserAndAccountType(user, request.getAccountType());
         String accountNumber = randomNumberPort.generateDigit(16);
         if(account.isEmpty()){
             // 중복된 계좌 번호가 있는지 확인
             for(int i=0; i<10; i++){
-                Optional<Account> checkAccount = queryAccountPort.findByAccountNumber(accountNumber, AccountType.DEPOSIT);
+                Optional<Account> checkAccount = queryAccountDbPort.findByAccountNumber(accountNumber, request.getAccountType());
                 if(checkAccount.isEmpty()){
                     break;
                 }
                 accountNumber = randomNumberPort.generateDigit(16);
             }
-            commandAccountPort.add(Account.builder()
+            commandAccountDbPort.save(Account.builder()
                     .accountNumber(accountNumber)
-                    .accountType(AccountType.DEPOSIT)
-                    .bank(bank)
+                    .accountType(request.getAccountType())
+                    .bank(request.getBank())
                     .balance(0L)
                     .isDeleted(false)
                     .isPasswordRegistered(false)
@@ -48,7 +50,7 @@ public class GenerateDepositAccountService {
             );
         }else{
             // 기존 반환
-            Account existAccount = queryAccountPort.findByUserAndAccountType(user, AccountType.DEPOSIT)
+            Account existAccount = queryAccountDbPort.findByUserAndAccountType(user,request.getAccountType())
                     .orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NO_BANK_ACCOUNT));
             accountNumber = existAccount.getAccountNumber();
         }

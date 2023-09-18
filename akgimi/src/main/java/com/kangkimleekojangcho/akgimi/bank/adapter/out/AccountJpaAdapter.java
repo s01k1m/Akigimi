@@ -4,8 +4,6 @@ import com.kangkimleekojangcho.akgimi.bank.application.port.CommandAccountDbPort
 import com.kangkimleekojangcho.akgimi.bank.application.port.QueryAccountDbPort;
 import com.kangkimleekojangcho.akgimi.bank.domain.Account;
 import com.kangkimleekojangcho.akgimi.bank.domain.AccountType;
-import com.kangkimleekojangcho.akgimi.bank.application.port.CommandAccountPort;
-import com.kangkimleekojangcho.akgimi.bank.application.port.QueryAccountPort;
 import com.kangkimleekojangcho.akgimi.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -14,7 +12,7 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class AccountJpaAdapter implements CommandAccountDbPort, QueryAccountDbPort, CommandAccountPort, QueryAccountPort {
+public class AccountJpaAdapter implements CommandAccountDbPort, QueryAccountDbPort{
     private final AccountJpaRepository accountJpaRepository;
 
     @Override
@@ -42,8 +40,4 @@ public class AccountJpaAdapter implements CommandAccountDbPort, QueryAccountDbPo
         return accountJpaRepository.findByAccountNumberAndAccountType(accountNumber,accountType);
     }
 
-    @Override
-    public Account add(Account account) {
-        return accountJpaRepository.save(account);
-    }
 }
