@@ -31,3 +31,51 @@
     line-height: normal;
     letter-spacing: 2px;
 }
+
+/* 삼각형 찢어지기 */
+.appear {
+    animation: appear-animation 1s forwards;
+}
+
+@keyframes appear-animation {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 재도전 테이프 */
+.retry-sticker {
+    border-radius: 5px;
+    background: #B9CAFF;
+    width: 80vw;
+    max-width: 450px;
+    min-width: 400px;
+    height: 31px;
+    transform: rotate(-1.951deg);
+    flex-shrink: 0;
+
+    color: #202632;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+    letter-spacing: 1.5px;
+    /* 왼쪽에서 등장하는 애니메이션 */
+    animation: slide-in 2s forwards;
+}
+
+@keyframes slide-in {
+    from {
+        opacity: 0;
+        transform: translateX(-100%) rotate(-10deg);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0) rotate(-1.951deg);
+    }
+}
