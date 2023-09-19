@@ -1,6 +1,6 @@
-/*!***********************************************************************************************************************************************************************************************************************************************************!*\
-  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[5].oneOf[12].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[5].oneOf[12].use[3]!./app/globals.css ***!
-  \***********************************************************************************************************************************************************************************************************************************************************/
+/*!**************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[5].oneOf[12].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[5].oneOf[12].use[3]!./styles/globals.css ***!
+  \**************************************************************************************************************************************************************************************************************************************************************/
 /*
 ! tailwindcss v3.3.3 | MIT License | https://tailwindcss.com
 *//*
@@ -494,6 +494,7 @@ video {
 .relative {
   position: relative;
 }
+<<<<<<< HEAD
 .sticky {
   position: sticky;
 }
@@ -593,10 +594,18 @@ video {
 }
 .mb-10 {
   margin-bottom: 2.5rem;
+=======
+.inline-block {
+  display: inline-block;
+}
+.inline {
+  display: inline;
+>>>>>>> 206c22508cdfb096df3f01b3c00d8d3f360ab17b
 }
 .flex {
   display: flex;
 }
+<<<<<<< HEAD
 .hidden {
   display: none;
 }
@@ -614,10 +623,15 @@ video {
 }
 .h-\[40px\] {
   height: 40px;
+=======
+.h-auto {
+  height: auto;
+>>>>>>> 206c22508cdfb096df3f01b3c00d8d3f360ab17b
 }
 .h-full {
   height: 100%;
 }
+<<<<<<< HEAD
 .w-16 {
   width: 4rem;
 }
@@ -771,6 +785,33 @@ video {
 }
 
 
+=======
+.w-full {
+  width: 100%;
+}
+.flex-col {
+  flex-direction: column;
+}
+.items-center {
+  align-items: center;
+}
+.justify-start {
+  justify-content: flex-start;
+}
+.justify-center {
+  justify-content: center;
+}
+.justify-around {
+  justify-content: space-around;
+}
+.border {
+  border-width: 1px;
+}
+.bg-stone-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(245 245 244 / var(--tw-bg-opacity));
+}
+>>>>>>> 206c22508cdfb096df3f01b3c00d8d3f360ab17b
 
 /*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[5].oneOf[2].use[1]!./node_modules/next/dist/build/webpack/loaders/next-font-loader/index.js??ruleSet[1].rules[5].oneOf[2].use[2]!./node_modules/next/font/google/target.css?{"path":"app/layout.tsx","import":"Inter","arguments":[{"subsets":["latin"]}],"variableName":"inter"} ***!

@@ -3,7 +3,7 @@ version: '3'
 services:
   mysql:
     image: mysql
-    container_name: mysql
+    container_name: mysql-ssafy
     volumes:
       - mysql-data:/var/lib/mysql
       - mysql-conf:/etc/mysql/conf.d"
@@ -23,7 +23,7 @@ services:
 
   mysql-salt:
     image: mysql
-    container_name: mysql-salt
+    container_name: mysql-salt-ssafy
     volumes:
       - mysql-salt-data:/var/lib/mysql
       - mysql-salt-conf:/etc/mysql/conf.d"
@@ -43,13 +43,15 @@ services:
 
   redis:
     image: redis
-    container_name: redis
+    container_name: redis-ssafy
     volumes:
       - redis-data:/var/lib/redis
       - redis-conf:/usr/local/conf/redis.conf
     labels:
       - "name=redis"
       - "mode=standalone"
+    ports:
+      - ${REDIS_PORT}:6379
     restart: always
     command: redis-server /usr/local/conf/redis.conf
     networks:
