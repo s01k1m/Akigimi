@@ -1,11 +1,13 @@
 package com.kangkimleekojangcho.akgimi.bank.domain;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "transfer")
+@Builder
 public class Transfer {
 
     @Id
