@@ -23,6 +23,7 @@ public class Account extends BaseTimeEntity{
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Enumerated(EnumType.STRING)
     private AccountType accountType;
 
     @Enumerated(EnumType.STRING)
@@ -51,7 +52,8 @@ public class Account extends BaseTimeEntity{
         balance = result;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(String password, boolean isPasswordRegistered) {
         this.password = password;
+        this.isPasswordRegistered = isPasswordRegistered;
     }
 }
