@@ -2,6 +2,7 @@ package com.kangkimleekojangcho.akgimi.sns.adapter.in.request;
 
 import com.kangkimleekojangcho.akgimi.sns.application.request.CreateFeedServiceRequest;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Builder;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,6 +18,7 @@ public record CreateFeedRequest(
         String akgimiPlace,
         String content,
         MultipartFile photo,
+        @NotNull
         Boolean isPublic
 ) {
 
