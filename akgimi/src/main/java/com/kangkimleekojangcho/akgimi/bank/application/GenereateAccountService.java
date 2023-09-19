@@ -31,9 +31,10 @@ public class GenereateAccountService {
                 .orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NOT_USER));
         Optional<Account> account = queryAccountDbPort.findByUserAndAccountType(user, request.getAccountType());
         if (!account.isEmpty()) {
-            // 기존 계좌 반환
-            Account existAccount = account.orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NO_BANK_ACCOUNT));
-            return new CreateAccountServiceResponse(existAccount.getAccountNumber(), false);
+            // 기존 반환
+            Account existAccount = queryAccountDbPort.findByUserAndAccountType(user, request.getAccountType())
+                    .orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NO_BANK_ACCOUNT));
+            return new CreateAccountServiceResponse(existAccount.getAccountNumber(), existAccount.getIsPasswordRegistered(), existAccount.getBank().ordinal());
         }
         // TODO 리펙토링 필요
         // 중복된 계좌 번호가 있는지 확인
@@ -48,17 +49,17 @@ public class GenereateAccountService {
                 break;
             }
         }
-        commandAccountDbPort.save(Account.builder()
+
+        Account newAccount = commandAccountDbPort.save(Account.builder()
                 .accountNumber(randomGeneratedAccountNumber)
                 .accountType(request.getAccountType())
                 .bank(request.getBank())
                 .balance(0L)
                 .isDeleted(false)
                 .isPasswordRegistered(false)
-                .user(user)
                 .build()
         );
 
-        return new CreateAccountServiceResponse(randomGeneratedAccountNumber, false);
+        return new CreateAccountServiceResponse(randomGeneratedAccountNumber, newAccount.getIsPasswordRegistered(), newAccount.getBank().ordinal() );
     }
 }
