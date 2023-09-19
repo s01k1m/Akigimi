@@ -12,7 +12,8 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class AccountJpaAdapter implements CommandAccountDbPort, QueryAccountDbPort{
+public class AccountJpaAdapter implements CommandAccountDbPort, QueryAccountDbPort {
+
     private final AccountJpaRepository accountJpaRepository;
 
     @Override
