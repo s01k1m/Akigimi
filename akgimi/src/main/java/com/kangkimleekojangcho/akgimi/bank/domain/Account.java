@@ -52,9 +52,8 @@ public class Account extends BaseTimeEntity{
         balance = result;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(String password, boolean isPasswordRegistered) {
         this.password = password;
+        this.isPasswordRegistered = isPasswordRegistered;
     }
-
-    public void setIsPasswordRegistered(boolean isPasswordRegistered) {this.isPasswordRegistered = isPasswordRegistered;}
 }

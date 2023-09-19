@@ -4,13 +4,15 @@ import com.kangkimleekojangcho.akgimi.bank.application.request.CreateAccountPass
 import com.kangkimleekojangcho.akgimi.bank.domain.AccountType;
 import com.kangkimleekojangcho.akgimi.bank.domain.Bank;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
+@RequiredArgsConstructor
 public class CreateAccountPasswordRequest {
-    private Bank bank;
-    private AccountType accountType;
-    private String accountNumber;
-    private String password;
+    private final Bank bank;
+    private final AccountType accountType;
+    private final String accountNumber;
+    private final String password;
 
     public CreateAccountPasswordServiceRequest toServiceRequest() {
         return new CreateAccountPasswordServiceRequest(bank,accountType,accountNumber,password);
