@@ -56,7 +56,7 @@ export default function Login() {
         // TODO: 회원이므로 6자리 로그인으로 페이지 전환해야됨
       })
       .then(() => {
-        router.replace("/login/register");
+        router.replace("/login");
       })
       .catch((error) => {
         // 회원이 아니면 400 Bad Request를 반환하므로 회원가입으로 페이지 전환해야됨
