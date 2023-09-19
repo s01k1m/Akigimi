@@ -12,8 +12,8 @@ const config: Config = {
     },
     extend: {
       colors: {
-        grey0: "#757575",
-        grey1: "#EEEEEE",
+        gray0: "#757575",
+        gray1: "#EEEEEE",
         tossblue: "#0049F2",
       },
       backgroundImage: {
