@@ -19,7 +19,13 @@ export default function Signup() {
   const [cnt, setCnt] = useState<number>(0);
   const router = useRouter();
 
-  const token = window.localStorage.getItem("access_token");
+  let token: string = "";
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      token = window.localStorage.getItem("access_token");
+    }
+  }, []);
 
   // handleClick() : 버튼 컴포넌트에 넘겨줄 함수 prop을 만듦
   const handleClick = async () => {
