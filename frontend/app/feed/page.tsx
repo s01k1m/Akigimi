@@ -5,11 +5,11 @@ const Feed = () => {
     return (
         <div>
             <FeedTap />
-            <div className="flex justify-center">
+            {/* <div className="flex justify-center">
                 <div>
                     <FeedList />  
                 </div>
-            </div>
+            </div> */}
         </div>
     )
 }
