@@ -2,7 +2,7 @@
 import axios from "axios";
 import * as React from "react";
 import { useEffect } from "react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 let id_token: string | null = "";
 
@@ -14,6 +14,7 @@ const redirect_uri = "http://localhost:3000/kakao/oidc";
 const app_key = process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID;
 const token_request_url = `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${app_key}&redirect_uri=${redirect_uri}&code=${authorize_code}`;
 export default function Login() {
+  const router = useRouter();
   // 1. 카카오 로그인 성공한 유저를 리다이렉트된 주소에서 코드를 파싱한다
   // 2. authorize_code 이걸 token_request_url 카카오 서버로 보낸다. 그러면 카카오로부터 이 유저의 id_token을 받아올 수 있다.
 
@@ -54,6 +55,9 @@ export default function Login() {
         console.log("우리 회원 맞아요");
         // TODO: 회원이므로 6자리 로그인으로 페이지 전환해야됨
       })
+      .then(() => {
+        router.replace("/login/register");
+      })
       .catch((error) => {
         // 회원이 아니면 400 Bad Request를 반환하므로 회원가입으로 페이지 전환해야됨
         getSignup();
@@ -80,7 +84,9 @@ export default function Login() {
         window.localStorage.setItem("access_token", access_token);
         window.localStorage.setItem("refresh_token", refresh_token);
         console.log("JWT 발급해줄게요");
-        // redirect("/login/register");
+      })
+      .then(() => {
+        router.replace("/login/register");
       })
       .catch((error) => {
         console.error("getSignup HTTP 요청 중 오류 발생:", error);
