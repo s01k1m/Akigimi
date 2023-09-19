@@ -6,10 +6,8 @@ spring:
       - classpath:local-env.properties
 
   jpa:
-    database: mysql
-    database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
@@ -50,3 +48,18 @@ jwt:
   refreshTokenValidTimeInDayUnit: ${JWT_REFRESH_TOKEN_VALID_TIME_IN_DAY_UNIT}
   refreshTokenValidTimeInDayUnitInRedis: ${JWT_REFRESH_TOKEN_VALID_TIME_IN_DAY_UNIT_IN_REDIS}
   tokenRedirectUrl: ${JWT_TOKEN_REDIRECT_URL}
+
+
+cloud:
+  aws:
+    credentials:
+      access-key: ${S3_ACCESS_KEY}
+      secret-key: ${S3_SECRET_KEY}
+    region:
+      static:
+        ${S3_REGION}
+    s3:
+      bucket:
+        ${S3_BUCKET}
+    stack:
+      auto: false

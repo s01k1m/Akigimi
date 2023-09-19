@@ -7,6 +7,7 @@ import java.time.LocalDate;
 
 @Getter
 public class CreateChallengeServiceResponse {
+    private final Long challengeId;
     private final Long productId;
     private final Integer accumulatedAmount;
     private final boolean achievementState;
@@ -15,7 +16,8 @@ public class CreateChallengeServiceResponse {
     private final LocalDate challengeEndDate;
     private final boolean isInProgress;
 
-    private CreateChallengeServiceResponse(Long productId, Integer accumulatedAmount, boolean achievementState, Integer challengePeriod, LocalDate challengeStartDate, LocalDate challengeEndDate, boolean isInProgress) {
+    private CreateChallengeServiceResponse(Long challengeId, Long productId, Integer accumulatedAmount, boolean achievementState, Integer challengePeriod, LocalDate challengeStartDate, LocalDate challengeEndDate, boolean isInProgress) {
+        this.challengeId = challengeId;
         this.productId = productId;
         this.accumulatedAmount = accumulatedAmount;
         this.achievementState = achievementState;
@@ -27,6 +29,7 @@ public class CreateChallengeServiceResponse {
 
     public static CreateChallengeServiceResponse from(Challenge challenge) {
         return new CreateChallengeServiceResponse(challenge.getId(),
+                challenge.getProduct().getId(),
                 challenge.getAccumulatedAmount(),
                 challenge.isAchievementState(),
                 challenge.getChallengePeriod(),

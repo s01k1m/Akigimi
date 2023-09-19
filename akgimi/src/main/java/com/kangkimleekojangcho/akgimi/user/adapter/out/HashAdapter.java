@@ -18,8 +18,9 @@ public class HashAdapter implements HashPort {
     public String hash(String value, String salt){
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
-            String temp = value + salt;
-            md.update(temp.getBytes());
+            // TODO TEMP NAMING REFACTOR 필요
+            String slated = value + salt;
+            md.update(slated.getBytes());
             byte[] hashBytes = md.digest();
             return Base64.getEncoder().encodeToString(hashBytes);
         } catch (NoSuchAlgorithmException e) {
