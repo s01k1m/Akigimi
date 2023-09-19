@@ -31,9 +31,8 @@ public class GenereateAccountService {
                 .orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NOT_USER));
         Optional<Account> account = queryAccountDbPort.findByUserAndAccountType(user, request.getAccountType());
         if (!account.isEmpty()) {
-            // 기존 반환
-            Account existAccount = queryAccountDbPort.findByUserAndAccountType(user, request.getAccountType())
-                    .orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NO_BANK_ACCOUNT));
+            // 기존 계좌 반환
+            Account existAccount = account.orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NO_BANK_ACCOUNT));
             return new CreateAccountServiceResponse(existAccount.getAccountNumber(), false);
         }
         // TODO 리펙토링 필요
@@ -49,7 +48,6 @@ public class GenereateAccountService {
                 break;
             }
         }
-
         commandAccountDbPort.save(Account.builder()
                 .accountNumber(randomGeneratedAccountNumber)
                 .accountType(request.getAccountType())
@@ -57,6 +55,7 @@ public class GenereateAccountService {
                 .balance(0L)
                 .isDeleted(false)
                 .isPasswordRegistered(false)
+                .user(user)
                 .build()
         );
 

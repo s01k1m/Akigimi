@@ -31,11 +31,6 @@ public class AccountJpaAdapter implements CommandAccountDbPort, QueryAccountDbPo
     }
 
     @Override
-    public void savePassword(Account account, String password) {
-        // TODO
-    }
-
-    @Override
     public Optional<Account> findByUserAndAccountType(User user, AccountType accountType) {
         return accountJpaRepository.findByUserAndAccountType(user,accountType);
     }
@@ -46,8 +41,8 @@ public class AccountJpaAdapter implements CommandAccountDbPort, QueryAccountDbPo
     }
 
     @Override
-    public Optional<Account> findByUserIdAndAccountTypeAndAccountNumber(Long userId, AccountType accountType, String accountNumber) {
-        return accountJpaRepository.findByUserIdAndAccountTypeAndAccountNumber(userId,accountType,accountNumber);
+    public Optional<Account> findByUserAndAccountTypeAndAccountNumber(User user, AccountType accountType, String accountNumber) {
+        return accountJpaRepository.findByUserAndAccountTypeAndAccountNumber(user,accountType,accountNumber);
     }
 
 }
