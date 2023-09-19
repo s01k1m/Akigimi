@@ -17,7 +17,7 @@ const Description: React.FC<DescriptionProps> = ({ isLiked, description }) => {
     };
     return (
         <div className="flex w-[50vw] max-w-xs">
-             <div onClick={handleToggleLike} className="me-[1vw]">
+             <div onClick={handleToggleLike} className="me-[1vw] mb-2">
             {liked ? (
                 <AiOutlineHeart 
                      color="#0049F2"

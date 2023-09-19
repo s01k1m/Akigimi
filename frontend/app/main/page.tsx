@@ -12,8 +12,9 @@ import axios from 'axios'
 import { useState } from "react"
 
 const Main = () => {
-    const [stage, setState] = useState<number>(0)
 
+    const [stage, setState] = useState<number>(0)
+  
     return (
         <div className={`background-${stage}`} style={{ width: '100%'}}>
         <div className="flex flex-col items-center justify-center" style={{ width: '100%'}}>
