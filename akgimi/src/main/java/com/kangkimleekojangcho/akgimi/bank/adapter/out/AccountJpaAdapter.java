@@ -12,7 +12,8 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class AccountJpaAdapter implements CommandAccountDbPort, QueryAccountDbPort{
+public class AccountJpaAdapter implements CommandAccountDbPort, QueryAccountDbPort {
+
     private final AccountJpaRepository accountJpaRepository;
 
     @Override
@@ -38,6 +39,11 @@ public class AccountJpaAdapter implements CommandAccountDbPort, QueryAccountDbPo
     @Override
     public Optional<Account> findByAccountNumber(String accountNumber, AccountType accountType) {
         return accountJpaRepository.findByAccountNumberAndAccountType(accountNumber,accountType);
+    }
+
+    @Override
+    public Optional<Account> findByUserAndAccountTypeAndAccountNumber(User user, AccountType accountType, String accountNumber) {
+        return accountJpaRepository.findByUserAndAccountTypeAndAccountNumber(user,accountType,accountNumber);
     }
 
 }
