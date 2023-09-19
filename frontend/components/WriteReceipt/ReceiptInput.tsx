@@ -2,12 +2,22 @@
 import '@/styles/WriteReceipt.css'
 import '@/styles/MainPageButton.css'
 import ReceiptCircle from './ReceiptCircle'
-import { ChangeEvent, useState, useRef, useEffect } from 'react'
+import React, { ChangeEvent, useState, useRef } from 'react'
+import { MouseEventHandler, FormEvent  } from 'react'
 import { AiOutlineFileAdd } from 'react-icons/ai'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
 import Modal from './Modal'
+
+interface FormData {
+    notPurchasedItem: string;
+    saving: number;
+    akgimiPlace: string;
+    content: string;
+    isPublic: boolean;
+    photo: string;
+  }
 
 const ReceiptInput = () => {
     const [isOpened, setIsOpened] = useState<boolean>(false)
@@ -16,7 +26,7 @@ const ReceiptInput = () => {
         saving: '',
         akgimiPlace: '',
         content: '',
-        isPublic: '',
+        isPublic: false,
         photo: '',
     })
     
@@ -69,10 +79,16 @@ const ReceiptInput = () => {
         }
     }
     
+    // 공개 토글
+    const handleCheckboxClick: MouseEventHandler<HTMLInputElement> = (event) => {
+        const checkedValue: boolean = event.currentTarget.checked
+        setFormData({ ...formData, isPublic: checkedValue})
+      };
+
     // form 제출
     const router = useRouter()
     const token = `eyJ0eXBlIjoiQUNDRVNTVE9LRU4iLCJhbGciOiJIUzI1NiJ9.eyJpZCI6OTk5OSwidXNlclN0YXRlIjoiUEVORElORyIsImlhdCI6MTY5NTA5MTQ0MywiZXhwIjoxNjk1MjcxNDQzfQ.ZtvhjRaPo4LfBdi8RHzm5giPsH6RP1luAVgj8EY_VDI`
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
         
         console.log(formData)
@@ -177,11 +193,8 @@ const ReceiptInput = () => {
                             <input 
                                 type="checkbox" 
                                 name="isOpened"
-                                value={formData.isPublic}
-                                onClick={( e: ChangeEvent<HTMLInputElement>) => {
-                                    const checkedValue: boolean = e.target.checked
-                                    handleInputChange({ target: {name: "isPublic", value: checkedValue }})
-                                }}
+                                checked={formData.isPublic}
+                                onClick={handleCheckboxClick}
                                 className="switch me-2" 
                             />
                             <div className='ms-2'>{inputCount}/200</div>  
