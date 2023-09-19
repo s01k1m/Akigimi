@@ -1,0 +1,92 @@
+.go-to-btn {
+    border-radius: 10px;
+    background: #0049F2;
+    
+    width: 60%;
+    height: 55px;
+ 
+    color: #FFF;
+    font-size: 130%;
+    font-style: normal;
+    font-weight: 800;
+    letter-spacing: 4.6px;
+}
+
+.button-common {
+    padding: 11px 18px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    color: #FFF;
+    font-size: 25px;
+    font-style: normal;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    width: 100%;
+}
+
+.button-common-small {
+    padding: 11px 18px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    color: #FFF;
+    font-size: 25px;
+    font-style: normal;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    width: 80%;
+}
+
+.blue-btn {
+    background: #0049F2;
+}
+
+.go-to-retry {
+    background: #202632; 
+}
+
+/* 메인 페이지 배경화면 */
+.background-0 {
+    background: linear-gradient(181deg, #0049F2 0.5%, rgba(217, 217, 217, 0.00) 71.06%);
+}
+
+.background-1 {
+    background: linear-gradient(181deg, #F4CEBA 0.5%, rgba(217, 217, 217, 0.00) 71.06%);
+}
+
+.background-2 {
+    background: linear-gradient(181deg, #F4EABA 0.5%, rgba(217, 217, 217, 0.00) 71.06%);
+}
+
+.background-3 {
+    background: linear-gradient(181deg, #EFF4BA 0.5%, rgba(217, 217, 217, 0.00) 71.06%);
+}
+
+.background-4 {
+    background: linear-gradient(181deg, #C6EAFF 0.5%, rgba(217, 217, 217, 0.00) 71.06%);
+}
+
+.background-5 {
+    background: linear-gradient(181deg, #DCF5FB 0.5%, rgba(217, 217, 217, 0.00) 71.06%);
+}
+
+.background-6 {
+    background: linear-gradient(181deg, #AEAEAE 0.5%, rgba(217, 217, 217, 0.00) 71.06%);
+}
+
+.logo {
+    color: #202632;
+    font-size: 25px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 5px;
+    border-radius: 10px;
+    background: #D9D9D9;
+    display: flex;
+    width: 55%;
+    height: 38px;
+    justify-content: center;
+    align-items: center;
+}
