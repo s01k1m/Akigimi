@@ -14,21 +14,27 @@ const ReceiptInput = () => {
     const [formData, setFormData] = useState({
         notPurchasedItem: '',
         saving: '',
-        akgimPlace: '',
-        photo: '',
+        akgimiPlace: '',
         content: '',
-        isOpened: ''
+        isPublic: '',
+        photo: '',
     })
     
     // input 값에 변화가 생기면 FormData에 담아주기
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target
-        
+
+        let parsedValue: string | number = value;
+        if (name === 'saving') {
+            parsedValue = parseFloat(value);
+        }
+
         setFormData({
             ...formData,
-            [name]: value,
+            [name]: parsedValue,
         });
         
+    
         // 글자수 세기
         if (e.target.placeholder === '내용을 입력해주세요') {
             setInputCount(e.target.value.length)
@@ -46,7 +52,14 @@ const ReceiptInput = () => {
     const [imgSrc, setImgSrc] = useState<string>("")
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
+        
         if (!file) return
+
+        setFormData((prevFormData: any) => ({
+            ...prevFormData,
+            photo: file
+        }))
+        
         const fileReader = new FileReader()
         fileReader.readAsDataURL(file)
         fileReader.onload = (e) => {
@@ -56,36 +69,35 @@ const ReceiptInput = () => {
         }
     }
     
-    // imgSrc 가 변하면 FormData의 photo값 변경
-    useEffect(() => {
-        setFormData(prevFormData => ({
-            ...prevFormData,
-            photo: imgSrc
-        }))
-    }, [imgSrc])
-    
     // form 제출
     const router = useRouter()
+    const token = `eyJ0eXBlIjoiQUNDRVNTVE9LRU4iLCJhbGciOiJIUzI1NiJ9.eyJpZCI6OTk5OSwidXNlclN0YXRlIjoiUEVORElORyIsImlhdCI6MTY5NTA5MTQ0MywiZXhwIjoxNjk1MjcxNDQzfQ.ZtvhjRaPo4LfBdi8RHzm5giPsH6RP1luAVgj8EY_VDI`
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         
         console.log(formData)
+        console.log(typeof(formData.saving))
         
-        // 제출 api 추가 (api 완료되면 다시)
+        // 제출 api
         await axios
-        .post('feeds', formData)
-        .then((response) => {
-            console.log('response', response)
-        })
-        .then(() => {
-            // feed 페이지로 이동
-            router.push('/feed')
-        })
-        .catch((error) => {
-            console.error('error')
-            // 잔액이 부족한 경우 모달창 띄우기
-            // setIsOpened(true)
-        })
+            .post('http://25.4.167.82:8080/feed', formData, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            .then((response) => {
+                console.log('절약 기록 작성 성공', response.data)
+            })
+            .then(() => {
+                // feed 페이지로 이동
+                router.push('/feed')
+            })
+            .catch((error) => {
+                console.log('절약 기록 작성 실패', error)
+                // 잔액이 부족한 경우 모달창 띄우기
+                // setIsOpened(true)
+            })
         
         
     }
@@ -112,21 +124,21 @@ const ReceiptInput = () => {
                         value={formData.saving}
                         onChange={handleInputChange}
                         placeholder="가격을 입력해주세요"
-                        />
+                    />
                     <input 
                         type="text" 
-                        name="akgimPlace"
-                        value={formData.akgimPlace}
+                        name="akgimiPlace"
+                        value={formData.akgimiPlace}
                         onChange={handleInputChange}
                         placeholder="장소를 입력해주세요" 
-                        />
+                    />
                     <div className='relative flex justify-center items-center'>
                         <input 
                             type="" 
                             name="photo"
                             className='h-[100px] relative' 
                             disabled
-                            />
+                        />
                         <div className='absolute'>
                             <AiOutlineFileAdd size={40} color="gray" onClick={handleClick} />
                         </div>
@@ -166,10 +178,10 @@ const ReceiptInput = () => {
                             <input 
                                 type="checkbox" 
                                 name="isOpened"
-                                value={formData.isOpened}
+                                value={formData.isPublic}
                                 onClick={( e: ChangeEvent<HTMLInputElement>) => {
                                     const checkedValue: boolean = e.target.checked
-                                    handleInputChange({ target: {name: "isOpened", value: checkedValue }})
+                                    handleInputChange({ target: {name: "isPublic", value: checkedValue }})
                                 }}
                                 className="switch me-2" 
                             />
