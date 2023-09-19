@@ -6,6 +6,7 @@ import com.kangkimleekojangcho.akgimi.challenge.domain.Challenge;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -22,5 +23,10 @@ public class ChallengeJpaAdapter implements CommandChallengeDbPort, QueryChallen
     @Override
     public Optional<Challenge> findInProgressChallengeByUserId(Long userId) {
         return challengeJpaRepository.findChallengeByUserIdAndIsInProgress(userId, true);
+    }
+
+    @Override
+    public List<Challenge> findAllByUserId(Long userId){
+        return challengeJpaRepository.findAllByUserId(userId);
     }
 }

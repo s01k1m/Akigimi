@@ -1,0 +1,18 @@
+.Gage-Bar {
+    border-radius: 15px; 
+    background-color: white;
+    width: 80%;
+    height: 25px;
+}
+
+.Money-Gage {
+    height: 22px;
+    border-radius: 11px;
+    background: linear-gradient(180deg, #FF9A84 0%, rgba(255, 154, 132, 0.00) 100%);
+}
+
+.Date-Gage {
+    height: 22px;
+    border-radius: 11px;
+    background: linear-gradient(180deg, #848484 0%, rgba(132, 132, 132, 0.92) 0.01%, rgba(132, 132, 132, 0.00) 100%);
+}
