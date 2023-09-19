@@ -7,11 +7,16 @@ import com.kangkimleekojangcho.akgimi.sns.application.GetBunchOfFeedWrittenByFol
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+
+import java.util.stream.Stream;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -111,4 +116,35 @@ class FeedControllerTest extends ControllerTestSupport {
                 .andExpect(status().isOk());
     }
 
+    @DisplayName("[bad] 유저가 잘못된 입력값을 주었을 때 에러를 반환한다.")
+    @MethodSource("generateFeedRequestData")
+    @ParameterizedTest
+    void givenValidInput_whenUserRequestBunchOfFeed_thenThrowsError(Long lastFeedId, Integer numberOfFeed) throws Exception {
+        //given
+        HttpServletRequest servletRequest = new MockHttpServletRequest();
+        GetBunchOfFeedWrittenByFollowerRequest request = GetBunchOfFeedWrittenByFollowerRequest.builder()
+                .lastFeedId(lastFeedId)
+                .numberOfFeed(numberOfFeed)
+                .build();
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("lastFeedId", lastFeedId==null ? null : lastFeedId.toString());
+        params.add("numberOfFeed",numberOfFeed==null ? null : numberOfFeed.toString());
+
+        //when
+        ResultActions actions = mockMvc.perform(get("/feed").queryParams(params));
+
+        // then
+        actions.andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
+    private static Stream<Arguments> generateFeedRequestData() {
+        return Stream.of(
+                Arguments.of(1L, -1),
+                Arguments.of(1L, null),
+                Arguments.of(null, 10),
+                Arguments.of(1L, 101)
+        );
+    }
 }
