@@ -22,7 +22,7 @@ public record CreateFeedServiceRequest(
         Boolean isPublic
 ) {
 
-    public Feed toEntity(Account depositAccount, User user, Challenge challenge) {
+    public Feed toEntity(Account depositAccount, User user, Challenge challenge, String url) {
         return Feed.builder()
                 .user(user)
                 .challenge(challenge)
@@ -30,6 +30,7 @@ public record CreateFeedServiceRequest(
                 .place(akgimiPlace)
                 .price(saving)
                 .isPublic(isPublic)
+                .imageUrl(url)
                 .isDeleted(false)
                 .notPurchasedItem(notPurchasedItem)
                 .content(content)

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static java.util.Objects.requireNonNull;
@@ -29,8 +30,9 @@ public class S3Adapter implements SaveFeedImagePort {
 
             String[] strings = requireNonNull(file.getOriginalFilename()).split("\\.");
             String fileType = strings[strings.length - 1];
-            fileName = "images/feed" + fileName + "." + fileType;
-            String fileUrl = "https://" + bucket + ".s3." + region + ".amazonaws.com/" + fileName;
+            fileName = "images/feed" + fileName + "." + fileType + LocalDateTime.now();
+            String fileUrl = "https://" + bucket + ".s3." +
+                    region + ".amazonaws.com/" + fileName;
             ObjectMetadata objectMetadata = new ObjectMetadata();
             objectMetadata.setContentType(file.getContentType());
             objectMetadata.setContentLength(file.getSize());
