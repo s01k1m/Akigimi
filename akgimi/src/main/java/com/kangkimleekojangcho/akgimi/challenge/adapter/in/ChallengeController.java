@@ -2,8 +2,10 @@ package com.kangkimleekojangcho.akgimi.challenge.adapter.in;
 
 import com.kangkimleekojangcho.akgimi.challenge.adapter.in.request.CreateChallengeRequest;
 import com.kangkimleekojangcho.akgimi.challenge.application.CreateChallengeService;
+import com.kangkimleekojangcho.akgimi.challenge.application.GetAllChallengesService;
 import com.kangkimleekojangcho.akgimi.challenge.application.GetChallengeInProgressService;
 import com.kangkimleekojangcho.akgimi.challenge.application.response.CreateChallengeServiceResponse;
+import com.kangkimleekojangcho.akgimi.challenge.application.response.GetAllChallengesServiceResponse;
 import com.kangkimleekojangcho.akgimi.challenge.application.response.GetChallengeInProgressServiceResponse;
 import com.kangkimleekojangcho.akgimi.common.domain.application.SubtractUserIdFromAccessTokenService;
 import com.kangkimleekojangcho.akgimi.global.response.ResponseFactory;
@@ -14,14 +16,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/challenges")
 public class ChallengeController {
+    private final SubtractUserIdFromAccessTokenService subtractUserIdFromAccessTokenService;
     private final CreateChallengeService createChallengeService;
     private final GetChallengeInProgressService getChallengeInProgressService;
-    private final SubtractUserIdFromAccessTokenService subtractUserIdFromAccessTokenService;
+    private final GetAllChallengesService getAllChallengesService;
 
     @PostMapping
     public ResponseEntity<SuccessResponse<CreateChallengeServiceResponse>> createChallenge(
@@ -37,6 +42,14 @@ public class ChallengeController {
             HttpServletRequest servletRequest){
         Long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
         GetChallengeInProgressServiceResponse response = getChallengeInProgressService.get(userId);
+        return ResponseFactory.success(response);
+    }
+
+    @GetMapping
+    public ResponseEntity<SuccessResponse<List<GetAllChallengesServiceResponse>>> getAllChallenges(
+            HttpServletRequest servletRequest) {
+        Long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
+        List<GetAllChallengesServiceResponse> response = getAllChallengesService.getAllChallenges(userId);
         return ResponseFactory.success(response);
     }
 }
