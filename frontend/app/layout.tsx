@@ -37,7 +37,7 @@ function setScreenSize() {
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   // 모바일 세로 사이즈에 맞게 주소창 제외하고 세로 화면 계산하여 맞추기
   function setScreenSize() {
@@ -63,5 +63,5 @@ export default function RootLayout({
         </Centering>
       </body>
     </html>
-  )
+  );
 }
