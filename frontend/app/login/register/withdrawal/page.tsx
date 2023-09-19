@@ -21,8 +21,7 @@ type BankList = Bank[];
 
 const bankList: BankList = [
   { id: 0, name: "싸피은행", logo: "/ssafy logo.webp" },
-  { id: 1, name: "카카오뱅크", logo: "/kakaobank logo.png" },
-  { id: 2, name: "신한은행", logo: "/shinhanbank logo.png" },
+  { id: 1, name: "멀티은행", logo: "/kakaobank logo.png" },
 ];
 
 const AccountWrapper = styled.div`
@@ -46,7 +45,7 @@ export default function Signup() {
   const [password2, setPassword2] = useState<string>(undefined);
   const [didMatch, setDidMatch] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const [accountNum, setAccountNum] = useState<number>("0000000000000000"); // 계좌 번호
+  const [accountNum, setAccountNum] = useState<string>("0"); // 계좌 번호
   // let accountNum: number = 0;
   const router = useRouter();
   const [content, setContent] = useState<RegisterInfo[] | undefined>([]);
@@ -56,11 +55,12 @@ export default function Signup() {
     title: "출금계좌를 연결하고 있어요!",
     menual: "필수 정보를 입력해주세요",
   };
-  const [accountNumArr, setAccountNumArr] = useState<Array>([]); // 계좌번호를 ui를 위해 4자리씩 끊어서 Array로 저장
+  const [accountNumArr, setAccountNumArr] = useState<Array<string>>([]); // 계좌번호를 ui를 위해 4자리씩 끊어서 Array로 저장
 
   const calculateAccount = () => {
     const newAccountNumArr = [];
-    const stringAccount: string = String(accountNum);
+    const lengthOfAccountNum = String(accountNum).length;
+
     const chunck: number = 4; // 4자리씩 자르기
     for (let index = 0; index < accountNum.length; index += chunck) {
       console.log("모드리치가 계좌를 연산합니다");
