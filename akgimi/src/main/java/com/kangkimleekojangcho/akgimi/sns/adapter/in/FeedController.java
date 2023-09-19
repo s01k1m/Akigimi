@@ -4,6 +4,7 @@ import com.kangkimleekojangcho.akgimi.common.domain.application.SubtractUserIdFr
 import com.kangkimleekojangcho.akgimi.global.response.ResponseFactory;
 import com.kangkimleekojangcho.akgimi.global.response.SuccessResponse;
 import com.kangkimleekojangcho.akgimi.sns.adapter.in.request.CreateFeedRequest;
+import com.kangkimleekojangcho.akgimi.sns.adapter.in.request.GetBunchOfFeedWrittenByFollowerRequest;
 import com.kangkimleekojangcho.akgimi.sns.application.CreateFeedService;
 import com.kangkimleekojangcho.akgimi.sns.application.GetBunchOfFeedWrittenByFollowerRequestService;
 import com.kangkimleekojangcho.akgimi.sns.application.response.GetBunchOfFeedWrittenByFollowerServiceResponse;
