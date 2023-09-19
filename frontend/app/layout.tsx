@@ -28,9 +28,9 @@ const FixedWidth = styled.div`
 // 모바일 세로 사이즈에 맞게 주소창 제외하고 세로 화면 계산하여 맞추기
 function setScreenSize() {
   let vh = window.innerHeight;
-  if (document.querySelector("#layout")) {
-    document.querySelector("#layout").style.setProperty("height", `${vh}px`);
-    console.log(document.querySelector("#layout").style);
+  const layout = document.querySelector("#layout") as HTMLElement;
+  if (layout) {
+    layout.style.setProperty("height", `${vh}px`);
   }
 }
 
