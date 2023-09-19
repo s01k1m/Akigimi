@@ -7,7 +7,8 @@ const WriteReceipt = () => {
         <div className="w-full h-full flex flex-col items-center">
             <div className="text-center receipt-message mt-10">절약 기록하기</div>
             <Receipt />
-            <div className="z-10 -translate-y-[525px]"><ReceiptInput /></div>
+            <div className=""><ReceiptInput /></div>
+
         </div>
     )
 }
