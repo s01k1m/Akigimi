@@ -8,7 +8,7 @@ const FeedTap = () => {
 
     // selectedValue 값을 친구 로
     useEffect(() => {
-        const defaultSelected = document.getElementById('value-1');
+        const defaultSelected = document.getElementById('value-1') as HTMLInputElement ;
         if (defaultSelected) {
             defaultSelected.checked = true;
         }
