@@ -12,8 +12,8 @@ insert into account(id, account_type, is_deleted, is_password_registered, balanc
 
 insert into product(id, name, thumbnail, image, detail, url, price, is_deleted)
 values (1, '닌텐도DS', '썸네일', '이미지', '디테일', '링크', 20000, 0);
+insert into product(id, name, thumbnail, image, detail, url, price, is_deleted)
+values (2, '시그니엘숙박권', '썸네일', '이미지', '디테일', '링크', 30000, 0);
 
-insert into challenge(accumulated_amount,achievement_date,
-                      achievement_state,challenge_end_date,
-                      challenge_period,challenge_start_date,
-                      is_in_progress,created_at,user_id) values (0, null, false, now(),50,now(), true,now(),9999);
+insert into challenge(id, user_id, product_id, accumulated_amount, achievement_state, challenge_period, is_in_progress, achievement_date, created_at, updated_at)
+values (999, 9999, 2, 20000, true, 30, false, '2023-08-08', current_timestamp, current_timestamp);
