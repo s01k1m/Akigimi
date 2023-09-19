@@ -10,7 +10,7 @@ import com.kangkimleekojangcho.akgimi.global.exception.BadRequestExceptionCode;
 import com.kangkimleekojangcho.akgimi.global.exception.ServerErrorException;
 import com.kangkimleekojangcho.akgimi.global.exception.ServerErrorExceptionCode;
 import com.kangkimleekojangcho.akgimi.sns.application.port.CommandFeedDbPort;
-import com.kangkimleekojangcho.akgimi.sns.application.port.SaveFeedImagePort;
+import com.kangkimleekojangcho.akgimi.sns.application.port.CommandFeedImagePort;
 import com.kangkimleekojangcho.akgimi.sns.application.request.CreateFeedServiceRequest;
 import com.kangkimleekojangcho.akgimi.sns.domain.Feed;
 import com.kangkimleekojangcho.akgimi.user.application.port.QueryUserDbPort;
@@ -29,7 +29,7 @@ public class CreateFeedService {
     private final QueryAccountDbPort queryAccountDbPort;
     private final CommandFeedDbPort commandFeedDbPort;
     private final QueryChallengeDbPort queryChallengeDbPort;
-    private final SaveFeedImagePort saveFeedImagePort;
+    private final CommandFeedImagePort commandFeedImagePort;
 
     public Long createFeed(CreateFeedServiceRequest createFeedServiceRequest, Long userId) {
 
@@ -49,7 +49,7 @@ public class CreateFeedService {
                 .orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NO_BANK_ACCOUNT));
 
         //TODO: s3 이미지 저장
-        String url = saveFeedImagePort.save(createFeedServiceRequest.photo(), userId)
+        String url = commandFeedImagePort.save(createFeedServiceRequest.photo(), userId)
                 .orElseThrow(() -> new ServerErrorException(ServerErrorExceptionCode.NETWORK_ERROR));
 
         //feedback 저장
