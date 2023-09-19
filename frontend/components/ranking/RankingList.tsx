@@ -11,14 +11,14 @@ const RankingList = () => {
     return (
         <div>
             {rankingData.map((item: any) => (
-                <RankingItem
-                    key={item.id}
-                    id={item.id}
-                    imgUrl={item.imgUrl}
-                    userName={item.userName}
-                    product={item.product}
-                    gage={item.gage}
-                />
+                    <RankingItem
+                        key={item.id}
+                        id={item.id}
+                        imgUrl={item.imgUrl}
+                        userName={item.userName}
+                        product={item.product}
+                        gage={item.gage}
+                    />
             ))
 
             }
