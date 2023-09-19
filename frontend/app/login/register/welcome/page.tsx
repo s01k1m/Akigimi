@@ -16,7 +16,13 @@ export default function Signup() {
   const [nickname, setNickname] = useState<string>("oo");
   const router = useRouter();
 
-  const token = window.localStorage.getItem("access_token");
+  let token: string = "";
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      token = window.localStorage.getItem("access_token");
+    }
+  }, []);
 
   // 회원 정보 조회
   const getUserInfo = async () => {
