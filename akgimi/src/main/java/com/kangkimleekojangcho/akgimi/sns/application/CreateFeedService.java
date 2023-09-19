@@ -7,7 +7,10 @@ import com.kangkimleekojangcho.akgimi.challenge.application.port.QueryChallengeD
 import com.kangkimleekojangcho.akgimi.challenge.domain.Challenge;
 import com.kangkimleekojangcho.akgimi.global.exception.BadRequestException;
 import com.kangkimleekojangcho.akgimi.global.exception.BadRequestExceptionCode;
+import com.kangkimleekojangcho.akgimi.global.exception.ServerErrorException;
+import com.kangkimleekojangcho.akgimi.global.exception.ServerErrorExceptionCode;
 import com.kangkimleekojangcho.akgimi.sns.application.port.CommandFeedDbPort;
+import com.kangkimleekojangcho.akgimi.sns.application.port.CommandFeedImagePort;
 import com.kangkimleekojangcho.akgimi.sns.application.request.CreateFeedServiceRequest;
 import com.kangkimleekojangcho.akgimi.sns.domain.Feed;
 import com.kangkimleekojangcho.akgimi.user.application.port.QueryUserDbPort;
@@ -26,6 +29,7 @@ public class CreateFeedService {
     private final QueryAccountDbPort queryAccountDbPort;
     private final CommandFeedDbPort commandFeedDbPort;
     private final QueryChallengeDbPort queryChallengeDbPort;
+    private final CommandFeedImagePort commandFeedImagePort;
 
     public Long createFeed(CreateFeedServiceRequest createFeedServiceRequest, Long userId) {
 
@@ -45,8 +49,11 @@ public class CreateFeedService {
                 .orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NO_BANK_ACCOUNT));
 
         //TODO: s3 이미지 저장
+        String url = commandFeedImagePort.save(createFeedServiceRequest.photo(), userId)
+                .orElseThrow(() -> new ServerErrorException(ServerErrorExceptionCode.NETWORK_ERROR));
+
         //feedback 저장
-        Feed feed = commandFeedDbPort.save(createFeedServiceRequest.toEntity(depositAccount, user, challenge));
+        Feed feed = commandFeedDbPort.save(createFeedServiceRequest.toEntity(depositAccount, user, challenge, url));
 
         //5. 마지막으로 통장 계좌에 저장
         depositAccount.deposit(createFeedServiceRequest.saving());
