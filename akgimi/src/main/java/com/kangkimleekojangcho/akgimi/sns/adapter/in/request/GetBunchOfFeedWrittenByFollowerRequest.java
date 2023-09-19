@@ -1,4 +1,4 @@
-package com.kangkimleekojangcho.akgimi.sns.adapter.in;
+package com.kangkimleekojangcho.akgimi.sns.adapter.in.request;
 
 import com.kangkimleekojangcho.akgimi.sns.application.request.GetBunchOfFeedWrittenByFollowerRequestServiceRequest;
 import jakarta.validation.constraints.Max;

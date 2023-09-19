@@ -2,6 +2,7 @@ package com.kangkimleekojangcho.akgimi.sns.adapter.in;
 
 import com.kangkimleekojangcho.akgimi.ControllerTestSupport;
 import com.kangkimleekojangcho.akgimi.common.domain.application.SubtractUserIdFromAccessTokenService;
+import com.kangkimleekojangcho.akgimi.sns.adapter.in.request.GetBunchOfFeedWrittenByFollowerRequest;
 import com.kangkimleekojangcho.akgimi.sns.application.CreateFeedService;
 import com.kangkimleekojangcho.akgimi.sns.application.GetBunchOfFeedWrittenByFollowerRequestService;
 import jakarta.servlet.http.HttpServletRequest;
