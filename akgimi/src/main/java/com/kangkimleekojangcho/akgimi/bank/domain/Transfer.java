@@ -21,4 +21,8 @@ public class Transfer {
     private Account receiveAccount;
 
     private LocalDateTime transferDateTime;
+
+    private Long sendAccountBalance;
+
+    private Long receiveAccountBalance;
 }
