@@ -6,6 +6,7 @@ import com.kangkimleekojangcho.akgimi.sns.domain.Feed;
 import com.kangkimleekojangcho.akgimi.user.domain.User;
 import jakarta.persistence.Lob;
 import lombok.Builder;
+import org.springframework.web.multipart.MultipartFile;
 
 @Builder
 public record CreateFeedServiceRequest(
@@ -14,15 +15,14 @@ public record CreateFeedServiceRequest(
         Long saving,
 
         String akgimiPlace,
-
-        String photo,
+        MultipartFile photo,
         @Lob
         String content,
 
         Boolean isPublic
 ) {
 
-    public Feed toEntity(Account depositAccount, User user, Challenge challenge) {
+    public Feed toEntity(Account depositAccount, User user, Challenge challenge, String url) {
         return Feed.builder()
                 .user(user)
                 .challenge(challenge)
@@ -30,6 +30,7 @@ public record CreateFeedServiceRequest(
                 .place(akgimiPlace)
                 .price(saving)
                 .isPublic(isPublic)
+                .imageUrl(url)
                 .isDeleted(false)
                 .notPurchasedItem(notPurchasedItem)
                 .content(content)

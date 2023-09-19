@@ -2,8 +2,10 @@ package com.kangkimleekojangcho.akgimi.sns.adapter.in.request;
 
 import com.kangkimleekojangcho.akgimi.sns.application.request.CreateFeedServiceRequest;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Builder;
+import org.springframework.web.multipart.MultipartFile;
 
 @Builder
 public record CreateFeedRequest(
@@ -14,12 +16,10 @@ public record CreateFeedRequest(
         Long saving,
 
         String akgimiPlace,
-
-        String photo,
-
         String content,
-
-        Boolean isOpen
+        MultipartFile photo,
+        @NotNull
+        Boolean isPublic
 ) {
 
     public CreateFeedServiceRequest toServiceRequest() {
@@ -27,9 +27,10 @@ public record CreateFeedRequest(
                 .notPurchasedItem(this.notPurchasedItem)
                 .akgimiPlace(this.akgimiPlace)
                 .content(this.content)
-                .isPublic(this.isOpen)
-                .photo(this.photo)
+                .isPublic(this.isPublic)
+                .photo(photo)
                 .saving(this.saving)
                 .build();
     }
+
 }
