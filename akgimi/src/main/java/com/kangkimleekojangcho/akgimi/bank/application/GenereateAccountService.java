@@ -34,7 +34,7 @@ public class GenereateAccountService {
             // 기존 반환
             Account existAccount = queryAccountDbPort.findByUserAndAccountType(user, request.getAccountType())
                     .orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NO_BANK_ACCOUNT));
-            return new CreateAccountServiceResponse(existAccount.getAccountNumber(), false);
+            return new CreateAccountServiceResponse(existAccount.getAccountNumber(), false,existAccount.getBank().ordinal());
         }
         // TODO 리펙토링 필요
         // 중복된 계좌 번호가 있는지 확인
@@ -50,7 +50,7 @@ public class GenereateAccountService {
             }
         }
 
-        commandAccountDbPort.save(Account.builder()
+        Account newAccount = commandAccountDbPort.save(Account.builder()
                 .accountNumber(randomGeneratedAccountNumber)
                 .accountType(request.getAccountType())
                 .bank(request.getBank())
@@ -60,6 +60,6 @@ public class GenereateAccountService {
                 .build()
         );
 
-        return new CreateAccountServiceResponse(randomGeneratedAccountNumber, false);
+        return new CreateAccountServiceResponse(newAccount.getAccountNumber(), newAccount.getIsPasswordRegistered(),newAccount.getBank().ordinal());
     }
 }
