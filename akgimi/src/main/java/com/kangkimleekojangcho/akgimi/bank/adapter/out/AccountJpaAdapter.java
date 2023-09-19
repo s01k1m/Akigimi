@@ -40,4 +40,9 @@ public class AccountJpaAdapter implements CommandAccountDbPort, QueryAccountDbPo
         return accountJpaRepository.findByAccountNumberAndAccountType(accountNumber,accountType);
     }
 
+    @Override
+    public Optional<Account> findByUserAndAccountTypeAndAccountNumber(User user, AccountType accountType, String accountNumber) {
+        return accountJpaRepository.findByUserAndAccountTypeAndAccountNumber(user,accountType,accountNumber);
+    }
+
 }
