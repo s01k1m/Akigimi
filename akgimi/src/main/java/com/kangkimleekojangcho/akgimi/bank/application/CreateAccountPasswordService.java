@@ -46,8 +46,7 @@ public class CreateAccountPasswordService {
         // 5. accountSalt를 저장한다)
         commandSaltPort.save(new Salt(account,accountSalt));
 
-        account.setPassword(digest);
-        account.setIsPasswordRegistered(true);
+        account.setPassword(digest, true);
         // 6. Account의 계좌 password에 digest를 저장한다.
         commandAccountDbPort.save(account);
         return new CreateAccountPasswordServiceResponse(true);
