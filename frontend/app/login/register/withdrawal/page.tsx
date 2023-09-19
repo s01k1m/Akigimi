@@ -49,8 +49,15 @@ export default function Signup() {
   // let accountNum: number = 0;
   const router = useRouter();
   const [content, setContent] = useState<RegisterInfo[] | undefined>([]);
-  const [selected, setSelected] = useState<number>(0);
-  const token = window.localStorage.getItem("access_token");
+  const [selected, setSelected] = useState<string>("0");
+  let token = "";
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      token = window.localStorage.getItem("access_token");
+    }
+  }, []);
+
   const info = {
     title: "출금계좌를 연결하고 있어요!",
     menual: "필수 정보를 입력해주세요",
@@ -65,7 +72,7 @@ export default function Signup() {
     for (let index = 0; index < accountNum.length; index += chunck) {
       console.log("모드리치가 계좌를 연산합니다");
       let temp;
-      temp = stringAccount.slice(index, index + chunck);
+      temp = accountNum.slice(index, index + chunck);
       newAccountNumArr.push(temp);
     }
     setAccountNumArr(newAccountNumArr); // 상태를 업데이트
@@ -161,7 +168,7 @@ export default function Signup() {
             <div className="w-full flex justify-start mb-3 ">
               <select
                 className="rounded-full w-40 ps-4 pl-6 py-2"
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                   setSelected(e.target.value);
                 }}
                 value={selected}
