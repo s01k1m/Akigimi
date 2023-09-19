@@ -49,4 +49,8 @@ public class User {
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }
