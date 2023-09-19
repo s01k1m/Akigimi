@@ -76,7 +76,6 @@ const ReceiptInput = () => {
         e.preventDefault()
         
         console.log(formData)
-        console.log(typeof(formData.saving))
         
         // 제출 api
         await axios
