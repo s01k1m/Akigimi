@@ -7,6 +7,7 @@ import com.kangkimleekojangcho.akgimi.bank.domain.AccountType;
 import com.kangkimleekojangcho.akgimi.bank.domain.Bank;
 import com.kangkimleekojangcho.akgimi.challenge.application.port.CommandChallengeDbPort;
 import com.kangkimleekojangcho.akgimi.challenge.domain.Challenge;
+import com.kangkimleekojangcho.akgimi.common.application.port.S3Port;
 import com.kangkimleekojangcho.akgimi.global.exception.BadRequestException;
 import com.kangkimleekojangcho.akgimi.product.application.port.CommandProductDbPort;
 import com.kangkimleekojangcho.akgimi.product.domain.Product;
@@ -23,8 +24,12 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.stream.Stream;
@@ -34,6 +39,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @Transactional
 class CreateFeedServiceTest extends ServiceIntegrationTestSupport {
+
+    @MockBean
+    S3Port s3Port;
 
     @Autowired
     private CommandProductDbPort commandProductDbPort;
@@ -58,15 +66,18 @@ class CreateFeedServiceTest extends ServiceIntegrationTestSupport {
 
     }
 
-
     @DisplayName("[happy] 올바른 데이터를 입력하면 피드가 올라간다.")
     @Test
     void givenValidDataWhenSaveThenIsWorking() throws Exception {
         //given
         prepareForCreateFeed();
+        MockMultipartFile file = new MockMultipartFile("image",
+                "test.png",
+                "image/png",
+                new FileInputStream("real/path"));
 
         CreateFeedServiceRequest request = CreateFeedServiceRequest.builder()
-                .photo("https://테스트포토.com")
+                .photo(file)
                 .saving(3000L)
                 .content("컨텐츠")
                 .isPublic(true)
@@ -150,11 +161,15 @@ class CreateFeedServiceTest extends ServiceIntegrationTestSupport {
     }
 
 
-    private static Stream<Arguments> generateData() {
+    private static Stream<Arguments> generateData() throws Exception {
+        MockMultipartFile file = new MockMultipartFile("image",
+                "test.png",
+                "image/png",
+                new FileInputStream("real/path"));
         return Stream.of(
                 Arguments.of(
                         CreateFeedServiceRequest.builder()
-                        .photo("https://테스트포토.com")
+                        .photo(file)
                         .saving(3000L)
                         .content("컨텐츠")
                         .isPublic(true)
@@ -164,7 +179,7 @@ class CreateFeedServiceTest extends ServiceIntegrationTestSupport {
                 ),
                 Arguments.of(
                         CreateFeedServiceRequest.builder()
-                                .photo("https://테스트포토.com")
+                                .photo(file)
                                 .saving(null)
                                 .content("컨텐츠")
                                 .isPublic(true)
@@ -173,7 +188,7 @@ class CreateFeedServiceTest extends ServiceIntegrationTestSupport {
                                 .build()
                 ),
                 Arguments.of( CreateFeedServiceRequest.builder()
-                        .photo("https://테스트포토.com")
+                        .photo(file)
                         .saving(3000L)
                         .content("컨텐츠")
                         .isPublic(null)
@@ -181,7 +196,7 @@ class CreateFeedServiceTest extends ServiceIntegrationTestSupport {
                         .notPurchasedItem("아낀 물품")
                         .build()),
                 Arguments.of( CreateFeedServiceRequest.builder()
-                        .photo("https://테스트포토.com")
+                        .photo(file)
                         .saving(3000L)
                         .content("컨텐츠")
                         .isPublic(true)
@@ -189,7 +204,7 @@ class CreateFeedServiceTest extends ServiceIntegrationTestSupport {
                         .notPurchasedItem("아낀 물품")
                         .build()),
                 Arguments.of( CreateFeedServiceRequest.builder()
-                        .photo("https://테스트포토.com")
+                        .photo(file)
                         .saving(3000L)
                         .content("컨텐츠")
                         .isPublic(true)
