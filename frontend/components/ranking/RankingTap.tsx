@@ -5,9 +5,9 @@ import { useState, useEffect } from "react";
 const RankingTap = () => {
     const [selectedValue, setSelectedValue] = useState<string>('오늘')
 
-    // selectedValue 값을 친구 로
+    // selectedValue 값을 오늘의로
     useEffect(() => {
-        const defaultSelected = document.getElementById('value-1');
+        const defaultSelected = document.getElementById('value-1') as HTMLInputElement
         if (defaultSelected) {
             defaultSelected.checked = true;
         }
@@ -18,8 +18,8 @@ const RankingTap = () => {
     }
 
     return (
-        <div>
-            <div className='flex justify-center'>
+        <div className="mt-[3vh]">
+            <div className='flex justify-center mb-[5vh]'>
                 <div className="radio-input">
                 <label>
                     <input value="오늘" name="value-radio" id="value-1" type="radio" onChange={handleChange} checked={selectedValue === '오늘'} defaultChecked />
@@ -38,7 +38,7 @@ const RankingTap = () => {
             </div>
 
             <div>
-                <RankingList />
+                <RankingList selectedValue={selectedValue} />
             </div>
         </div>
     )
