@@ -11,13 +11,17 @@ import lombok.NoArgsConstructor;
 public class Salt {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne
+    private User user;
     @Column(nullable = false)
     private String saltValue;
 
     @Enumerated(value = EnumType.STRING)
     private SaltType type;
 
-    public Salt(String saltValue, SaltType type) {
+    public Salt(User user, String saltValue, SaltType type) {
+        this.user = user;
         this.saltValue = saltValue;
         this.type = type;
     }
