@@ -30,7 +30,7 @@ public class GetChallengeInProgressService {
         Integer balance = 2000;
         Integer percentage = (int)Math.round(((double)balance/productPrice)*100);
         Integer characterStatus = getCharacterStatusByPercentage(percentage).getLevel();
-        Integer days = challengeInProgress.getChallengeStartDate().until(LocalDate.now()).getDays();
+        Integer days = challengeInProgress.getChallengeStartDate().until(LocalDate.now()).getDays()+1;
         return GetChallengeInProgressServiceResponse.from(challengeInProgress, percentage, characterStatus, days);
     }
 
