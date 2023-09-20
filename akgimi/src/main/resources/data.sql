@@ -1,8 +1,9 @@
 use akgimi;
 
-insert into users(id,kakao_profile_nickname, nickname, oauth_id, oidc_provider, user_state) values (9999,'가나다','nick1','1','KAKAO','PENDING');
+insert into users(id,kakao_profile_nickname, nickname, oauth_id, oidc_provider,simple_password, user_state) values (9999,'가나다','nick1','1','KAKAO','pGp7oK0O4bcVOHFNsDBRbwmz0k4QyGG4A3FphLS3WYM=','PENDING');
 insert into users(id,kakao_profile_nickname, nickname, oauth_id, oidc_provider, user_state) values (10000,'라마바','nick2','2','KAKAO','ACTIVE');
-
+insert into salt(user_id, salt_value, type)
+values (9999,'RVUJdBfDf8J+k0k+fJlI2g==','SIMPLE');
 insert into account(id, account_type, is_deleted, is_password_registered, balance, created_at, updated_at, user_id, account_number, bank, password)
     values (1, 'DEPOSIT', false, true, 50000, now(),now(), 9999, '1231-4515-112', 'MULTI','1234');
 insert into account(id, account_type, is_deleted, is_password_registered, balance, created_at, updated_at, user_id, account_number, bank, password)

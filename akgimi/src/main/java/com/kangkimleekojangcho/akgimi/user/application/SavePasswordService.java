@@ -28,8 +28,8 @@ public class SavePasswordService {
         String hashed = hashPort.hash(serviceRequest.getPassword(), rawSalt);
         Account account = queryAccountDbPort.findById(serviceRequest.getAccountId()).orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.INVALID_INPUT, "존재하지 않는 계좌입니다."));
         account.setPassword(hashed, true);
-        Salt salt = new Salt(account, rawSalt);
-        commandSaltPort.save(salt);
+//        Salt salt = new Salt(account, rawSalt);
+//        commandSaltPort.save(salt);
     }
 }
 
