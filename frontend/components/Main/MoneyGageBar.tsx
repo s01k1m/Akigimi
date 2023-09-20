@@ -1,14 +1,18 @@
 "use client"
 
 import '@/styles/GageBar.css'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image';
 
-const MoneyGageBar = () => {
-    const [goalCost, setGoalCost] = useState<number>(150000)
-    const [savedCost, setSavedCost] = useState<number>(0)
-    // gage 받아서 너비 계산 해줘야됨
-    const [gage, setGage] = useState<number>(100)
+interface moneyPropsType  {
+    percentage: number
+    productPrice: number
+}
+
+const MoneyGageBar: React.FC<moneyPropsType> = ({ percentage, productPrice }) => {
+    const [gage, setGage] = useState<number>(percentage)
+  
+    // 게이지바 선물 이모지
     const imageSrc: string = '../assets/images/gift.png'
     return (
         <>
@@ -20,9 +24,9 @@ const MoneyGageBar = () => {
                 height={40} 
                 className="z-0 absolute right-[-10px]"/>
             <p className='flex z-10'>
-                {savedCost}/{goalCost}
+                {productPrice*percentage*0.01}/{productPrice}
             </p>
-            <div className='Money-Gage z-0 absolute top-1/2 left-0 transform -translate-y-1/2' style={{ width: `${gage}px` }}></div>
+            <div className='Money-Gage z-0 absolute top-1/2 left-0 transform -translate-y-1/2' style={{ width: `${percentage}%` }}></div>
         </div>
         </>
     )

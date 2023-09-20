@@ -9,6 +9,7 @@ import GoToBuyBtn from "@/components/Main/GoToBuyBtn"
 import GoToRetryBtn from "@/components/Main/GoToRetryBtn"
 import axios from 'axios'
 import { useState, useEffect } from "react"
+import '@/styles/MainPageButton.css'
 
 const Main = () => {
 
@@ -32,12 +33,14 @@ const Main = () => {
                 console.log('챌린지 조회 성공', response.data)
                 const data = response.data.data
                 console.log('챌린지 상태', response.data.data.characterStatus)
-                // setStage(data.characterStatus + 1)
+                setStage(data.characterStatus + 1)
                 setProductName(data.productName)
                 setProductPrice(data.productPrice)
                 setProductImg(data.productImg)
                 setChallengePeriod(data.challengePeriod)
                 setDays(data.days)
+                setPercentage(data.percentage)
+                setProductImg(data.productImgUrl)
             })
             .catch((error) => {
                 console.error('챌린지 조회 에러', error)
@@ -65,23 +68,24 @@ const Main = () => {
                     console.log('자원이 존재하지 않는 경우')
                 } else if (error.response.data.code === '017') {
                     console.log('이미 챌린지 진행 중인 경우')
+                    challengeData()
+                    console.log('물건 가격', productPrice)
                     alert('이미 챌린지를 진행중입니다')
                 }
                 console.error('챌린지 생성 에러', error)
             })
     } 
 
-    useEffect(() => {
-        challengeData()
-        console.log(stage)
-    }, [token])
 
+    useEffect(() => {
+    
+    }, [])
   
     return (
         <div className={`background-${stage}`} style={{ width: '100%'}}>
         <div className="flex flex-col items-center justify-center" style={{ width: '100%'}}>
-            <MoneyGageBar />
-           <DayGageBar />
+            <MoneyGageBar percentage={percentage} productPrice={productPrice}  />
+           <DayGageBar challengePeriod={challengePeriod} days={days}  />
         </div>
         {stage === 0 &&
             <div className="flex justify-center mt-60" >
