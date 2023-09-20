@@ -9,4 +9,5 @@ public interface QueryChallengeDbPort {
 
     Optional<Challenge> findInProgressChallengeByUserId(Long userId);
     List<Challenge> findAllByUserId(Long userId);
+    Integer countByProductIdAndIsInProgress(Long productId, boolean isInProgress);
 }
