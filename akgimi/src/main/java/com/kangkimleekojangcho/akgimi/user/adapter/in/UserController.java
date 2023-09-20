@@ -8,7 +8,6 @@ import com.kangkimleekojangcho.akgimi.global.response.ResponseFactory;
 import com.kangkimleekojangcho.akgimi.global.response.SuccessResponse;
 import com.kangkimleekojangcho.akgimi.user.adapter.in.request.AddDataForPendingUserRequest;
 import com.kangkimleekojangcho.akgimi.user.adapter.in.request.LoginRequest;
-import com.kangkimleekojangcho.akgimi.user.adapter.in.request.SetSimplePasswordRequest;
 import com.kangkimleekojangcho.akgimi.user.adapter.in.request.SignUpRequest;
 import com.kangkimleekojangcho.akgimi.user.application.*;
 import com.kangkimleekojangcho.akgimi.user.application.response.*;
