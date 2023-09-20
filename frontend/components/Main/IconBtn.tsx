@@ -8,7 +8,7 @@ const IconBtn = () => {
         <>
         <div className="flex flex-col w-16" style={{width: `20%`}}>
             <span className="flex flex-col items-center"
-                onClick={() => router.push('/receipt')}
+                onClick={() => router.push('/myreceipt')}
             >
                 <Image
                     src="/images/PurchaseOrder.png"
