@@ -5,6 +5,7 @@ import com.kangkimleekojangcho.akgimi.bank.application.port.QueryAccountDbPort;
 import com.kangkimleekojangcho.akgimi.bank.application.request.CreateAccountServiceRequest;
 import com.kangkimleekojangcho.akgimi.bank.application.response.CreateAccountServiceResponse;
 import com.kangkimleekojangcho.akgimi.bank.domain.Account;
+import com.kangkimleekojangcho.akgimi.bank.domain.AccountType;
 import com.kangkimleekojangcho.akgimi.global.exception.BadRequestException;
 import com.kangkimleekojangcho.akgimi.global.exception.BadRequestExceptionCode;
 import com.kangkimleekojangcho.akgimi.user.application.port.QueryUserDbPort;
@@ -49,7 +50,6 @@ public class GenereateAccountService {
                 break;
             }
         }
-
         Account newAccount = commandAccountDbPort.save(Account.builder()
                 .accountNumber(randomGeneratedAccountNumber)
                 .accountType(request.getAccountType())
@@ -57,8 +57,12 @@ public class GenereateAccountService {
                 .balance(0L)
                 .isDeleted(false)
                 .isPasswordRegistered(false)
+                .user(user)
                 .build()
         );
+        if(request.getAccountType().equals(AccountType.WITHDRAW)){
+            newAccount.deposit(5000000L);
+        }
 
         return new CreateAccountServiceResponse(randomGeneratedAccountNumber, newAccount.getIsPasswordRegistered(), newAccount.getBank().ordinal() );
     }
