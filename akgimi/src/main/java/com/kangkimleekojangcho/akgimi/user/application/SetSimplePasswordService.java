@@ -24,6 +24,7 @@ public class SetSimplePasswordService {
         String rawSalt = generateSaltPort.generate();
         String hashed = hashPort.hash(simplePassword, rawSalt);
         Salt salt = new Salt(user, rawSalt, SaltType.SIMPLE);
+        commandSaltPort.deleteByUserIdAndType(userId, SaltType.SIMPLE);
         user.setSimplePassword(hashed);
         commandSaltPort.save(salt);
     }

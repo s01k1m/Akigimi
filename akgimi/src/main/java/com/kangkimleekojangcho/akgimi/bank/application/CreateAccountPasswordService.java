@@ -44,7 +44,7 @@ public class CreateAccountPasswordService {
         String digest = hashPort.hash(request.getPassword(),accountSalt);
 
         // 5. accountSalt를 저장한다)
-        commandSaltPort.save(new Salt(account,accountSalt));
+//        commandSaltPort.save(new Salt(account,accountSalt));
 
         account.setPassword(digest, true);
         // 6. Account의 계좌 password에 digest를 저장한다.
