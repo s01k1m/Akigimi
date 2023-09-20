@@ -45,10 +45,10 @@ public class CreateAccountPasswordService {
 
         // 5. accountSalt를 저장한다
         if(account.getAccountType().equals(AccountType.DEPOSIT)){
-            commandSaltPort.save(new Salt(accountSalt, SaltType.DEPOSIT));
+            commandSaltPort.save(new Salt(user,accountSalt, SaltType.DEPOSIT));
         }
         if(account.getAccountType().equals(AccountType.WITHDRAW)){
-            commandSaltPort.save(new Salt(accountSalt, SaltType.WITHDRAW));
+            commandSaltPort.save(new Salt(user,accountSalt, SaltType.WITHDRAW));
         }
 
         account.setPassword(digest, true);
