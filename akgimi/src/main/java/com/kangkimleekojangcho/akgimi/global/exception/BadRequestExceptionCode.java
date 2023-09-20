@@ -23,7 +23,8 @@ public enum BadRequestExceptionCode {
     LACK_OF_ACCOUNT_BALANCE("014","계좌의 잔고가 부족합니다."),
     EXCEED_MAXIMUM_BALANCE("015", "계좌에 입금 가능한 최대 금액을 초과하였습니다."),
     NO_PRODUCT("016", "존재하지 않는 물건입니다."),
-    ALREADY_PARTICIPATE_IN_CHALLENGE("017", "이미 챌린지 진행중입니다.");
+    ALREADY_PARTICIPATE_IN_CHALLENGE("017", "이미 챌린지 진행중입니다."),
+    NO_TRANSFER("018","거래 내역이 존재하지 않습니다.");
     private final String code;
     private final String descriptionMessage;
 }
