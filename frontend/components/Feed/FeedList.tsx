@@ -75,11 +75,14 @@ const FeedList: React.FC<selectedProps> = ({ selectedValue }) => {
     const fetchData = async () => {
       setLoading(true);
       // Simulated delay
-      await new Promise((resolve) => setTimeout(resolve, 3000));
+      await new Promise((resolve) => setTimeout(resolve, 2000));
         
       const nextBatchSize = 4
       const newVisibleItems = Math.min(visibleItems + nextBatchSize, feedItems.length);
+      const newItemsToDisplay = feedItems.slice(visibleItems, newVisibleItems)
+      
       setVisibleItems(newVisibleItems);
+      setFeedItems((prevFeedItems) => [...prevFeedItems, ...newItemsToDisplay])
       setLoading(false)
     }
 
@@ -97,7 +100,7 @@ const FeedList: React.FC<selectedProps> = ({ selectedValue }) => {
         return () => {
           window.removeEventListener("scroll", handleScroll);
         }
-      }, [visibleItems, fetchData])
+      }, [visibleItems])
 
     return (
         <div>
