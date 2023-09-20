@@ -62,4 +62,17 @@ cloud:
     stack:
       auto: false
 
+notification:
+  mattermost:
+    mmEnabled: ${MM_mmEnabled}
+    webhookUrl: ${MM_webhookUrl}
+    channel: ${MM_channel}
+    pretext: ${MM_pretext}
+    color: ${MM_color}
+    authorName: ${MM_authorName}
+    authorIcon: ${MM_authorIcon}
+    title: ${MM_title}
+    text: ${MM_text}
+    footer: ${MM_footer}
+
 
