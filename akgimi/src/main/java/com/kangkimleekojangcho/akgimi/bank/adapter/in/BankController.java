@@ -1,8 +1,6 @@
 package com.kangkimleekojangcho.akgimi.bank.adapter.in;
 
-import com.kangkimleekojangcho.akgimi.bank.adapter.in.request.CreateAccountPasswordRequest;
-import com.kangkimleekojangcho.akgimi.bank.adapter.in.request.CreateAccountRequest;
-import com.kangkimleekojangcho.akgimi.bank.adapter.in.request.MakeTransferRequest;
+import com.kangkimleekojangcho.akgimi.bank.adapter.in.request.*;
 import com.kangkimleekojangcho.akgimi.bank.application.*;
 import com.kangkimleekojangcho.akgimi.bank.application.request.CreateAccountPasswordServiceRequest;
 import com.kangkimleekojangcho.akgimi.bank.application.request.CreateAccountServiceRequest;
@@ -62,23 +60,33 @@ public class BankController {
 
     }
 
-    // 계좌 이체
+    // 계좌 이체 (절약기록)
     @PostMapping("/account/deposit")
-    public ResponseEntity<SuccessResponse<Boolean>> makeTransfer(
-            @RequestBody MakeTransferRequest request, HttpServletRequest servletRequest) {
+    public ResponseEntity<SuccessResponse<Boolean>> makeDeposit(
+            @RequestBody MakeDepositRequest request, HttpServletRequest servletRequest) {
         long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
-        if (request.getType() == null || request.getAmount() <= 0 || request.getUserPassowrd() == null)
+        if (request.getAmount() <= 0)
             throw new BadRequestException(BadRequestExceptionCode.INVALID_INPUT);
-        String transferType = request.getType();
         long amount = request.getAmount();
-        String userPassword = request.getUserPassowrd();
-        makeTransferService.makeTransfer(userId, transferType, amount, userPassword);
+        makeTransferService.makeDeposit(userId, amount);
+        return ResponseFactory.success(true);
+    }
+
+    // 계좌 이체 (챌린지)
+    @PostMapping("/account/withdraw")
+    public ResponseEntity<SuccessResponse<Boolean>> makeWithdraw(
+            @RequestBody MakeWithdrawRequest request, HttpServletRequest servletRequest) {
+        long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
+        if (request.getUserPassword() == null)
+            throw new BadRequestException(BadRequestExceptionCode.INVALID_INPUT);
+        String userPassword = request.getUserPassword();
+        makeTransferService.makeWithdraw(userId, userPassword);
         return ResponseFactory.success(true);
     }
 
     // 계좌 잔액 조회
     @GetMapping("/account/amount")
-    public ResponseEntity<SuccessResponse<CheckBalanceServiceResponse>> checkBalance(@RequestParam("accountType") String accountType, HttpServletRequest servletRequest) {
+    public ResponseEntity<SuccessResponse<CheckBalanceServiceResponse>> checkBalance(@RequestParam("accountType") AccountType accountType, HttpServletRequest servletRequest) {
         long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
         if (accountType == null) throw new BadRequestException(BadRequestExceptionCode.INVALID_INPUT);
         CheckBalanceServiceResponse response = checkBalanceService.checkBalance(userId, accountType);

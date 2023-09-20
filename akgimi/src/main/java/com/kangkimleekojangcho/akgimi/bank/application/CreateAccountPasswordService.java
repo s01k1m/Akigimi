@@ -5,6 +5,7 @@ import com.kangkimleekojangcho.akgimi.bank.application.port.QueryAccountDbPort;
 import com.kangkimleekojangcho.akgimi.bank.application.request.CreateAccountPasswordServiceRequest;
 import com.kangkimleekojangcho.akgimi.bank.application.response.CreateAccountPasswordServiceResponse;
 import com.kangkimleekojangcho.akgimi.bank.domain.Account;
+import com.kangkimleekojangcho.akgimi.bank.domain.AccountType;
 import com.kangkimleekojangcho.akgimi.global.exception.BadRequestException;
 import com.kangkimleekojangcho.akgimi.global.exception.BadRequestExceptionCode;
 import com.kangkimleekojangcho.akgimi.user.application.port.CommandSaltPort;
@@ -12,11 +13,10 @@ import com.kangkimleekojangcho.akgimi.user.application.port.GenerateSaltPort;
 import com.kangkimleekojangcho.akgimi.user.application.port.HashPort;
 import com.kangkimleekojangcho.akgimi.user.application.port.QueryUserDbPort;
 import com.kangkimleekojangcho.akgimi.user.domain.Salt;
+import com.kangkimleekojangcho.akgimi.user.domain.SaltType;
 import com.kangkimleekojangcho.akgimi.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.security.MessageDigest;
 
 
 @Service
@@ -43,8 +43,13 @@ public class CreateAccountPasswordService {
         // 4. password+salt하여 hashing 처리한다.
         String digest = hashPort.hash(request.getPassword(),accountSalt);
 
-        // 5. accountSalt를 저장한다)
-        commandSaltPort.save(new Salt(account,accountSalt));
+        // 5. accountSalt를 저장한다
+        if(account.getAccountType().equals(AccountType.DEPOSIT)){
+            commandSaltPort.save(new Salt(user,accountSalt, SaltType.DEPOSIT));
+        }
+        if(account.getAccountType().equals(AccountType.WITHDRAW)){
+            commandSaltPort.save(new Salt(user,accountSalt, SaltType.WITHDRAW));
+        }
 
         account.setPassword(digest, true);
         // 6. Account의 계좌 password에 digest를 저장한다.
