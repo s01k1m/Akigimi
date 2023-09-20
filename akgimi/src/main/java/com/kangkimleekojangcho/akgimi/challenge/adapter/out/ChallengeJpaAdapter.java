@@ -29,4 +29,9 @@ public class ChallengeJpaAdapter implements CommandChallengeDbPort, QueryChallen
     public List<Challenge> findAllByUserId(Long userId){
         return challengeJpaRepository.findAllByUserId(userId);
     }
+
+    @Override
+    public Integer countByProductIdAndIsInProgress(Long productId, boolean isInProgress) {
+        return challengeJpaRepository.countByProductIdAndIsInProgress(productId, true);
+    }
 }
