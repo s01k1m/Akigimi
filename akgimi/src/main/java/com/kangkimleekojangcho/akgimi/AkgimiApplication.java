@@ -11,5 +11,4 @@ public class AkgimiApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(AkgimiApplication.class, args);
 	}
-
 }
