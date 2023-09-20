@@ -7,7 +7,7 @@ public enum ScrollConstant {
     FIRST_SCROLL(-1),
     LAST_SCROLL(-2);
 
-    int value;
+    final int value;
 
     ScrollConstant(int value) {
         this.value = value;
