@@ -95,7 +95,7 @@ public class BankController {
 
     // 계좌 입출금 내역 조회
     @GetMapping("/account/transaction/history")
-    public ResponseEntity<SuccessResponse<CheckDepositWithDrawServiceResponse>> checkDepositWithdraw(@RequestParam("accountType") String accountType, HttpServletRequest servletRequest) {
+    public ResponseEntity<SuccessResponse<CheckDepositWithDrawServiceResponse>> checkDepositWithdraw(@RequestParam("accountType") AccountType accountType, HttpServletRequest servletRequest) {
         long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
         if (accountType == null) throw new BadRequestException(BadRequestExceptionCode.INVALID_INPUT);
         CheckDepositWithDrawServiceResponse response = checkDepositWithdrawService.checkDepositWithdraw(userId, accountType);
