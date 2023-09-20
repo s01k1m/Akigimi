@@ -3,6 +3,7 @@ package com.kangkimleekojangcho.akgimi.global.exception;
 
 import com.kangkimleekojangcho.akgimi.global.response.FailResponse;
 import com.kangkimleekojangcho.akgimi.global.response.ResponseFactory;
+import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -47,6 +48,15 @@ public class GlobalExceptionHandler {
         String message = getBindingResultMessage(e.getBindingResult(),
                 invalidInput.getDescriptionMessage());
 
+        FailResponse failResponse = new FailResponse(message, invalidInput.getCode());
+        return ResponseFactory.fail(failResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = {ConstraintViolationException.class})
+    public ResponseEntity<FailResponse> businessConstraintViolationException(ConstraintViolationException e) {
+        BadRequestExceptionCode invalidInput = BadRequestExceptionCode.INVALID_INPUT;
+        String message = e.getMessage();
+        log.error(e.getStackTrace());
         FailResponse failResponse = new FailResponse(message, invalidInput.getCode());
         return ResponseFactory.fail(failResponse, HttpStatus.BAD_REQUEST);
     }
