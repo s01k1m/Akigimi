@@ -3,17 +3,18 @@ import axios from "axios";
 import * as React from "react";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
 
-let id_token: string | null = "";
-
-const urlStr = window.location.href;
-const url = new URL(urlStr);
-const authorize_code = url.searchParams.get("code");
-
-const redirect_uri = "http://localhost:3000/kakao/oidc";
-const app_key = process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID;
-const token_request_url = `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${app_key}&redirect_uri=${redirect_uri}&code=${authorize_code}`;
 export default function Login() {
+  let id_token: string | null = "";
+  let urlStr: string = "";
+  let url: URL = undefined;
+  let authorize_code: string = "";
+
+  const redirect_uri = "http://localhost:3000/kakao/oidc";
+  const app_key = process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID;
+  let token: string = "";
+  const token_request_url = `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${app_key}&redirect_uri=${redirect_uri}&code=${authorize_code}`;
   const router = useRouter();
   // 1. 카카오 로그인 성공한 유저를 리다이렉트된 주소에서 코드를 파싱한다
   // 2. authorize_code 이걸 token_request_url 카카오 서버로 보낸다. 그러면 카카오로부터 이 유저의 id_token을 받아올 수 있다.
@@ -97,7 +98,19 @@ export default function Login() {
   //   // header에 Authorization Bearer {{ACCESS_TOKEN}}
   // };
   useEffect(() => {
-    getLoginURL();
-  }, [token_request_url]);
+    if (typeof window !== "undefined" && token) {
+      getLoginURL();
+    }
+  }, [token_request_url, url]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      token = window.localStorage.getItem("access_token");
+      urlStr = window.location.href;
+      url = new URL(urlStr); // <---- and this line
+      authorize_code = url.searchParams.get("code");
+    }
+  }, []);
+
   return <div>로그인 중입니다.</div>;
 }
