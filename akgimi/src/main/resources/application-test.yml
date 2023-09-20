@@ -19,3 +19,16 @@ server:
   port: 8080
   servlet:
     context-path: /api
+
+notification:
+  mattermost:
+    mmEnabled: ..
+    webhookUrl: ..
+    channel: ..
+    pretext: ..
+    color: ..
+    authorName: ..
+    authorIcon: ..
+    title: ..
+    text: ..
+    footer: ..
