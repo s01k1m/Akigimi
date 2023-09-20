@@ -1,12 +1,14 @@
 package com.kangkimleekojangcho.akgimi.bank.domain;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "transfer")
-public class Transfer {
+@Builder
+public class Transfer extends BaseTimeEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
