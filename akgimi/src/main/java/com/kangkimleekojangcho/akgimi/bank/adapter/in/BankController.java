@@ -68,7 +68,7 @@ public class BankController {
         if (request.getAmount() <= 0)
             throw new BadRequestException(BadRequestExceptionCode.INVALID_INPUT);
         long amount = request.getAmount();
-        makeTransferService.makeDepsoit(userId, amount);
+        makeTransferService.makeDeposit(userId, amount);
         return ResponseFactory.success(true);
     }
 

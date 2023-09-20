@@ -10,6 +10,7 @@ import com.kangkimleekojangcho.akgimi.global.exception.BadRequestException;
 import com.kangkimleekojangcho.akgimi.global.exception.BadRequestExceptionCode;
 import com.kangkimleekojangcho.akgimi.user.application.port.QueryUserDbPort;
 import com.kangkimleekojangcho.akgimi.user.domain.User;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +21,10 @@ public class MakeTransferService {
     private final QueryUserDbPort queryUserDbPort;
     private final QueryAccountDbPort queryAccountDbPort;
     private final CommandAccountDbPort commandAccountDbPort;
-    private final CommandTransferDbPort commandTrnsferDbPort;
+    private final CommandTransferDbPort commandTransferDbPort;
 
-    public void makeDepsoit(long userId, long amount){
+    @Transactional
+    public void makeDeposit(long userId, long amount){
         // 1. 유저에 대한 정보를 가져온다.
         User user = queryUserDbPort.findById(userId)
                 .orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NOT_USER));
@@ -46,7 +48,7 @@ public class MakeTransferService {
                 .build();
         commandAccountDbPort.save(withdrawAccount);
         commandAccountDbPort.save(depositAccount);
-        commandTrnsferDbPort.save(transfer);
+        commandTransferDbPort.save(transfer);
     }
 
     public void makeWithdraw(long userId, String userPassword){
