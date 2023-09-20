@@ -1,6 +1,7 @@
 package com.kangkimleekojangcho.akgimi.challenge.application;
 
 import com.kangkimleekojangcho.akgimi.challenge.application.port.CommandChallengeDbPort;
+import com.kangkimleekojangcho.akgimi.challenge.application.port.QueryChallengeDbPort;
 import com.kangkimleekojangcho.akgimi.challenge.application.request.CreateChallengeServiceRequest;
 import com.kangkimleekojangcho.akgimi.challenge.application.response.CreateChallengeServiceResponse;
 import com.kangkimleekojangcho.akgimi.challenge.domain.Challenge;
@@ -21,10 +22,13 @@ public class CreateChallengeService{
     private final CommandChallengeDbPort commandChallengePort;
     private final QueryUserDbPort queryUserDbPort;
     private final QueryProductDbPort queryProductDbPort;
+    private final QueryChallengeDbPort queryChallengeDbPort;
 
     public CreateChallengeServiceResponse create(Long userId, CreateChallengeServiceRequest request) {
         User user = queryUserDbPort.findById(userId).orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NOT_USER));
-        Product product = queryProductDbPort.findById(request.getItemId()).orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NO_RESOURCE));
+        queryChallengeDbPort.findInProgressChallengeByUserId(userId).ifPresent(challenge -> {
+            throw new BadRequestException(BadRequestExceptionCode.ALREADY_PARTICIPATE_IN_CHALLENGE);});
+        Product product = queryProductDbPort.findById(request.getItemId()).orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NO_PRODUCT));
         Challenge challenge = Challenge.builder()
                 .user(user)
                 .product(product)

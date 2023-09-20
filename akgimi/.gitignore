@@ -38,3 +38,7 @@ out/
 ### VS Code ###
 .vscode/
 /src/main/resources/dev-env.properties
+
+
+### QueryDSL result###
+**/src/main/generated/**
