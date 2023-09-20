@@ -38,7 +38,7 @@ kakao:
 server:
   port: 8080
   servlet:
-    context-path: /
+    context-path: /api
 
 jwt:
   secretKey: ${JWT_SECRETKEY}
@@ -61,3 +61,5 @@ cloud:
         ${S3_BUCKET}
     stack:
       auto: false
+
+
