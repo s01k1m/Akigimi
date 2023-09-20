@@ -25,15 +25,17 @@ public class User {
     @Enumerated(value = EnumType.STRING)
     private UserState userState;
     private String kakaoProfileNickname;
+    private String simplePassword;
 
     @Builder
-    public User(Long id, String oauthId, String nickname, OidcProvider oidcProvider, UserState userState, KakaoNickname kakaoProfileNickname) {
+    public User(Long id, String oauthId, String nickname, OidcProvider oidcProvider, UserState userState, KakaoNickname kakaoProfileNickname, String simplePassword) {
         this.id = id;
         this.oauthId = oauthId;
         this.nickname = nickname;
         this.oidcProvider = oidcProvider;
         this.userState = userState;
         this.kakaoProfileNickname = kakaoProfileNickname.getValue();
+        this.simplePassword = simplePassword;
     }
 
 
@@ -52,5 +54,9 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public void setSimplePassword(String simplePassword) {
+        this.simplePassword = simplePassword;
     }
 }
