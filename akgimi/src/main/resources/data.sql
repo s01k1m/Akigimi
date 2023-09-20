@@ -3,10 +3,10 @@ use akgimi;
 insert into users(id,kakao_profile_nickname, nickname, oauth_id, oidc_provider, user_state) values (9999,'가나다','nick1','1','KAKAO','PENDING');
 insert into users(id,kakao_profile_nickname, nickname, oauth_id, oidc_provider, user_state) values (10000,'라마바','nick2','2','KAKAO','ACTIVE');
 
-insert into account(id, account_type, is_deleted, is_password_registered, balance, created_at, updated_at, user_id, account_number, bank, password)
-    values (1, 'DEPOSIT', false, true, 50000, now(),now(), 9999, '1231-4515-112', 'MULTI','1234');
-insert into account(id, account_type, is_deleted, is_password_registered, balance, created_at, updated_at, user_id, account_number, bank, password)
-    values (2, 'WITHDRAW', false, true, 50000, now(),now(), 9999, '1231-4515-114', 'MULTI','1234');
+insert into account(id, account_type, is_deleted, is_password_registered, balance, created_at, updated_at, user_id, account_number, bank)
+    values (1, 'DEPOSIT', false, false, 50000, now(),now(), 9999, '123412341234', 'MULTI');
+insert into account(id, account_type, is_deleted, is_password_registered, balance, created_at, updated_at, user_id, account_number, bank)
+    values (2, 'WITHDRAW', false, false, 50000, now(),now(), 9999, '567856785678', 'MULTI');
 
 
 insert into product(id, name, thumbnail, image, detail, url, price, is_deleted)
