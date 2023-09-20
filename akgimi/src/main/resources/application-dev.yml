@@ -1,0 +1,63 @@
+spring:
+  config:
+    import:
+      - classpath:dev-env.properties
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    defer-datasource-initialization: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE}?serverTimezone=UTC&characterEncoding=UTF-8
+    username: root
+    password: ${MYSQL_ROOT_PASSWORD}
+
+
+  sql:
+    init:
+      mode: never
+
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+
+kakao:
+  iss: ${KAKAO_ISS}
+  redirection-url: ${KAKAO_REDIRECTION_URL}
+  rest-api-key: ${KAKAO_REST_API_KEY}
+  publickey-url: ${KAKAO_PUBLICKEY_URL}
+  publickey-myself-url: ${MYSELF_PUBLICKEY_URL}
+  idtoken-url: ${KAKAO_IDTOKEN_URL}
+  token-redirect-url: ${KAKAO_JWT_TOKEN_REDIRECT_URL}
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+jwt:
+  secretKey: ${JWT_SECRETKEY}
+  accessTokenValidTimeInMinuteUnit: ${JWT_ACCESS_TOKEN_VALID_TIME_IN_MINUTE_UNIT}
+  refreshTokenValidTimeInDayUnit: ${JWT_REFRESH_TOKEN_VALID_TIME_IN_DAY_UNIT}
+  refreshTokenValidTimeInDayUnitInRedis: ${JWT_REFRESH_TOKEN_VALID_TIME_IN_DAY_UNIT_IN_REDIS}
+  tokenRedirectUrl: ${JWT_TOKEN_REDIRECT_URL}
+
+
+cloud:
+  aws:
+    credentials:
+      access-key: ${S3_ACCESS_KEY}
+      secret-key: ${S3_SECRET_KEY}
+    region:
+      static:
+        ${S3_REGION}
+    s3:
+      bucket:
+        ${S3_BUCKET}
+    stack:
+      auto: false
