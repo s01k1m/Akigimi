@@ -25,13 +25,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class FeedControllerTest extends ControllerTestSupport {
 
-    @MockBean
-    private CreateFeedService createFeedService;
-    @MockBean
-    private GetBunchOfFeedWrittenByFollowerRequestService getBunchOfFeedWrittenByFollowerRequestService;
-    @MockBean
-    private SubtractUserIdFromAccessTokenService subtractUserIdFromAccessTokenService;
-//
 //    @DisplayName("[happy]유저가 올바른 정보를 입력했을 때 정확한 파싱결과를 도출한다.")
 //    @Test
 //    void parsingRequestTest() throws Exception {
