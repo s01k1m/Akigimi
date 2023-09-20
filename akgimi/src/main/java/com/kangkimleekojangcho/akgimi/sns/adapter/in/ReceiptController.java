@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -22,12 +23,13 @@ public class ReceiptController {
     private final GetBunchOfReceiptService getBunchOfReceiptService;
     private final SubtractUserIdFromAccessTokenService userIdFromAccessTokenService;
 
-    @GetMapping("/receipt")
+    @GetMapping("/receipt/{userId}")
     ResponseEntity<SuccessResponse<GetBunchOfReceiptServiceResponse>> getBunchOfReceipt(
             @Valid GetBunchOfReceiptRequest getBunchOfReceiptRequest,
+            @PathVariable Long userId,
             HttpServletRequest servletRequest
     ) {
-        Long userId = userIdFromAccessTokenService.subtract(servletRequest);
+//        Long userId = userIdFromAccessTokenService.subtract(servletRequest);
         return ResponseFactory.success(getBunchOfReceiptService.getBunchOfReceipt(
                 userId, getBunchOfReceiptRequest.toServiceRequest()));
     }

@@ -5,12 +5,15 @@ import com.kangkimleekojangcho.akgimi.sns.application.response.BriefReceiptInfo;
 import com.kangkimleekojangcho.akgimi.sns.application.response.QBriefFeedInfo;
 import com.kangkimleekojangcho.akgimi.sns.application.response.QBriefReceiptInfo;
 import com.kangkimleekojangcho.akgimi.sns.domain.QFeed;
+import com.kangkimleekojangcho.akgimi.common.domain.ScrollConstant;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+
+import static com.kangkimleekojangcho.akgimi.common.domain.ScrollConstant.FIRST_SCROLL;
 
 @Repository
 @RequiredArgsConstructor
@@ -45,13 +48,6 @@ public class FeedQuerydslRepository {
         return result;
     }
 
-    private BooleanExpression ltFeedId(Long feedId) {
-        if (feedId == null) {
-            return null; // BooleanExpression 자리에 null이 반환되면 조건문에서 자동으로 제거된다
-        }
-        return feed.feedId.lt(feedId);
-    }
-
     public List<BriefReceiptInfo> findReceiptByUser_IdAndLastReceiptIdAndNumberOfReceipt(Long userId, Long lastReceiptId, Integer numberOfReceipt) {
         List<BriefReceiptInfo> result = jpaQueryFactory.select(
                         new QBriefReceiptInfo(
@@ -68,5 +64,12 @@ public class FeedQuerydslRepository {
                 .orderBy(feed.feedId.desc())
                 .limit(numberOfReceipt).fetch();
         return result;
+    }
+
+    private BooleanExpression ltFeedId(Long feedId) {
+        if (feedId == null) {
+            return null; // BooleanExpression 자리에 null이 반환되면 조건문에서 자동으로 제거된다
+        }
+        return feed.feedId.lt(feedId);
     }
 }
