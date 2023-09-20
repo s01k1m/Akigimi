@@ -19,4 +19,9 @@ public class ServerErrorException extends HttpBusinessException {
     public int getStatusCode() {
         return HttpStatus.INTERNAL_SERVER_ERROR.value();
     }
+
+    @Override
+    public String getMessage() {
+        return serverErrorExceptionCode.getDescriptionMessage();
+    }
 }
