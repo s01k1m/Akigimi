@@ -19,24 +19,25 @@ values (999, 9999, 2, 20000, true, 30, false, '2023-08-08', current_timestamp, c
 
 insert into feed(is_deleted,is_public,accumulated_amount,created_at,price,
     updated_at, image_url, not_purchased_item, place,content,user_id,challenge_id)
-values (false, true, 30000, now(), 3000, now(), "hsdfa.com","item","place","content",9999,1);
-
-insert into feed(is_deleted,is_public,accumulated_amount,created_at,price,
-                     updated_at, image_url, not_purchased_item, place,content,user_id,challenge_id)
-values (false, true, 33000, now(), 3000, now(), "hsdfa.com","item","place","content",9999,1);
+values (false, true, 30000, now(), 3000, now(), 'hsdfa.com','item','place','content',9999,999);
 
 insert into feed(is_deleted,is_public,accumulated_amount,created_at,price,
                  updated_at, image_url, not_purchased_item, place,content,user_id,challenge_id)
-values (false, true, 36000, now(), 3000, now(), "hsdfa.com","item","place","content",9999,1);
+values (false, true, 30000, now(), 3000, now(), 'hsdfa.com','item','place','content',9999,999);
 
 insert into feed(is_deleted,is_public,accumulated_amount,created_at,price,
                  updated_at, image_url, not_purchased_item, place,content,user_id,challenge_id)
-values (false, true, 39000, now(), 3000, now(), "hsdfa.com","item","place","content",9999,1);
+values (false, true, 30000, now(), 3000, now(), 'hsdfa.com','item','place','content',9999,999);
 
 insert into feed(is_deleted,is_public,accumulated_amount,created_at,price,
                  updated_at, image_url, not_purchased_item, place,content,user_id,challenge_id)
-values (false, true, 42000, now(), 3000, now(), "hsdfa.com","item","place","content",9999,1);
+values (false, true, 30000, now(), 3000, now(), 'hsdfa.com','item','place','content',9999,999);
 
 insert into feed(is_deleted,is_public,accumulated_amount,created_at,price,
                  updated_at, image_url, not_purchased_item, place,content,user_id,challenge_id)
-values (false, true, 45000, now(), 3000, now(), "hsdfa.com","item","place","content",9999,1);
+values (false, true, 30000, now(), 3000, now(), 'hsdfa.com','item','place','content',9999,999);
+
+insert into feed(is_deleted,is_public,accumulated_amount,created_at,price,
+                 updated_at, image_url, not_purchased_item, place,content,user_id,challenge_id)
+values (false, true, 30000, now(), 3000, now(), 'hsdfa.com','item','place','content',9999,999);
+
