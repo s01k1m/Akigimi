@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GetChallengeInProgressServiceResponse {
+    private Long balance;
     private Integer percentage;
     private Integer characterStatus;
     private String productName;
@@ -20,8 +21,9 @@ public class GetChallengeInProgressServiceResponse {
     private Integer challengePeriod;
     private Integer days;
 
-    public static GetChallengeInProgressServiceResponse from(Challenge challenge, Integer percentage, Integer characterStatus, Integer days){
+    public static GetChallengeInProgressServiceResponse from(Challenge challenge, Long balance, Integer percentage, Integer characterStatus, Integer days){
         return GetChallengeInProgressServiceResponse.builder()
+                .balance(balance)
                 .percentage(percentage)
                 .characterStatus(characterStatus)
                 .productName(challenge.getProduct().getName())
