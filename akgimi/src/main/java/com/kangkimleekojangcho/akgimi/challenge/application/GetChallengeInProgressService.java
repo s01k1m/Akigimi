@@ -1,6 +1,8 @@
 package com.kangkimleekojangcho.akgimi.challenge.application;
 
 import com.kangkimleekojangcho.akgimi.bank.application.CheckBalanceService;
+import com.kangkimleekojangcho.akgimi.bank.application.port.QueryAccountDbPort;
+import com.kangkimleekojangcho.akgimi.bank.domain.Account;
 import com.kangkimleekojangcho.akgimi.bank.domain.AccountType;
 import com.kangkimleekojangcho.akgimi.challenge.application.port.QueryChallengeDbPort;
 import com.kangkimleekojangcho.akgimi.challenge.application.response.GetChallengeInProgressServiceResponse;
@@ -19,19 +21,19 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 public class GetChallengeInProgressService {
     private final QueryChallengeDbPort queryChallengeDbPort;
-    private final CheckBalanceService checkBalanceService;
+    private final QueryAccountDbPort queryAccountDbPort;
 
     public GetChallengeInProgressServiceResponse get(Long userId){
         Challenge challengeInProgress = queryChallengeDbPort.findInProgressChallengeByUserId(userId).orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NOT_PARTICIPATE_IN_CHALLENGE));
 
         Integer productPrice = challengeInProgress.getProduct().getPrice();
-        //TODO : Bank 연결
-        //Long balance = checkBalanceService.checkBalance(userId, AccountType.DEPOSIT.toString()).getBalance();
-        Integer balance = 2000;
+        Account account = queryAccountDbPort.findAccountByAccountTypeAndUserId(AccountType.DEPOSIT, userId).orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NO_BANK_ACCOUNT));
+        Long balance = account.getBalance();
         Integer percentage = (int)Math.round(((double)balance/productPrice)*100);
+        if (percentage > 100) percentage = 100;
         Integer characterStatus = getCharacterStatusByPercentage(percentage).getLevel();
         Integer days = challengeInProgress.getChallengeStartDate().until(LocalDate.now()).getDays()+1;
-        return GetChallengeInProgressServiceResponse.from(challengeInProgress, percentage, characterStatus, days);
+        return GetChallengeInProgressServiceResponse.from(challengeInProgress, balance, percentage, characterStatus, days);
     }
 
     public CharacterStatus getCharacterStatusByPercentage(Integer percentage){
