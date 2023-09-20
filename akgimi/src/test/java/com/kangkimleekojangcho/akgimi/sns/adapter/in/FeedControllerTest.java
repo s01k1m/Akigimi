@@ -95,16 +95,10 @@ class FeedControllerTest extends ControllerTestSupport {
 //        );
 //    }
 
-    @DisplayName("[happy] 유저가 올바른 입력값을 주었을 때 팔로잉한 사람들의 피드리스트를 반환한다.")
+    @DisplayName("[happy] 유저가 올바른 입력값을 가지고 피드목록을 요청하면 팔로잉한 사람들의 피드리스트를 반환한다.")
     @Test
     void givenValidInput_whenUserRequestBunchOfFeed_thenReturnBunchOfFeed() throws Exception {
         //given
-        HttpServletRequest servletRequest = new MockHttpServletRequest();
-        GetBunchOfFeedWrittenByFollowerRequest request = GetBunchOfFeedWrittenByFollowerRequest.builder()
-                .lastFeedId(1L)
-                .numberOfFeed(5)
-                .build();
-
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("lastFeedId", "1");
         params.add("numberOfFeed", "2");
@@ -117,17 +111,11 @@ class FeedControllerTest extends ControllerTestSupport {
                 .andExpect(status().isOk());
     }
 
-    @DisplayName("[bad] 유저가 잘못된 입력값을 주었을 때 에러를 반환한다.")
-    @MethodSource("generateFeedRequestData")
+    @DisplayName("[bad] 유저가 잘못된 입력값을 가지고 피드목록을 요청하면 에러를 반환한다.")
+    @MethodSource("generateWrongFeedRequestData")
     @ParameterizedTest
     void givenValidInput_whenUserRequestBunchOfFeed_thenThrowsError(Long lastFeedId, Integer numberOfFeed) throws Exception {
         //given
-        HttpServletRequest servletRequest = new MockHttpServletRequest();
-        GetBunchOfFeedWrittenByFollowerRequest request = GetBunchOfFeedWrittenByFollowerRequest.builder()
-                .lastFeedId(lastFeedId)
-                .numberOfFeed(numberOfFeed)
-                .build();
-
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("lastFeedId", lastFeedId==null ? null : lastFeedId.toString());
         params.add("numberOfFeed",numberOfFeed==null ? null : numberOfFeed.toString());
@@ -140,7 +128,7 @@ class FeedControllerTest extends ControllerTestSupport {
                 .andExpect(status().isBadRequest());
     }
 
-    private static Stream<Arguments> generateFeedRequestData() {
+    private static Stream<Arguments> generateWrongFeedRequestData() {
         return Stream.of(
                 Arguments.of(1L, -1),
                 Arguments.of(1L, null),
