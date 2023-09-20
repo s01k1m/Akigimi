@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface ChallengeJpaRepository extends JpaRepository<Challenge, Long> {
     Optional<Challenge> findChallengeByUserIdAndIsInProgress(Long userId, boolean isInProgress);
     List<Challenge> findAllByUserId(Long userId);
+    Integer countByProductIdAndIsInProgress(Long productId, boolean isInProgress);
 }

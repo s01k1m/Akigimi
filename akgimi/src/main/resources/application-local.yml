@@ -1,11 +1,11 @@
 spring:
   config:
     import:
-      - classpath:dev-env.properties
+      - classpath:local-env.properties
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     show-sql: true
     properties:
       hibernate:
@@ -20,7 +20,7 @@ spring:
 
   sql:
     init:
-      mode: never
+      mode: always
 
   data:
     redis:
@@ -61,5 +61,3 @@ cloud:
         ${S3_BUCKET}
     stack:
       auto: false
-
-
