@@ -23,7 +23,7 @@ import java.util.Enumeration;
 @RequiredArgsConstructor
 @Log4j2
 public class GlobalExceptionHandler {
-    private final MattermostSender mattermostSender;
+//    private final MattermostSender mattermostSender;
 
     @ExceptionHandler(HttpBusinessException.class)
     public ResponseEntity<FailResponse> httpBusinessException(HttpBusinessException e) {
