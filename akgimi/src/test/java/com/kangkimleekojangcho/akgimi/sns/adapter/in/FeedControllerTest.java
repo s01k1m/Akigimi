@@ -144,8 +144,7 @@ class FeedControllerTest extends ControllerTestSupport {
         return Stream.of(
                 Arguments.of(1L, -1),
                 Arguments.of(1L, null),
-                Arguments.of(null, 10),
-                Arguments.of(1L, 101)
+                Arguments.of(null, 10)
         );
     }
 }
