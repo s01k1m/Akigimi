@@ -6,16 +6,15 @@ import com.kangkimleekojangcho.akgimi.global.exception.BadRequestException;
 import com.kangkimleekojangcho.akgimi.global.exception.BadRequestExceptionCode;
 import com.kangkimleekojangcho.akgimi.global.response.ResponseFactory;
 import com.kangkimleekojangcho.akgimi.global.response.SuccessResponse;
-import com.kangkimleekojangcho.akgimi.user.adapter.in.request.AddDataForPendingUserRequest;
 import com.kangkimleekojangcho.akgimi.user.adapter.in.request.LoginRequest;
 import com.kangkimleekojangcho.akgimi.user.adapter.in.request.SignUpRequest;
 import com.kangkimleekojangcho.akgimi.user.adapter.in.response.GetUserInfoServiceResponse;
 import com.kangkimleekojangcho.akgimi.user.application.*;
 import com.kangkimleekojangcho.akgimi.user.application.response.*;
+import com.kangkimleekojangcho.akgimi.user.config.KakaoProperties;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,17 +34,12 @@ public class UserController {
     private final CheckSimplePasswordService checkSimplePasswordService;
     private final GetUserInfoService getUserInfoService;
     private final ReissueService reissueService;
-    @Value("${kakao.redirection-url}")
-    String kakaoRedirectUrl;
-    @Value("${kakao.rest-api-key}")
-    String kakaoRestApiKey;
-    @Value("${kakao.token-redirect-url}")
-    String kakaoTokenRedirectUrl;
+    private final KakaoProperties kakaoProperties;
 
     @GetMapping("/kakao/loginurl")
     public ResponseEntity<SuccessResponse<String>> getKakaoLoginUrl() {
         String loginUrl = String.format("https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=%s&redirect_uri=%s",
-                kakaoRestApiKey, kakaoRedirectUrl);
+                kakaoProperties.kakaoRestApiKey(), kakaoProperties.kakaoRedirectUrl());
         return ResponseFactory.success(loginUrl);
     }
 
@@ -72,7 +66,7 @@ public class UserController {
     @PostMapping("/user/nickname")
     public ResponseEntity<SuccessResponse<Boolean>> inputNickname(@RequestParam("nickname") String nickname, HttpServletRequest servletRequest) {
         Long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
-        if(nickname==null) throw new BadRequestException(BadRequestExceptionCode.INVALID_INPUT);
+        if (nickname == null) throw new BadRequestException(BadRequestExceptionCode.INVALID_INPUT);
         inputNicknameService.input(userId, nickname);
         return ResponseFactory.success(true);
     }
@@ -92,8 +86,8 @@ public class UserController {
     }
 
     @PostMapping("/user/password/simple")
-    public void setSimplePassword(@RequestParam String simplePassword, HttpServletRequest servletRequest){
-        if(simplePassword==null){
+    public void setSimplePassword(@RequestParam String simplePassword, HttpServletRequest servletRequest) {
+        if (simplePassword == null) {
             throw new BadRequestException(BadRequestExceptionCode.INVALID_INPUT, "간편 비밀번호를 입력해주세요.");
         }
         Long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
@@ -102,7 +96,7 @@ public class UserController {
 
     @PostMapping("/user/password/simple/check")
     public ResponseEntity<SuccessResponse<Boolean>> checkSimplePassword(@RequestParam String simplePassword,
-                                    HttpServletRequest servletRequest) {
+                                                                        HttpServletRequest servletRequest) {
         if (simplePassword == null) {
             throw new BadRequestException(BadRequestExceptionCode.INVALID_INPUT, "간편 비밀번호를 입력해주세요.");
         }
@@ -119,7 +113,7 @@ public class UserController {
     }
 
     @PostMapping("/user/reissue")
-    public ResponseEntity<SuccessResponse<ReissueServiceResponse>> reissue(@RequestParam("refreshToken") String refreshToken){
+    public ResponseEntity<SuccessResponse<ReissueServiceResponse>> reissue(@RequestParam("refreshToken") String refreshToken) {
         ReissueServiceResponse response = reissueService.reissue(refreshToken);
         return ResponseFactory.success(response);
     }
