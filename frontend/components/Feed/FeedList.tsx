@@ -33,11 +33,9 @@ const FeedList: React.FC<selectedProps> = ({ selectedValue }) => {
 
     // 다음 피드가 불러오질 때까지 로딩
     const [loading, setLoading] = useState<boolean>(false);
-
-    // selectedValue 선택 된 값 파라미터로 넘기기
-    
+   
     const [feedData, setFeedData] = useState<[]>()
-    const token = `eyJ0eXBlIjoiQUNDRVNTVE9LRU4iLCJhbGciOiJIUzI1NiJ9.eyJpZCI6OTk5OSwidXNlclN0YXRlIjoiUEVORElORyIsImlhdCI6MTY5NTI1NTQ5MywiZXhwIjoxNjk1NDM1NDkzfQ.Wwg5ar8uOp2xZmt6JO7aRyhPTHuIxduFcrx1pdV-vAM`
+    const token = window.localStorage.getItem('accessToken')
 
     // 피드 정보 api 호출하기 // 무한 스크롤 적용하기
     const getFeedData = async () => {
@@ -65,14 +63,13 @@ const FeedList: React.FC<selectedProps> = ({ selectedValue }) => {
                 setLastViewId(toCheckFeedId[toCheckFeedId.length-1])
                 console.log('마지막 피드의 아이디 값은?', lastViewId)
 
-                
               })
             .then(() => {
               // 마지막 요청을 판단하는 방법
 
             })
             .catch((error) => {
-                console.log('피드 조회 실패', error)
+                console.log('영수증 조회 실패', error)
             })
             .finally (() => {
               setLoading(false)
