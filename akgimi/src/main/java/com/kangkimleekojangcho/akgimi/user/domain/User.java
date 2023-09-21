@@ -26,9 +26,10 @@ public class User {
     private UserState userState;
     private String kakaoProfileNickname;
     private String simplePassword;
+    private String profileImageUrl;
 
     @Builder
-    public User(Long id, String oauthId, String nickname, OidcProvider oidcProvider, UserState userState, KakaoNickname kakaoProfileNickname, String simplePassword) {
+    public User(Long id, String oauthId, String nickname, OidcProvider oidcProvider, UserState userState, KakaoNickname kakaoProfileNickname, String simplePassword, String profileImageUrl) {
         this.id = id;
         this.oauthId = oauthId;
         this.nickname = nickname;
@@ -36,6 +37,7 @@ public class User {
         this.userState = userState;
         this.kakaoProfileNickname = kakaoProfileNickname.getValue();
         this.simplePassword = simplePassword;
+        this.profileImageUrl = profileImageUrl;
     }
 
 
