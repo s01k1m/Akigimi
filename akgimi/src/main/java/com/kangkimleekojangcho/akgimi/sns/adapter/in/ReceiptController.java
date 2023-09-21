@@ -23,7 +23,7 @@ public class ReceiptController {
     private final GetBunchOfReceiptService getBunchOfReceiptService;
     private final SubtractUserIdFromAccessTokenService userIdFromAccessTokenService;
 
-    @GetMapping("/receipt/{userId}")
+    @GetMapping("/receipts/{userId}")
     ResponseEntity<SuccessResponse<GetBunchOfReceiptServiceResponse>> getBunchOfReceipt(
             @Valid GetBunchOfReceiptRequest getBunchOfReceiptRequest,
             @PathVariable Long userId,

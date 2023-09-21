@@ -19,6 +19,7 @@ bin/
 
 *env
 local-env.properties
+dev-env.properties
 ### IntelliJ IDEA ###
 .idea
 *.iws
