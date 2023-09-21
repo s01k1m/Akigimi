@@ -98,6 +98,7 @@ public class MakeTransferService {
                 .sendAccountBalance(depositAccount.getBalance())
                 .receiveAccount(withdrawAccount)
                 .receiveAccountBalance(withdrawAccount.getBalance())
+                .transferDateTime(LocalDateTime.now())
                 .build();
 
         // 10. 최종 DB에 반영
