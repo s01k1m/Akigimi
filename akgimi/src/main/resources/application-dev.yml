@@ -29,12 +29,12 @@ spring:
 
 kakao:
   iss: ${KAKAO_ISS}
-  redirection-url: ${KAKAO_REDIRECTION_URL}
-  rest-api-key: ${KAKAO_REST_API_KEY}
-  publickey-url: ${KAKAO_PUBLICKEY_URL}
-  publickey-myself-url: ${MYSELF_PUBLICKEY_URL}
-  idtoken-url: ${KAKAO_IDTOKEN_URL}
-  token-redirect-url: ${KAKAO_JWT_TOKEN_REDIRECT_URL}
+  kakaoRedirectUrl: ${KAKAO_REDIRECTION_URL}
+  kakaoRestApiKey: ${KAKAO_REST_API_KEY}
+  kakaoPublicKeyUrl: ${KAKAO_PUBLICKEY_URL}
+  myselfPublicKeyUrl: ${MYSELF_PUBLICKEY_URL}
+  kakaoIdTokenUrl: ${KAKAO_IDTOKEN_URL}
+  kakaoTokenRedirectUrl: ${KAKAO_JWT_TOKEN_REDIRECT_URL}
 server:
   port: 8080
   servlet:
