@@ -33,7 +33,7 @@ const FeedTap = () => {
                 <div className="selection"></div>
                 </div>
             </div>
-            <div className='flex justify-center min-w-lg min-w-[450px]'>
+            <div className='flex justify-center min-w-lg min-w-[300px]'>
                 <FeedList selectedValue={selectedValue} />
             </div>
         </div>
