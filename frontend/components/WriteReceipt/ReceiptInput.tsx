@@ -87,7 +87,7 @@ const ReceiptInput = () => {
 
     // form 제출
     const router = useRouter()
-    const token = `eyJ0eXBlIjoiQUNDRVNTVE9LRU4iLCJhbGciOiJIUzI1NiJ9.eyJpZCI6OTk5OSwidXNlclN0YXRlIjoiUEVORElORyIsImlhdCI6MTY5NTA5MTQ0MywiZXhwIjoxNjk1MjcxNDQzfQ.ZtvhjRaPo4LfBdi8RHzm5giPsH6RP1luAVgj8EY_VDI`
+    const token = `eyJ0eXBlIjoiQUNDRVNTVE9LRU4iLCJhbGciOiJIUzI1NiJ9.eyJpZCI6OTk5OSwidXNlclN0YXRlIjoiUEVORElORyIsImlhdCI6MTY5NTI1NTQ5MywiZXhwIjoxNjk1NDM1NDkzfQ.Wwg5ar8uOp2xZmt6JO7aRyhPTHuIxduFcrx1pdV-vAM`
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
         
@@ -95,7 +95,7 @@ const ReceiptInput = () => {
         
         // 제출 api
         await axios
-            .post('http://25.4.167.82:8080/feed', formData, {
+            .post('http://25.7.186.86:8080/api/feeds', formData, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'multipart/form-data'
@@ -103,12 +103,18 @@ const ReceiptInput = () => {
             })
             .then((response) => {
                 console.log('절약 기록 작성 성공', response.data)
+
             })
             .then(() => {
-                // feed 페이지로 이동
-                router.push('/feed')
+                // main 챌린지 페이지로 이동
+                router.push('/main')
             })
             .catch((error) => {
+                if (error.response.data.code === '012') {
+                    alert('현재 참여중인 챌린지가 없어요 챌린지를 등록해주세요')
+                } else if (error.response.data.code === '014') {
+                    console.log('계좌에 돈이 부족합니다')
+                }
                 console.log('절약 기록 작성 실패', error)
                 // 잔액이 부족한 경우 모달창 띄우기
                 // setIsOpened(true)
