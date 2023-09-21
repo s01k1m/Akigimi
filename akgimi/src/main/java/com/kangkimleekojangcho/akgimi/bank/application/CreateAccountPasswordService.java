@@ -18,6 +18,8 @@ import com.kangkimleekojangcho.akgimi.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.security.MessageDigest;
+
 
 @Service
 @RequiredArgsConstructor
