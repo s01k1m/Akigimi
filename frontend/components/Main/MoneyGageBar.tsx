@@ -4,13 +4,14 @@ import '@/styles/GageBar.css'
 import { useState, useEffect } from 'react'
 import Image from 'next/image';
 
-interface moneyPropsType  {
+interface MoneyPropsType  {
     percentage: number
     productPrice: number
     stage: number
+    balance: number
 }
 
-const MoneyGageBar: React.FC<moneyPropsType> = ({ percentage, productPrice, stage }) => {
+const MoneyGageBar: React.FC<MoneyPropsType> = ({ percentage, productPrice, stage, balance }) => {
     const [gage, setGage] = useState<number>(percentage)
   
     // 게이지바 선물 이모지
@@ -36,9 +37,9 @@ const MoneyGageBar: React.FC<moneyPropsType> = ({ percentage, productPrice, stag
                     alt="gift" 
                     width={40} 
                     height={40} 
-                    className="z-0 absolute right-[-10px]"/>
+                    className="z-10 absolute right-[-10px]"/>
                 <p className='flex z-10'>
-                    {productPrice*percentage*0.01}/{productPrice}
+                    {balance}/{productPrice}
                 </p>
                 <div className='Money-Gage z-0 absolute top-1/2 left-0 transform -translate-y-1/2 min-w-[10%]' style={{ width: `${percentage}%` }}></div>
             </div>

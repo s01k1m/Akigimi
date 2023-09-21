@@ -16,6 +16,9 @@ const IconBtn = () => {
                     width={50}
                     height={50}
                     className="mb-2"
+                    onClick={() => {
+                        router.push('/myreipt')
+                    }}
                 />
                 <span className="mb-5">영수증</span>
             </span>
@@ -28,6 +31,9 @@ const IconBtn = () => {
                     width={50}
                     height={50}
                     className="mb-2"
+                    onClick={() => {
+                        router.push('/ranking')
+                    }}
                 />
                 <span>랭킹</span>
             </span>
