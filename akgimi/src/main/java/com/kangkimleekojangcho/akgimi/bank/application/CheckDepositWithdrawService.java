@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -33,6 +34,7 @@ public class CheckDepositWithdrawService {
                 .orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NO_BANK_ACCOUNT));
         // 2. Transfer 정보를 가져온다.
         List<Transfer> transfers = queryTransferDbPort.findByAccount(account);
+        Collections.sort(transfers);
 
         List<TransferResponse> transferResponse = new ArrayList<>();
         for(Transfer transfer: transfers){

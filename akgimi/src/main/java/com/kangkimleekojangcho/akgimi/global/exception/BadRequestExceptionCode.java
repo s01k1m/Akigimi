@@ -25,7 +25,9 @@ public enum BadRequestExceptionCode {
     NO_PRODUCT("016", "존재하지 않는 물건입니다."),
     ALREADY_PARTICIPATE_IN_CHALLENGE("017", "이미 챌린지 진행중입니다."),
     NO_TRANSFER("018","거래 내역이 존재하지 않습니다."),
-    NO_AVAILABLE_ACCOUNT_TYPE("019", "유효하지 않은 계좌 타입입니다.");
+    NO_AVAILABLE_ACCOUNT_TYPE("019", "유효하지 않은 계좌 타입입니다."),
+    NO_SALT("020", "솔트가 존재하지 않습니다"),
+    NOT_AVAILABLE_PASSWORD("021", "패스워드가 맞지 않습니다");
     private final String code;
     private final String descriptionMessage;
 }
