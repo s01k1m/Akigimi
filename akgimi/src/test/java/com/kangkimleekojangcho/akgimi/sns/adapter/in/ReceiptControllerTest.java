@@ -22,6 +22,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class ReceiptControllerTest extends ControllerTestSupport {
 
+    private static final String RECEIPT_BASE_URL = "/receipts";
+
     @DisplayName("[happy] 유저가 올바른 입력값을 가지고 영수증 목록을 요청하면 요청한 사람의 영수증리스트를 반환한다.")
     @Test
     void givenValidInput_whenUserRequestBunchOfReceipt_thenReturnBunchOfFeed() throws Exception {
@@ -31,7 +33,7 @@ class ReceiptControllerTest extends ControllerTestSupport {
         params.add("numberOfReceipt", "100");
 
         //when
-        ResultActions actions = mockMvc.perform(get("/receipts/1").queryParams(params));
+        ResultActions actions = mockMvc.perform(get(RECEIPT_BASE_URL + "/1").queryParams(params));
 
         // then
         actions.andDo(print())
@@ -48,7 +50,7 @@ class ReceiptControllerTest extends ControllerTestSupport {
         params.add("numberOfFeed", numberOfFeed == null ? null : numberOfFeed.toString());
 
         //when
-        ResultActions actions = mockMvc.perform(get("/receipts/1").queryParams(params));
+        ResultActions actions = mockMvc.perform(get(RECEIPT_BASE_URL + "/1").queryParams(params));
 
         // then
         actions.andDo(print())

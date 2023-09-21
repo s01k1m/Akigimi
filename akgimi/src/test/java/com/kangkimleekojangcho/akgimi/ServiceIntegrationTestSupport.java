@@ -27,6 +27,7 @@ public abstract class ServiceIntegrationTestSupport {
                 new GenericContainer<>(DockerImageName.parse("redis:7.2.1-alpine"));
         redis.setPortBindings(portBindings);
         redis.start();
+        //mysql 추가하기
     }
 
     @MockBean
