@@ -17,7 +17,7 @@ const FeedUserProfile: React.FC<FeedUserProfileProps> = ({ imgUrl, name }) => {
                     className="w-[40px] h-[40px] rounded-full"
                 />
             </div>
-            <div className="ms-[5%]">{name}</div>
+            <div className="ms-[5%] text-[17px] font-semibold">{name}</div>
         </div>
     )
 }

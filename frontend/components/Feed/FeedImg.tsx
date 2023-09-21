@@ -6,13 +6,13 @@ interface FeedImgProps {
 
 const FeedImg: React.FC<FeedImgProps> = ({ image }) => {
     return (
-        <div>
+        <div className="flex justify-center">
             <Image
                 src={image}
                 alt="유저가 올린 사진"
                 width={250}
                 height={150}
-                className="w-[50vw] h-[20vh] max-w-xs mx-[5vw] rounded-md"  
+                className="h-[20vh] mx-[5vw] overflow-hidden rounded-md"  
             />
         </div>
     )
