@@ -36,4 +36,24 @@ public class Challenge extends BaseTimeEntity {
     private LocalDate challengeStartDate;
     private LocalDate challengeEndDate;
     private boolean isInProgress;
+
+    public int calculatePercentage(long balance){
+        int productPrice = this.getProduct().getPrice();
+        int percentage = (int)Math.round(((double)balance/productPrice)*100);
+        if (percentage > 100) percentage = 100;
+        return percentage;
+    }
+
+    public CharacterStatus getCharacterStatusByPercentage(int percentage){
+        if (percentage < 20) return CharacterStatus.LEVEL0;
+        if (percentage < 40) return CharacterStatus.LEVEL1;
+        if (percentage < 60) return CharacterStatus.LEVEL2;
+        if (percentage < 80) return CharacterStatus.LEVEL3;
+        if (percentage < 100) return CharacterStatus.LEVEL4;
+        return CharacterStatus.LEVEL5;
+    }
+
+    public int calculateDays(LocalDate today){
+        return this.challengeStartDate.until(today).getDays()+1;
+    }
 }
