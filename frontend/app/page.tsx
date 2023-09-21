@@ -14,6 +14,7 @@ export default function Home() {
       <Link href="/login/register/deposit">입금계좌등록</Link> <br></br>
       <Link href="/login/register/welcome">웰컴</Link> <br></br>
       <Link href="/transaction/history">거래내역 조회</Link> <br></br>
+      <Link href="/main">챌린지</Link> <br></br>
     </main>
   );
 }

@@ -6,15 +6,15 @@ import axios from 'axios'
 const GoToSelectItem = () => {
     // const router = useRouter()
 
-    const token = `eyJ0eXBlIjoiQUNDRVNTVE9LRU4iLCJhbGciOiJIUzI1NiJ9.eyJpZCI6OTk5OSwidXNlclN0YXRlIjoiUEVORElORyIsImlhdCI6MTY5NTAwOTUyNSwiZXhwIjoxNjk1MTg5NTI1fQ.WBPbPxShBAPXZZ3UmaMQYLO_VlkY5EmEHR1-aAH4am4`
+    const token = `eyJ0eXBlIjoiQUNDRVNTVE9LRU4iLCJhbGciOiJIUzI1NiJ9.eyJpZCI6OTk5OSwidXNlclN0YXRlIjoiUEVORElORyIsImlhdCI6MTY5NTE3NDc3NywiZXhwIjoxNjk1MzU0Nzc3fQ.58F3t3w_nBSCD0wRrwExXc4VTdPJSrGBiqRwjlQ4XjU`
 
     const inProgress = async () => {
         const requestBody = {
-            itemId: 2,
+            itemId: 1,
             challengePeriod: 50
         };
         await axios
-            .post('http://25.4.167.82:8080/challenges', requestBody, {
+            .post('http://25.4.167.82:8080/api/challenges', requestBody, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
