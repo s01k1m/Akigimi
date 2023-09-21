@@ -12,8 +12,11 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.stream.Stream;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -53,21 +56,18 @@ class FeedControllerTest extends ControllerTestSupport {
         //when then
         mockMvc.perform(
                 multipart(FEED_BASE_URL)
-                        .file(file)
+                        .file("photo", file.getBytes())
                         .params(params)
-        ).andExpect(MockMvcResultMatchers.status().isOk());
+        ).andExpect(status().isOk());
     }
 
     @ParameterizedTest
     @DisplayName("[bad]유저가 잘못된 정보를 입력했을 때 올바른 오류를 반환한다.")
     @MethodSource("generateData")
     void requestValidationTest(String notPurchasedItem, Long saving,
-                               String akgimiPlace, String content, Boolean isPublic) throws Exception {
+                               String akgimiPlace, String content,
+                               Boolean isPublic, MockMultipartFile file) throws Exception {
         //given
-        MockMultipartFile file = new MockMultipartFile("image",
-                "test.png",
-                "image/png",
-                new FileInputStream("src/test/resources/test/test.png"));
         CreateFeedRequest request = CreateFeedRequest.builder()
                 .notPurchasedItem(notPurchasedItem)
                 .akgimiPlace(akgimiPlace)
@@ -86,18 +86,22 @@ class FeedControllerTest extends ControllerTestSupport {
         //when then
         mockMvc.perform(
                         multipart(FEED_BASE_URL)
-                                .file(file)
+                                .file("photo", file.getBytes())
                                 .params(params)
                 ).andDo(print())
-                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+                .andExpect(status().isBadRequest());
     }
 
-    private static Stream<Arguments> generateData() {
+    private static Stream<Arguments> generateData() throws Exception {
+        MockMultipartFile file = new MockMultipartFile("image",
+                "test.png",
+                "image/png",
+                new FileInputStream("src/test/resources/test/test.png"));
         return Stream.of(
-                Arguments.of(" ", 1000L, "akgimiPlace", "content", true),
-                Arguments.of("notPurchasedItem", -10L, "akgimiPlace", "content", true),
-                Arguments.of("   ", 1000L, "   ", "content", true),
-                Arguments.of("   ", 1000L, "   ", "content", null)
+                Arguments.of(" ", 1000L, "akgimiPlace", "content", true, file),
+                Arguments.of("notPurchasedItem", -10L, "akgimiPlace", "content", true, file),
+                Arguments.of("   ", 1000L, "   ", "content", true, file),
+                Arguments.of("   ", 1000L, "   ", "content", null, file)
         );
     }
 

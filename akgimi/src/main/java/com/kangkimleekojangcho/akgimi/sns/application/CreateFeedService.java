@@ -47,12 +47,8 @@ public class CreateFeedService {
         withdrawAccount.withdraw(createFeedServiceRequest.saving());
         Account depositAccount = queryAccountDbPort.findAccountByAccountTypeAndUserId(AccountType.DEPOSIT, userId)
                 .orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NO_BANK_ACCOUNT));
-
-        String url = null;
-        if(createFeedServiceRequest.photo()!=null) {
-            url = commandFeedImagePort.save(createFeedServiceRequest.photo(), userId)
-                    .orElseThrow(() -> new ServerErrorException(ServerErrorExceptionCode.NETWORK_ERROR));
-        }
+        String url = commandFeedImagePort.save(createFeedServiceRequest.photo(), userId)
+                .orElseThrow(() -> new ServerErrorException(ServerErrorExceptionCode.NETWORK_ERROR));
         //feedback 저장
         Feed feed = commandFeedDbPort.save(createFeedServiceRequest.toEntity(depositAccount, user, challenge, url));
 

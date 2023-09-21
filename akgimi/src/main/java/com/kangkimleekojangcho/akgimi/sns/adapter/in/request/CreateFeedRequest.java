@@ -18,6 +18,7 @@ public record CreateFeedRequest(
         @NotBlank(message = "장소를 입력해주세요.")
         String akgimiPlace,
         String content,
+        @NotNull(message = "사진이 반드시 필요합니다.")
         MultipartFile photo,
         @NotNull(message = "게시글 공개 여부를 입력해야 합니다.")
         Boolean isPublic
