@@ -18,6 +18,7 @@ export default function Home() {
       <Link href="/main">챌린지</Link> <br></br>
       <Link href="/feed">피드</Link> <br></br>
       <Link href="/write/receipt">피드 작성하기</Link> <br></br>
+      <Link href="/myreceipt">내 영수증 보기</Link> <br></br>
     </main>
   )
 }
