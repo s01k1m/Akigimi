@@ -6,7 +6,7 @@ export default function Login() {
     <div className="flex flex-col items-center justify-around h-full">
       <div style={{ width: "80%" }}>
         <Image
-          src="/logo.png"
+          src="/images/logo.png"
           alt="로고 사진"
           width={400} // 실제 이미지의 가로 크기로 설정하세요
           height={483} // 실제 이미지의 세로 크기로 설정하세요
