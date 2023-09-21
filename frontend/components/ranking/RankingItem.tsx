@@ -12,9 +12,9 @@ const RankingItem: React.FC<rankingItemProps> = ({ id, imgUrl, userName, product
     return (
         <div className="flex items-center">
           { (id <= 3) ? (
-            <div className="rounded-full bg-[#0049F2] text-white w-[40px] h-[40px] flex justify-center items-center text-[30px] font-semi-bold">{id}</div> 
+            <div className="rounded-full bg-tossblue text-white w-[40px] h-[40px] flex justify-center items-center text-[30px] font-semi-bold">{id}</div> 
             ) : (
-            <div className="rounded-full bg-white text-[#0049F2] w-[40px] h-[40px] flex justify-center items-center text-[30px] font-semi-bold border border-[#0049F2]">{id}</div> 
+            <div className="rounded-full bg-white text-tossblue w-[40px] h-[40px] flex justify-center items-center text-[30px] font-semi-bold border border-tossblue">{id}</div> 
           )
 
           }
@@ -31,6 +31,7 @@ const RankingItem: React.FC<rankingItemProps> = ({ id, imgUrl, userName, product
                 <div className="ms-[10px]">
                   <div className="text-[13px] font-semibold mb-[0.5vh]">{userName}</div>
                   <div className="text-[13px] text-[#757575] font-normal">{product}</div>
+
                   <div>
                     <div className="w-[40vw] h-[15px] max-w-[210px] min-w-[180px] bg-white rounded-full">
                       <div className={`w-[${gage}%] h-[15px] max-w-[210px] bg-[#0049F2] rounded-full`}></div>
