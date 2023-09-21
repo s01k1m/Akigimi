@@ -4,5 +4,5 @@ import lombok.Getter;
 
 @Getter
 public class FollowRequest {
-    private long followUser;
+    private long followee;
 }

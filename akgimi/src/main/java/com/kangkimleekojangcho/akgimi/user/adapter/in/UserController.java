@@ -123,7 +123,7 @@ public class UserController {
     @PostMapping("/friends")
     public ResponseEntity<SuccessResponse<Boolean>> followUser(@RequestBody FollowRequest request, HttpServletRequest servletRequest) {
         long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
-        boolean response = followUserService.followUser(userId, request.getFollowUser());
+        boolean response = followUserService.followUser(userId, request.getFollowee());
         return ResponseFactory.success(response);
     }
 }
