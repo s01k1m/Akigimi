@@ -55,9 +55,6 @@ public class MakeTransferService {
                 .receiveAccountBalance(withdrawAccount.getBalance())
                 .transferDateTime(LocalDateTime.now())
                 .build();
-        commandAccountDbPort.save(withdrawAccount);
-        commandAccountDbPort.save(depositAccount);
-        commandTransferDbPort.save(transfer);
     }
 
     @Transactional
@@ -100,11 +97,6 @@ public class MakeTransferService {
                 .receiveAccountBalance(withdrawAccount.getBalance())
                 .transferDateTime(LocalDateTime.now())
                 .build();
-
-        // 10. 최종 DB에 반영
-        commandAccountDbPort.save(withdrawAccount);
-        commandAccountDbPort.save(depositAccount);
-        commandTransferDbPort.save(transfer);
     }
 
 }
