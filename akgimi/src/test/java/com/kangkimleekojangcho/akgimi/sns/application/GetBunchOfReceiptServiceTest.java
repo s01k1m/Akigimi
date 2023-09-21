@@ -17,25 +17,27 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+import org.testcontainers.shaded.org.apache.commons.lang3.builder.ToStringExclude;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Transactional
 class GetBunchOfReceiptServiceTest extends SnsServiceIntegrationTestSupport {
 
     @Autowired
     private GetBunchOfReceiptService getBunchOfReceiptService;
 
     private static final int NUMBER_OF_PUBLIC = 10;
-    @BeforeEach
-    void before() {
-        prepareForSelectReceipt();
-    }
 
-    @DisplayName("[happy] 정확한 데이터가 주어지면 요청에 따라 영수증 리스트를 반환한다.")
+    @DisplayName("[happy] 다른 유저가 요청했을 때 정확한 데이터가 주어지면 요청에 따라 영수증 리스트를 반환한다.")
     @Test
     void givenValidData_whenGetBunchOfReceipt_thenReturnData() throws Exception {
         //given
@@ -44,25 +46,43 @@ class GetBunchOfReceiptServiceTest extends SnsServiceIntegrationTestSupport {
                         .lastReceiptId(Long.MAX_VALUE)
                         .numberOfReceipt(100)
                         .build();
-        //when
-        GetBunchOfReceiptServiceResponse getBunchOfReceiptServiceResponse
-                = getBunchOfReceiptService.getBunchOfReceipt(1L, getBunchOfReceiptServiceRequest);
-
-
-        //then
-        assertThat(getBunchOfReceiptServiceResponse.bunchOfBriefReceiptInfo()).isNotNull();
-        assertThat(getBunchOfReceiptServiceResponse.bunchOfBriefReceiptInfo().size()).isEqualTo(NUMBER_OF_PUBLIC);
-    }
-
-    private void prepareForSelectReceipt() {
-        User user = User.builder()
-                .id(1L)
+        User user = commandUserDbPort.save(User.builder()
                 .kakaoProfileNickname(new KakaoNickname("카카오프로필"))
                 .userState(UserState.ACTIVE)
                 .nickname("돌아다니는 카카오")
                 .oauthId("abcde")
-                .build();
+                .build());
+        prepareForSelectReceipt(user);
 
+        User user2 = commandUserDbPort.save(User.builder()
+                .kakaoProfileNickname(new KakaoNickname("카카오프로필"))
+                .userState(UserState.ACTIVE)
+                .nickname("돌아다니는 카카오2")
+                .oauthId("abcde")
+                .build());
+
+        //when
+        GetBunchOfReceiptServiceResponse getBunchOfReceiptServiceResponse
+                = getBunchOfReceiptService.getBunchOfReceipt(user.getId(),user2.getId(), getBunchOfReceiptServiceRequest);
+
+
+        //then
+        assertThat(getBunchOfReceiptServiceResponse.bunchOfBriefReceiptInfo()).isNotNull();
+        assertThat(getBunchOfReceiptServiceResponse.bunchOfBriefReceiptInfo().size()).isEqualTo(10);
+    }
+
+//    @DisplayName("[bad] 잘못된 데이터가 주어지면 영수증 리스트가 아닌 오류를 반환한다.")
+//    @Test
+//    public void givenInvalidData_whenGetBunchOfReceipt_thenThrowError() throws Exception {
+//        //given
+//        //테스트 진행 방향. -> S3 오류 잡기. 나머지는 어차피 최적화하면서 변경해야함.
+//
+//        //when
+//
+//        //then
+//    }
+
+    private void prepareForSelectReceipt(User user) {
         commandUserDbPort.save(user);
 
         Product product = Product.builder()
@@ -111,16 +131,16 @@ class GetBunchOfReceiptServiceTest extends SnsServiceIntegrationTestSupport {
                 .password("1234")
                 .build();
         commandAccountDbPort.save(withdrawalAccount);
+
         createPublicFeed(challenge, user);
         createNotPublicFeed(challenge, user);
     }
 
     private void createPublicFeed(Challenge challenge, User user) {
-        for (long i = 1; i <= NUMBER_OF_PUBLIC; i++) {
+        for (long i = 0; i < NUMBER_OF_PUBLIC; i++) {
             commandFeedDbPort.save(
                     Feed.builder()
                             .user(user)
-                            .feedId(i)
                             .price(100000L)
                             .content("content")
                             .place("my place")
@@ -135,11 +155,10 @@ class GetBunchOfReceiptServiceTest extends SnsServiceIntegrationTestSupport {
     }
 
     private void createNotPublicFeed(Challenge challenge, User user) {
-        for (long i = NUMBER_OF_PUBLIC+1; i <= NUMBER_OF_PUBLIC+10; i++) {
+        for (long i = 0; i < NUMBER_OF_PUBLIC; i++) {
             commandFeedDbPort.save(
                     Feed.builder()
                             .user(user)
-                            .feedId(i)
                             .price(100000L)
                             .content("content")
                             .place("my place")
@@ -147,7 +166,7 @@ class GetBunchOfReceiptServiceTest extends SnsServiceIntegrationTestSupport {
                             .accumulatedAmount(1000000L)
                             .challenge(challenge)
                             .isDeleted(false)
-                            .isPublic(true)
+                            .isPublic(false)
                             .notPurchasedItem("안샀어요")
                             .build());
         }
