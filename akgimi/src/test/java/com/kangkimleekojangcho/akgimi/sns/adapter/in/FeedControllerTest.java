@@ -97,7 +97,7 @@ class FeedControllerTest extends ControllerTestSupport {
         params.add("numberOfFeed", "2");
 
         //when
-        ResultActions actions = mockMvc.perform(get("/feed").queryParams(params));
+        ResultActions actions = mockMvc.perform(get("/feeds").queryParams(params));
 
         // then
         actions.andDo(print())
@@ -114,7 +114,7 @@ class FeedControllerTest extends ControllerTestSupport {
         params.add("numberOfFeed",numberOfFeed==null ? null : numberOfFeed.toString());
 
         //when
-        ResultActions actions = mockMvc.perform(get("/feed").queryParams(params));
+        ResultActions actions = mockMvc.perform(get("/feeds").queryParams(params));
 
         // then
         actions.andDo(print())
