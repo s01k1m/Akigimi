@@ -12,5 +12,6 @@ import java.time.LocalDateTime;
 public class TransferResponse {
     private final LocalDateTime transferDateTime;
     private final String type;
-    private final long amount;
+    private final Long amount;
+    private final Long balance;
 }
