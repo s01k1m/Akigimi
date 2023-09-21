@@ -15,10 +15,11 @@ public record CreateFeedRequest(
         @Positive(message = "아끼신 금액은 0 이상이어야 합니다.")
         Long saving,
 
+        @NotBlank(message = "장소를 입력해주세요.")
         String akgimiPlace,
         String content,
         MultipartFile photo,
-        @NotNull
+        @NotNull(message = "게시글 공개 여부를 입력해야 합니다.")
         Boolean isPublic
 ) {
 
