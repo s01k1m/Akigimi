@@ -14,6 +14,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 
 @Service
 @RequiredArgsConstructor
@@ -45,6 +47,7 @@ public class MakeTransferService {
                 .sendAccountBalance(withdrawAccount.getBalance())
                 .receiveAccount(depositAccount)
                 .receiveAccountBalance(withdrawAccount.getBalance())
+                .transferDateTime(LocalDateTime.now())
                 .build();
         commandAccountDbPort.save(withdrawAccount);
         commandAccountDbPort.save(depositAccount);
