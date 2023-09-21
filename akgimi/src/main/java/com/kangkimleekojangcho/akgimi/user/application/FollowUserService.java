@@ -2,6 +2,7 @@ package com.kangkimleekojangcho.akgimi.user.application;
 
 import com.kangkimleekojangcho.akgimi.global.exception.BadRequestException;
 import com.kangkimleekojangcho.akgimi.global.exception.BadRequestExceptionCode;
+import com.kangkimleekojangcho.akgimi.user.application.port.CommandFollowDbPort;
 import com.kangkimleekojangcho.akgimi.user.application.port.QueryUserDbPort;
 import com.kangkimleekojangcho.akgimi.user.domain.Follow;
 import com.kangkimleekojangcho.akgimi.user.domain.User;
@@ -9,10 +10,13 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class FollowUserService {
     private final QueryUserDbPort queryUserDbPort;
+    private final CommandFollowDbPort commandFollowDbPort;
 
     @Transactional
     public boolean followUser(long userId, long followUser) {
@@ -24,7 +28,9 @@ public class FollowUserService {
         Follow follow = Follow.builder()
                 .follower(follower)
                 .followee(followee)
+                .followTime(LocalDateTime.now())
                 .build();
+        commandFollowDbPort.save(follow);
         return true;
     }
 }
