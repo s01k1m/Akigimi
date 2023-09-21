@@ -4,6 +4,7 @@ import com.kangkimleekojangcho.akgimi.global.exception.ServerErrorException;
 import com.kangkimleekojangcho.akgimi.global.exception.ServerErrorExceptionCode;
 import com.kangkimleekojangcho.akgimi.global.exception.UnauthorizedException;
 import com.kangkimleekojangcho.akgimi.user.application.port.QueryPublicKeyPort;
+import com.kangkimleekojangcho.akgimi.user.config.KakaoProperties;
 import com.kangkimleekojangcho.akgimi.user.domain.KakaoIdToken;
 import com.kangkimleekojangcho.akgimi.user.domain.KakaoPublicKey;
 import io.jsonwebtoken.Claims;
@@ -11,7 +12,6 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
@@ -29,10 +29,8 @@ import static com.kangkimleekojangcho.akgimi.global.exception.UnauthorizedExcept
 @Service
 @RequiredArgsConstructor
 public class DecodeIdTokenService {
-    @Value("${kakao.iss}")
-    private String iss;
-    @Value("${kakao.rest-api-key}")
-    private String restApiKey;
+
+    private final KakaoProperties kakaoProperties;
     private final QueryPublicKeyPort queryPublicKeyPort;
     private final KakaoPublicKeyGenerator kakaoPublicKeyGenerator;
 
@@ -61,8 +59,8 @@ public class DecodeIdTokenService {
     private String getKid(String idToken) {
         try {
             return (String) Jwts.parserBuilder()
-                    .requireAudience(restApiKey)
-                    .requireIssuer(iss)
+                    .requireAudience(kakaoProperties.restApiKey())
+                    .requireIssuer(kakaoProperties.iss())
                     .build()
                     .parseClaimsJwt(getUnsignedToken(idToken))
                     .getHeader().get("kid");
@@ -73,6 +71,7 @@ public class DecodeIdTokenService {
             throw new ServerErrorException(ServerErrorExceptionCode.NETWORK_ERROR);
         }
     }
+
     private Jws<Claims> getOidcTokenJws(String token, String modulus, String exponent) {
         try {
             return Jwts.parserBuilder()
