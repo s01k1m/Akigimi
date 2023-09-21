@@ -31,6 +31,7 @@ public class UserController {
     private final GenerateWithdrawalAccountService generateWithdrawalAccountService;
     private final SubtractUserIdFromAccessTokenService subtractUserIdFromAccessTokenService;
     private final SetSimplePasswordService setSimplePasswordService;
+    private final CheckSimplePasswordService checkSimplePasswordService;
 
     @Value("${kakao.redirection-url}")
     String kakaoRedirectUrl;
@@ -95,5 +96,16 @@ public class UserController {
         }
         Long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
         setSimplePasswordService.set(userId, simplePassword);
+    }
+
+    @PostMapping("/user/password/simple/check")
+    public ResponseEntity<SuccessResponse<Boolean>> checkSimplePassword(@RequestParam String simplePassword,
+                                    HttpServletRequest servletRequest) {
+        if (simplePassword == null) {
+            throw new BadRequestException(BadRequestExceptionCode.INVALID_INPUT, "간편 비밀번호를 입력해주세요.");
+        }
+        Long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
+        boolean response = checkSimplePasswordService.check(userId, simplePassword);
+        return ResponseFactory.success(response);
     }
 }

@@ -1,13 +1,14 @@
 use akgimi;
 
-insert into users(id,kakao_profile_nickname, nickname, oauth_id, oidc_provider, user_state) values (9999,'가나다','nick1','1','KAKAO','PENDING');
+insert into users(id,kakao_profile_nickname, nickname, oauth_id, oidc_provider,simple_password, user_state) values (9999,'가나다','nick1','1','KAKAO','pGp7oK0O4bcVOHFNsDBRbwmz0k4QyGG4A3FphLS3WYM=','PENDING');
 insert into users(id,kakao_profile_nickname, nickname, oauth_id, oidc_provider, user_state) values (10000,'라마바','nick2','2','KAKAO','ACTIVE');
+insert into salt(user_id, salt_value, type)
+values (9999,'RVUJdBfDf8J+k0k+fJlI2g==','SIMPLE');
 
 insert into account(id, account_type, is_deleted, is_password_registered, balance, created_at, updated_at, user_id, account_number, bank)
-    values (1, 'DEPOSIT', false, false, 50000, now(),now(), 9999, '123412341234', 'MULTI');
+values (1, 'DEPOSIT', false, false, 50000, now(),now(), 9999, '123412341234', 'MULTI');
 insert into account(id, account_type, is_deleted, is_password_registered, balance, created_at, updated_at, user_id, account_number, bank)
-    values (2, 'WITHDRAW', false, false, 50000, now(),now(), 9999, '567856785678', 'MULTI');
-
+values (2, 'WITHDRAW', false, false, 50000, now(),now(), 9999, '567856785678', 'MULTI');
 
 insert into product(id, name, thumbnail, image, detail, url, price, is_deleted)
 values (1, '닌텐도DS', '/images/nintendo.png', '/images/nintendo.png', '디테일', '/images/nintendo.png', 20000, 0);
