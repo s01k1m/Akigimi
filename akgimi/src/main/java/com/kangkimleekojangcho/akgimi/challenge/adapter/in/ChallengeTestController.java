@@ -20,7 +20,7 @@ public class ChallengeTestController {
     private final ChallengeJpaRepository challengeJpaRepository;
 
     @DeleteMapping("/challenges/test")
-    public ResponseEntity<SuccessResponse<String>> createChallenge(
+    public ResponseEntity<SuccessResponse<String>> deleteChallenge(
             HttpServletRequest servletRequest){
         Long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
         Challenge challenge = challengeJpaRepository.findChallengeByUserIdAndIsInProgress(userId, true).orElseThrow(()-> new BadRequestException(BadRequestExceptionCode.NOT_PARTICIPATE_IN_CHALLENGE));
