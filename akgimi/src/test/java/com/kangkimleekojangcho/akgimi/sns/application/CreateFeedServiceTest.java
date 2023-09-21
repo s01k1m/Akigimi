@@ -1,18 +1,13 @@
 package com.kangkimleekojangcho.akgimi.sns.application;
 
-import com.kangkimleekojangcho.akgimi.ServiceIntegrationTestSupport;
-import com.kangkimleekojangcho.akgimi.bank.application.port.CommandAccountDbPort;
 import com.kangkimleekojangcho.akgimi.bank.domain.Account;
 import com.kangkimleekojangcho.akgimi.bank.domain.AccountType;
 import com.kangkimleekojangcho.akgimi.bank.domain.Bank;
-import com.kangkimleekojangcho.akgimi.challenge.application.port.CommandChallengeDbPort;
 import com.kangkimleekojangcho.akgimi.challenge.domain.Challenge;
 import com.kangkimleekojangcho.akgimi.global.exception.BadRequestException;
-import com.kangkimleekojangcho.akgimi.product.application.port.CommandProductDbPort;
 import com.kangkimleekojangcho.akgimi.product.domain.Product;
 import com.kangkimleekojangcho.akgimi.sns.application.port.QueryFeedDbPort;
 import com.kangkimleekojangcho.akgimi.sns.application.request.CreateFeedServiceRequest;
-import com.kangkimleekojangcho.akgimi.user.application.port.CommandUserDbPort;
 import com.kangkimleekojangcho.akgimi.user.domain.KakaoNickname;
 import com.kangkimleekojangcho.akgimi.user.domain.User;
 import com.kangkimleekojangcho.akgimi.user.domain.UserState;
@@ -34,6 +29,7 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.BDDMockito.*;
 import static org.mockito.Mockito.mock;
 
 @Transactional
@@ -57,7 +53,13 @@ class CreateFeedServiceTest extends SnsServiceIntegrationTestSupport {
     @Test
     void givenValidDataWhenSaveThenIsWorking() throws Exception {
         //given
-        prepareForCreateFeed();
+        User user = commandUserDbPort.save(User.builder()
+                .kakaoProfileNickname(new KakaoNickname("카카오프로필"))
+                .userState(UserState.ACTIVE)
+                .nickname("돌아다니는 카카오")
+                .oauthId("abcde")
+                .build());
+        prepareForCreateFeed(user);
 
         CreateFeedServiceRequest request = CreateFeedServiceRequest.builder()
                 .photo(mockFile)
@@ -67,9 +69,10 @@ class CreateFeedServiceTest extends SnsServiceIntegrationTestSupport {
                 .akgimiPlace("아낀 장소")
                 .notPurchasedItem("아낀 물품")
                 .build();
-        BDDMockito.given(commandFeedImagePort.save(mockFile, 1L)).willReturn("hello");
+        given(commandFeedImagePort.save(mockFile, user.getId())).willReturn("hello");
+
         //when
-        Long feedId = createFeedService.createFeed(request, 1L);
+        Long feedId = createFeedService.createFeed(request, user.getId());
 
         //then
         assertThat(queryFeedDbPort.findById(feedId)).isPresent();
@@ -80,20 +83,20 @@ class CreateFeedServiceTest extends SnsServiceIntegrationTestSupport {
     @ParameterizedTest
     void givenInvalidDataWhenSaveThenThrowError(CreateFeedServiceRequest request) throws Exception {
         //given
-        prepareForCreateFeed();
+        User user = commandUserDbPort.save(User.builder()
+                .kakaoProfileNickname(new KakaoNickname("카카오프로필"))
+                .userState(UserState.ACTIVE)
+                .nickname("돌아다니는 카카오")
+                .oauthId("abcde")
+                .build());
+        prepareForCreateFeed(user);
 
         //when //then
         assertThatThrownBy(() -> createFeedService.createFeed(request, 1L))
                 .isInstanceOf(BadRequestException.class);
     }
 
-    private void prepareForCreateFeed() {
-        User user = User.builder()
-                .kakaoProfileNickname(new KakaoNickname("카카오프로필"))
-                .userState(UserState.ACTIVE)
-                .nickname("돌아다니는 카카오")
-                .oauthId("abcde")
-                .build();
+    private void prepareForCreateFeed(User user) {
 
         commandUserDbPort.save(user);
 
@@ -194,6 +197,6 @@ class CreateFeedServiceTest extends SnsServiceIntegrationTestSupport {
                         .akgimiPlace("아낀 장소")
                         .notPurchasedItem(null)
                         .build())
-                );
+        );
     }
 }

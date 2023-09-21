@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 @RequiredArgsConstructor
@@ -21,7 +22,10 @@ public class FeedQuerydslRepository {
 
 
     public List<BriefFeedInfo> findByUser_IdAndLastFeedIdAndNumberOfFeed(
-            Long userId, Long lastFeedId, Integer numberOfFeed) {
+            Long userId,
+            Long lastFeedId,
+            Integer numberOfFeed
+    ) {
 
         List<BriefFeedInfo> result = jpaQueryFactory.select(
                         new QBriefFeedInfo(
@@ -47,7 +51,8 @@ public class FeedQuerydslRepository {
     }
 
     public List<BriefReceiptInfo> findReceiptByUser_IdAndLastReceiptIdAndNumberOfReceipt(
-            Long userId, Long lastReceiptId, Integer numberOfReceipt
+            Long requestUserId, Long receiptOwnerId,
+            Long lastReceiptId, Integer numberOfReceipt
     ) {
         List<BriefReceiptInfo> result = jpaQueryFactory.select(
                         new QBriefReceiptInfo(
@@ -60,10 +65,17 @@ public class FeedQuerydslRepository {
                 )
                 .from(feed)
                 .where(ltFeedId(lastReceiptId),
-                        feed.user.id.eq(userId)) //동적쿼리. user가 본인이면 다 보여주고, 본인이 아니면 공개된 것만.
+                        feed.user.id.eq(requestUserId),isMine(requestUserId, receiptOwnerId))
                 .orderBy(feed.feedId.desc())
                 .limit(numberOfReceipt).fetch();
         return result;
+    }
+
+    private BooleanExpression isMine(Long userId, Long receiptOwnerId) {
+        if(Objects.equals(userId, receiptOwnerId)) {
+            return null; //null 반환되면 조건문 자동 제거
+        }
+        return feed.isPublic.eq(true);
     }
 
     private BooleanExpression ltFeedId(Long feedId) {
