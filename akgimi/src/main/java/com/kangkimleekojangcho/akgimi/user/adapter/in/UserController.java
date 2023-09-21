@@ -9,6 +9,7 @@ import com.kangkimleekojangcho.akgimi.global.response.SuccessResponse;
 import com.kangkimleekojangcho.akgimi.user.adapter.in.request.AddDataForPendingUserRequest;
 import com.kangkimleekojangcho.akgimi.user.adapter.in.request.LoginRequest;
 import com.kangkimleekojangcho.akgimi.user.adapter.in.request.SignUpRequest;
+import com.kangkimleekojangcho.akgimi.user.adapter.in.response.GetUserInfoServiceResponse;
 import com.kangkimleekojangcho.akgimi.user.application.*;
 import com.kangkimleekojangcho.akgimi.user.application.response.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,7 +33,8 @@ public class UserController {
     private final SubtractUserIdFromAccessTokenService subtractUserIdFromAccessTokenService;
     private final SetSimplePasswordService setSimplePasswordService;
     private final CheckSimplePasswordService checkSimplePasswordService;
-
+    private final GetUserInfoService getUserInfoService;
+    private final ReissueService reissueService;
     @Value("${kakao.redirection-url}")
     String kakaoRedirectUrl;
     @Value("${kakao.rest-api-key}")
@@ -106,6 +108,19 @@ public class UserController {
         }
         Long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
         boolean response = checkSimplePasswordService.check(userId, simplePassword);
+        return ResponseFactory.success(response);
+    }
+
+    @GetMapping("/user/info")
+    public ResponseEntity<SuccessResponse<GetUserInfoServiceResponse>> getUserInfo(HttpServletRequest servletRequest) {
+        Long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
+        GetUserInfoServiceResponse response = getUserInfoService.get(userId);
+        return ResponseFactory.success(response);
+    }
+
+    @PostMapping("/user/reissue")
+    public ResponseEntity<SuccessResponse<ReissueServiceResponse>> reissue(@RequestParam("refreshToken") String refreshToken){
+        ReissueServiceResponse response = reissueService.reissue(refreshToken);
         return ResponseFactory.success(response);
     }
 }
