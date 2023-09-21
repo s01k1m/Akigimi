@@ -43,7 +43,7 @@ const FeedList: React.FC<selectedProps> = ({ selectedValue }) => {
     const getFeedData = async () => {
       setLoading(true)
         await axios
-            .get('http://25.7.186.86:8080/api/feeds', {
+            .get('/api/feeds', {
                 params: {
                   lastFeedId: 9,
                   numberOfFeed: 5
