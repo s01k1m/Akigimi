@@ -5,15 +5,12 @@ import com.kangkimleekojangcho.akgimi.sns.application.response.BriefReceiptInfo;
 import com.kangkimleekojangcho.akgimi.sns.application.response.QBriefFeedInfo;
 import com.kangkimleekojangcho.akgimi.sns.application.response.QBriefReceiptInfo;
 import com.kangkimleekojangcho.akgimi.sns.domain.QFeed;
-import com.kangkimleekojangcho.akgimi.common.domain.ScrollConstant;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
-import static com.kangkimleekojangcho.akgimi.common.domain.ScrollConstant.FIRST_SCROLL;
 
 @Repository
 @RequiredArgsConstructor
@@ -29,6 +26,7 @@ public class FeedQuerydslRepository {
         List<BriefFeedInfo> result = jpaQueryFactory.select(
                         new QBriefFeedInfo(
                                 feed.user.id.as("userId"),
+                                feed.user.nickname.as("nickname"),
 //                                feed.user.profile.as("userProfile"), TODO: profile 나중에 만들것
                                 feed.price.as("price"),
 //                                feed.like.as("likes"), TODO: like 수 계산해서 가져와야 함.

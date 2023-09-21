@@ -25,6 +25,6 @@ public class ChallengeTestController {
         Long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
         Challenge challenge = challengeJpaRepository.findChallengeByUserIdAndIsInProgress(userId, true).orElseThrow(()-> new BadRequestException(BadRequestExceptionCode.NOT_PARTICIPATE_IN_CHALLENGE));
         challengeJpaRepository.deleteById(challenge.getId());
-        return ResponseFactory.success("삭제되었습니다.");
+        return ResponseFactory.successWithoutData("삭제되었습니다.");
     }
 }
