@@ -7,7 +7,6 @@ const nextConfig = {
   },
   
   // 외부 이미지 불러오기
-  // https://akgimi-bucket.s3.ap-northeast-2.amazonaws.com/images/feed9999.png2023-09-21T14:56:16.383037500
   images: {
     remotePatterns: [
       {
@@ -21,7 +20,7 @@ const nextConfig = {
     return [
       {
         source: "/api/:path*",
-        destination: `http://25.4.167.82:8080/:path*`,
+        destination: `http://akgimi.ddns.net/api/:path*`,
       },
     ];
   },

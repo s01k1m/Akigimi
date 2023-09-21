@@ -27,7 +27,7 @@ const Main = () => {
     const challengeData = async () => {
         setIsLoading(true)
         await axios
-            .get('http://25.7.186.86:8080/api/challenges/in-progress', {
+            .get('/api/challenges/in-progress', {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 }
@@ -62,7 +62,7 @@ const Main = () => {
             challengePeriod: 50
         };
         await axios
-            .post('http://25.7.186.86:8080/api/challenges', requestBody, {
+            .post('/api/challenges', requestBody, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'

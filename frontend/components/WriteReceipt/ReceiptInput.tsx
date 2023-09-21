@@ -94,10 +94,14 @@ const ReceiptInput = () => {
         e.preventDefault()
         
         console.log(formData)
-        
+
+        if (formData.photo === ""){
+            alert('사진을 추가해주세요')
+            return
+        } 
         // 제출 api
         await axios
-            .post('http://25.7.186.86:8080/api/feeds', formData, {
+            .post('/api/feeds', formData, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'multipart/form-data'
@@ -116,10 +120,10 @@ const ReceiptInput = () => {
                     alert('현재 참여중인 챌린지가 없어요 챌린지를 등록해주세요')
                 } else if (error.response.data.code === '014') {
                     console.log('계좌에 돈이 부족합니다')
+                    setIsOpened(true)
                 }
                 console.log('절약 기록 작성 실패', error)
                 // 잔액이 부족한 경우 모달창 띄우기
-                setIsOpened(true)
             })
         
         
@@ -201,7 +205,7 @@ const ReceiptInput = () => {
                             <input 
                                 type="checkbox" 
                                 name="isOpened"
-                                checked={formData.isPublic}
+                                defaultChecked={formData.isPublic}
                                 onClick={handleCheckboxClick}
                                 className="switch me-2" 
                             />

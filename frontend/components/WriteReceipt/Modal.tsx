@@ -13,7 +13,7 @@ const Modal = () => {
         const token = `eyJ0eXBlIjoiQUNDRVNTVE9LRU4iLCJhbGciOiJIUzI1NiJ9.eyJpZCI6OTk5OSwidXNlclN0YXRlIjoiUEVORElORyIsImlhdCI6MTY5NTI1NTQ5MywiZXhwIjoxNjk1NDM1NDkzfQ.Wwg5ar8uOp2xZmt6JO7aRyhPTHuIxduFcrx1pdV-vAM`
         
         await axios
-        .get('http://25.7.186.86:8080/api/account/amount', {
+        .get('/api/account/amount', {
             params: {
                 accountType: 'DEPOSIT'
             },
