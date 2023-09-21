@@ -26,7 +26,7 @@ public class FeedController {
     private final GetBunchOfFeedWrittenByFollowerRequestService getBunchOfFeedWrittenByFollowerRequestService;
     private final SubtractUserIdFromAccessTokenService userIdFromAccessTokenService;
 
-    @PostMapping("/feed")
+    @PostMapping("/feeds")
     ResponseEntity<SuccessResponse<Long>> getBunchOfFeed(
             @Valid CreateFeedRequest createFeedRequest,
             HttpServletRequest servletRequest
@@ -36,7 +36,7 @@ public class FeedController {
         return ResponseFactory.success(result);
     }
 
-    @GetMapping("/feed")
+    @GetMapping("/feeds")
     ResponseEntity<SuccessResponse<GetBunchOfFeedWrittenByFollowerServiceResponse>> getBunchOfFeed(
             @Valid GetBunchOfFeedWrittenByFollowerRequest getBunchOfFeedWrittenByFollowerRequest,
             HttpServletRequest servletRequest
