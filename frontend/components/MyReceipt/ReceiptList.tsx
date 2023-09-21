@@ -22,7 +22,14 @@ const ReceiptList = () => {
     ]
 
     const userId = window.localStorage.getItem('userId')
-    const token = window.localStorage.getItem('accessToken')
+
+    let token: string = "";
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+        token = window.localStorage.getItem("access_token");
+        }
+    }, []);
 
     // api 로 불러올 모든 아이템
     const [receiptItems, setReceiptItems] = useState<ReceiptItem[]>([]);

@@ -2,7 +2,7 @@
 import '@/styles/WriteReceipt.css'
 import '@/styles/MainPageButton.css'
 import ReceiptCircle from './ReceiptCircle'
-import React, { ChangeEvent, useState, useRef } from 'react'
+import React, { ChangeEvent, useState, useRef, useEffect } from 'react'
 import { MouseEventHandler, FormEvent  } from 'react'
 import { AiOutlineFileAdd } from 'react-icons/ai'
 import Image from 'next/image'
@@ -89,7 +89,16 @@ const ReceiptInput = () => {
 
     // form 제출
     const router = useRouter()
-    const token = `eyJ0eXBlIjoiQUNDRVNTVE9LRU4iLCJhbGciOiJIUzI1NiJ9.eyJpZCI6OTk5OSwidXNlclN0YXRlIjoiUEVORElORyIsImlhdCI6MTY5NTI1NTQ5MywiZXhwIjoxNjk1NDM1NDkzfQ.Wwg5ar8uOp2xZmt6JO7aRyhPTHuIxduFcrx1pdV-vAM`
+
+    // token
+    let token: string = "";
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+        token = window.localStorage.getItem("access_token");
+        }
+    }, []);
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
         
