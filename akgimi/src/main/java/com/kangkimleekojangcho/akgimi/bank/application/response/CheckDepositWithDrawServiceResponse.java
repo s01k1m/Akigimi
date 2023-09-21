@@ -10,6 +10,5 @@ import java.util.List;
 @RequiredArgsConstructor
 @Builder
 public class CheckDepositWithDrawServiceResponse {
-    private final String transfer;
-    private final List<TransferResponse> depositWithDrawResponse;
+    private final List<TransferResponse> transfer;
 }

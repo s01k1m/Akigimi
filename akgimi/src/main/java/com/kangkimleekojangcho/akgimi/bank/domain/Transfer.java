@@ -1,13 +1,19 @@
 package com.kangkimleekojangcho.akgimi.bank.domain;
 
 import jakarta.persistence.*;
-import lombok.Builder;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "transfer")
-@Builder
+@SuperBuilder
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Transfer extends BaseTimeEntity{
 
     @Id
