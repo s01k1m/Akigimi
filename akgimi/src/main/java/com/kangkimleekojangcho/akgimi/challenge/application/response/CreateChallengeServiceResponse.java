@@ -9,14 +9,14 @@ import java.time.LocalDate;
 public class CreateChallengeServiceResponse {
     private final Long challengeId;
     private final Long productId;
-    private final Integer accumulatedAmount;
+    private final Long accumulatedAmount;
     private final boolean achievementState;
     private final Integer challengePeriod;
     private final LocalDate challengeStartDate;
     private final LocalDate challengeEndDate;
     private final boolean isInProgress;
 
-    private CreateChallengeServiceResponse(Long challengeId, Long productId, Integer accumulatedAmount, boolean achievementState, Integer challengePeriod, LocalDate challengeStartDate, LocalDate challengeEndDate, boolean isInProgress) {
+    private CreateChallengeServiceResponse(Long challengeId, Long productId, Long accumulatedAmount, boolean achievementState, Integer challengePeriod, LocalDate challengeStartDate, LocalDate challengeEndDate, boolean isInProgress) {
         this.challengeId = challengeId;
         this.productId = productId;
         this.accumulatedAmount = accumulatedAmount;
