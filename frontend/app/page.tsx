@@ -13,10 +13,11 @@ export default function Home() {
       <Link href="/login/register/withdrawal">출금계좌등록</Link> <br></br>
       <Link href="/login/register/deposit">입금계좌등록</Link> <br></br>
       <Link href="/login/register/welcome">웰컴</Link> <br></br>
-      <Link href="/transaction/history">거래내역 조회</Link> <br></br>
+      <Link href="/transaction/withdraw">거래내역 조회 (출금 계좌)</Link> <br></br>
+      <Link href="/transaction/deposit">거래내역 조회 (저축 계좌)</Link> <br></br>
       <Link href="/main">챌린지</Link> <br></br>
       <Link href="/feed">피드</Link> <br></br>
-      <Link href="/writereceipt">피드 작성하기</Link> <br></br>
+      <Link href="/write/receipt">피드 작성하기</Link> <br></br>
     </main>
   )
 }
