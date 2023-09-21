@@ -12,5 +12,5 @@ import java.util.Optional;
 public interface TransferJpaRepository extends JpaRepository<Transfer, Long> {
 
     @Query(value = "SELECT t FROM Transfer t WHERE t.sendAccount = :account OR t.receiveAccount = :account")
-    List<Transfer> findBySendAccountOrReceiveAccount(@Param("account") Account account);
+    List<Transfer> findByAccount(@Param("account") Account account);
 }
