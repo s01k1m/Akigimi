@@ -11,7 +11,10 @@ const GoToSelectItem = () => {
 
     useEffect(() => {
         if (typeof window !== "undefined") {
+            console.log('로컬스토리지 접근 성공')
         token = window.localStorage.getItem("access_token");
+        } else {
+            console.log('로컬 스토리지 접근 실패')
         }
     }, []);
 
@@ -34,7 +37,7 @@ const GoToSelectItem = () => {
                 if (error.response.data.code === '011') {
                     console.log('자원이 존재하지 않는 경우')
                 }
-                console.error('챌린지 생성 에러', error)
+                console.error('챌린지 생성 에러', error, token)
             })
     } 
 
