@@ -16,6 +16,8 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.security.SignatureException;
 import java.util.Enumeration;
 
@@ -23,7 +25,6 @@ import java.util.Enumeration;
 @RequiredArgsConstructor
 @Log4j2
 public class GlobalExceptionHandler {
-//    private final MattermostSender mattermostSender;
 
     @ExceptionHandler(HttpBusinessException.class)
     public ResponseEntity<FailResponse> httpBusinessException(HttpBusinessException e) {
@@ -36,16 +37,21 @@ public class GlobalExceptionHandler {
     public ResponseEntity<FailResponse> serverErrorException(ServerErrorException e,
                                                              HttpServletRequest request) {
         log.error("서버 에러 예외 발생! << code: {}", e.getCode());
-        e.printStackTrace();
-//        mattermostSender.sendMessage(e, request.getRequestURI(), getParams(request));
+        log.error("에러 로그: {}",getPrintStackTrace(e));
         return ResponseFactory.failWithServerError();
+    }
+
+    public String getPrintStackTrace(Exception e) {
+        StringWriter errors = new StringWriter();
+        e.printStackTrace(new PrintWriter(errors));
+        return errors.toString();
     }
 
     @ExceptionHandler(SignatureException.class)
     public ResponseEntity<FailResponse> signatureException(SignatureException e,
                                                            HttpServletRequest request) {
         log.error("유효하지 않은 토큰 입력!");
-//        mattermostSender.sendMessage(e, request.getRequestURI(), getParams(request));
+        log.error("에러 로그: {}",getPrintStackTrace(e));
         return ResponseFactory.fail(new UnauthorizedException(UnauthorizedExceptionCode.INVALID_TOKEN));
     }
 
@@ -67,7 +73,6 @@ public class GlobalExceptionHandler {
         String message = e.getMessage();
         log.error(e.getStackTrace());
         FailResponse failResponse = new FailResponse(message, invalidInput.getCode());
-//        mattermostSender.sendMessage(e, request.getRequestURI(), getParams(request));
         return ResponseFactory.fail(failResponse, HttpStatus.BAD_REQUEST);
     }
 
