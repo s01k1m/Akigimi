@@ -5,7 +5,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 
@@ -14,7 +13,7 @@ import java.time.LocalDateTime;
 @SuperBuilder
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Transfer extends BaseTimeEntity{
+public class Transfer extends BaseTimeEntity implements Comparable<Transfer> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,4 +32,15 @@ public class Transfer extends BaseTimeEntity{
     private Long sendAccountBalance;
 
     private Long receiveAccountBalance;
+
+
+    @Override
+    public int compareTo(Transfer transfer) {
+        if(transfer.transferDateTime.isBefore(transferDateTime)){
+            return -1;
+        }else if(transfer.transferDateTime.isAfter(transferDateTime)){
+            return 1;
+        }
+        return 0;
+    }
 }
