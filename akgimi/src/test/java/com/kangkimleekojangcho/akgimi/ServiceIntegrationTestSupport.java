@@ -20,14 +20,14 @@ import java.util.List;
 public abstract class ServiceIntegrationTestSupport {
 
     static {
-        List<String> portBindings = new ArrayList<>();
-        portBindings.add("6380:6379");
-
-        GenericContainer<?> redis =
-                new GenericContainer<>(DockerImageName.parse("redis:7.2.1-alpine"));
-        redis.setPortBindings(portBindings);
-        redis.start();
-        //mysql 추가하기
+//        List<String> portBindings = new ArrayList<>();
+//        portBindings.add("6380:6379");
+//
+//        GenericContainer<?> redis =
+//                new GenericContainer<>(DockerImageName.parse("redis:7.2.1-alpine"));
+//        redis.setPortBindings(portBindings);
+//        redis.start();
+//        //mysql 추가하기
     }
 
     @MockBean

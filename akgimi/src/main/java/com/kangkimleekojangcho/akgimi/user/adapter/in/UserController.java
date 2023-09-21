@@ -6,6 +6,7 @@ import com.kangkimleekojangcho.akgimi.global.exception.BadRequestException;
 import com.kangkimleekojangcho.akgimi.global.exception.BadRequestExceptionCode;
 import com.kangkimleekojangcho.akgimi.global.response.ResponseFactory;
 import com.kangkimleekojangcho.akgimi.global.response.SuccessResponse;
+import com.kangkimleekojangcho.akgimi.user.adapter.in.request.FollowRequest;
 import com.kangkimleekojangcho.akgimi.user.adapter.in.request.LoginRequest;
 import com.kangkimleekojangcho.akgimi.user.adapter.in.request.SignUpRequest;
 import com.kangkimleekojangcho.akgimi.user.adapter.in.response.GetUserInfoServiceResponse;
@@ -35,6 +36,7 @@ public class UserController {
     private final GetUserInfoService getUserInfoService;
     private final ReissueService reissueService;
     private final KakaoProperties kakaoProperties;
+    private final FollowUserService followUserService;
     private final GetFriendsInfoService getFriendsInfoService;
 
     @GetMapping("/kakao/loginurl")
@@ -116,6 +118,13 @@ public class UserController {
     @PostMapping("/user/reissue")
     public ResponseEntity<SuccessResponse<ReissueServiceResponse>> reissue(@RequestParam("refreshToken") String refreshToken) {
         ReissueServiceResponse response = reissueService.reissue(refreshToken);
+        return ResponseFactory.success(response);
+    }
+
+    @PostMapping("/friends")
+    public ResponseEntity<SuccessResponse<Boolean>> followUser(@RequestBody FollowRequest request, HttpServletRequest servletRequest) {
+        long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
+        boolean response = followUserService.followUser(userId, request.getFollowee());
         return ResponseFactory.success(response);
     }
 
