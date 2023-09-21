@@ -13,5 +13,9 @@ public interface QueryFeedDbPort {
 
     List<BriefFeedInfo> findByUser_IdAndLastFeedIdAndNumberOfFeed(Long userId, Long aLong, Integer integer);
 
-    List<BriefReceiptInfo> findReceiptByUser_IdAndLastReceiptIdAndNumberOfReceipt(Long userId, Long lastReceiptId, Integer numberOfReceipt);
+    List<BriefReceiptInfo> findReceiptByUser_IdAndLastReceiptIdAndNumberOfReceipt(
+                    Long userId,
+                    Long lastReceiptId,
+                    Integer numberOfReceipt
+    );
 }

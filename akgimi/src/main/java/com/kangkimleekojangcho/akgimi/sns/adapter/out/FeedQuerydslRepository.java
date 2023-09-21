@@ -46,7 +46,9 @@ public class FeedQuerydslRepository {
         return result;
     }
 
-    public List<BriefReceiptInfo> findReceiptByUser_IdAndLastReceiptIdAndNumberOfReceipt(Long userId, Long lastReceiptId, Integer numberOfReceipt) {
+    public List<BriefReceiptInfo> findReceiptByUser_IdAndLastReceiptIdAndNumberOfReceipt(
+            Long userId, Long lastReceiptId, Integer numberOfReceipt
+    ) {
         List<BriefReceiptInfo> result = jpaQueryFactory.select(
                         new QBriefReceiptInfo(
                                 feed.price.as("price"),
@@ -58,7 +60,7 @@ public class FeedQuerydslRepository {
                 )
                 .from(feed)
                 .where(ltFeedId(lastReceiptId),
-                        feed.user.id.eq(userId))
+                        feed.user.id.eq(userId)) //동적쿼리. user가 본인이면 다 보여주고, 본인이 아니면 공개된 것만.
                 .orderBy(feed.feedId.desc())
                 .limit(numberOfReceipt).fetch();
         return result;

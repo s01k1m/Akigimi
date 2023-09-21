@@ -37,19 +37,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 
 @Transactional
-class CreateFeedServiceTest extends ServiceIntegrationTestSupport {
+class CreateFeedServiceTest extends SnsServiceIntegrationTestSupport {
 
-    @Autowired
-    private CommandProductDbPort commandProductDbPort;
-
-    @Autowired
-    private CommandUserDbPort commandUserDbPort;
-
-    @Autowired
-    private CommandChallengeDbPort commandChallengeDbPort;
-
-    @Autowired
-    private CommandAccountDbPort commandAccountDbPort;
 
     @Autowired
     private QueryFeedDbPort queryFeedDbPort;

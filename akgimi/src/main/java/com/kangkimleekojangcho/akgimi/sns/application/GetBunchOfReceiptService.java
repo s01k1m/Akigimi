@@ -30,7 +30,6 @@ public class GetBunchOfReceiptService {
                     .bunchOfBriefReceiptInfo(new ArrayList<>())
                     .build();
         }
-
         return GetBunchOfReceiptServiceResponse.builder()
                 .bunchOfBriefReceiptInfo(commandFeedDbPort.findReceiptByUser_IdAndLastReceiptIdAndNumberOfReceipt(
                         userId, serviceRequest.lastReceiptId(), serviceRequest.numberOfReceipt()))
