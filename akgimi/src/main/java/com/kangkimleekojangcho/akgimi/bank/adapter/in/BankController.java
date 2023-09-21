@@ -86,10 +86,10 @@ public class BankController {
 
     // 계좌 잔액 조회
     @GetMapping("/account/amount")
-    public ResponseEntity<SuccessResponse<CheckBalanceServiceResponse>> checkBalance(@RequestParam("accountType") AccountType accountType, HttpServletRequest servletRequest) {
+    public ResponseEntity<SuccessResponse<CheckBalanceServiceResponse>> checkBalance(@RequestParam("accountType") String accountType, HttpServletRequest servletRequest) {
         long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
         if (accountType == null) throw new BadRequestException(BadRequestExceptionCode.INVALID_INPUT);
-        CheckBalanceServiceResponse response = checkBalanceService.checkBalance(userId, accountType);
+        CheckBalanceServiceResponse response = checkBalanceService.checkBalance(userId, AccountType.stringToAccountType(accountType));
         return ResponseFactory.success(response);
     }
 
@@ -98,7 +98,7 @@ public class BankController {
     public ResponseEntity<SuccessResponse<CheckDepositWithDrawServiceResponse>> checkDepositWithdraw(@RequestParam("accountType") String accountType, HttpServletRequest servletRequest) {
         long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
         if (accountType == null) throw new BadRequestException(BadRequestExceptionCode.INVALID_INPUT);
-        CheckDepositWithDrawServiceResponse response = checkDepositWithdrawService.checkDepositWithdraw(userId, accountType);
+        CheckDepositWithDrawServiceResponse response = checkDepositWithdrawService.checkDepositWithdraw(userId, AccountType.stringToAccountType(accountType));
         return ResponseFactory.success(response);
     }
 }
