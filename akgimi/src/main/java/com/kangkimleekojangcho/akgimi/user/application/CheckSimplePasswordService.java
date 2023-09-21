@@ -12,6 +12,7 @@ import com.kangkimleekojangcho.akgimi.user.domain.SaltType;
 import com.kangkimleekojangcho.akgimi.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -22,6 +23,7 @@ public class CheckSimplePasswordService {
     private final QuerySaltPort querySaltPort;
     private final QueryUserDbPort queryUserDbPort;
 
+    @Transactional(readOnly = true)
     public boolean check(Long userId, String simplePassword) {
         Salt salt = querySaltPort.findByUserIdAndSaltType(userId, SaltType.SIMPLE).orElseThrow(() -> new UnauthorizedException(UnauthorizedExceptionCode.INVALID_SIMPLE_PASSWORD));
         User user = queryUserDbPort.findById(userId).orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NOT_USER));
