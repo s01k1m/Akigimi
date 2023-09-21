@@ -10,8 +10,15 @@ const Modal = () => {
 
     // 계좌 조회 API
     const checkBalance = async () => {
-        const token = `eyJ0eXBlIjoiQUNDRVNTVE9LRU4iLCJhbGciOiJIUzI1NiJ9.eyJpZCI6OTk5OSwidXNlclN0YXRlIjoiUEVORElORyIsImlhdCI6MTY5NTI1NTQ5MywiZXhwIjoxNjk1NDM1NDkzfQ.Wwg5ar8uOp2xZmt6JO7aRyhPTHuIxduFcrx1pdV-vAM`
         
+        let token: string = "";
+
+        useEffect(() => {
+            if (typeof window !== "undefined") {
+            token = window.localStorage.getItem("access_token");
+            }
+        }, []);
+
         await axios
         .get('/api/account/amount', {
             params: {

@@ -1,12 +1,19 @@
 'use client'
 import '@/styles/MainPageButton.css'
 import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 import axios from 'axios'
 
 const GoToSelectItem = () => {
     // const router = useRouter()
 
-    const token = `eyJ0eXBlIjoiQUNDRVNTVE9LRU4iLCJhbGciOiJIUzI1NiJ9.eyJpZCI6OTk5OSwidXNlclN0YXRlIjoiUEVORElORyIsImlhdCI6MTY5NTE3NDc3NywiZXhwIjoxNjk1MzU0Nzc3fQ.58F3t3w_nBSCD0wRrwExXc4VTdPJSrGBiqRwjlQ4XjU`
+    let token: string = "";
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+        token = window.localStorage.getItem("access_token");
+        }
+    }, []);
 
     const inProgress = async () => {
         const requestBody = {

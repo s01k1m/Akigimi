@@ -9,6 +9,7 @@ import GoToBuyBtn from "@/components/Main/GoToBuyBtn"
 import GoToRetryBtn from "@/components/Main/GoToRetryBtn"
 import axios from 'axios'
 import { useState, useEffect } from "react"
+import Footer from "../Footer"
 import '@/styles/MainPageButton.css'
 
 const Main = () => {
@@ -139,6 +140,7 @@ const Main = () => {
         ) : (
             <div>로딩 중</div>
         )}
+        <Footer />
         </>
     )
 }
