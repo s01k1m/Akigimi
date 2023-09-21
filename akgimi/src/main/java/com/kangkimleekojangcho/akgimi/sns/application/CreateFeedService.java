@@ -47,17 +47,13 @@ public class CreateFeedService {
         withdrawAccount.withdraw(createFeedServiceRequest.saving());
         Account depositAccount = queryAccountDbPort.findAccountByAccountTypeAndUserId(AccountType.DEPOSIT, userId)
                 .orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NO_BANK_ACCOUNT));
-
-        //TODO: s3 이미지 저장
         String url = commandFeedImagePort.save(createFeedServiceRequest.photo(), userId)
                 .orElseThrow(() -> new ServerErrorException(ServerErrorExceptionCode.NETWORK_ERROR));
-
         //feedback 저장
         Feed feed = commandFeedDbPort.save(createFeedServiceRequest.toEntity(depositAccount, user, challenge, url));
 
         //5. 마지막으로 통장 계좌에 저장
         depositAccount.deposit(createFeedServiceRequest.saving());
-
         return feed.getFeedId();
     }
 }
