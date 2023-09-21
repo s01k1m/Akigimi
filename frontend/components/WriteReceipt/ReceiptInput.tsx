@@ -20,7 +20,9 @@ interface FormData {
   }
 
 const ReceiptInput = () => {
+    // 잔액 부족한 경우 모달 창 관리
     const [isOpened, setIsOpened] = useState<boolean>(false)
+    // formData 데이터 한 번에 관리
     const [formData, setFormData] = useState({
         notPurchasedItem: '',
         saving: '',
@@ -117,7 +119,7 @@ const ReceiptInput = () => {
                 }
                 console.log('절약 기록 작성 실패', error)
                 // 잔액이 부족한 경우 모달창 띄우기
-                // setIsOpened(true)
+                setIsOpened(true)
             })
         
         
@@ -214,9 +216,9 @@ const ReceiptInput = () => {
                 <button type="button" className="button-common-small blue-btn" onClick={handleSubmit}>기록 남기기</button>
             </div>
             {/* 추후 기능 */}
-            <div className='sticky bottom-0'>
+            <div className='flex fixed bottom-0 justify-center'>
                 {isOpened ? (
-                    <Modal change={500} /> 
+                    <Modal /> 
                 ) : (
                     null
                 )}
