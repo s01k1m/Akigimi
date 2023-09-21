@@ -78,7 +78,7 @@ const Main = () => {
 
 
     useEffect(() => {
-        // challengeData()
+        challengeData()
     }, [stage])
   
     return (
@@ -107,12 +107,12 @@ const Main = () => {
                 <ChallengeInfo item={productName} day={challengePeriod} date={days} itemImg={productImg} />
             </div>
         }
-        {stage === 5 &&
+        {stage === 6 &&
             <div className="flex justify-center -mt-1.5">
                 <GoToBuyBtn />
             </div>
         }
-        {stage === 6 &&
+        {stage === 7 &&
             <div className="flex justify-center -mt-1.5">
             <GoToRetryBtn />
             </div>
