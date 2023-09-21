@@ -5,7 +5,9 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import lombok.Builder;
 
+@Builder
 public record GetBunchOfReceiptRequest (
         @Positive
         @NotNull(message = "올바른 feed 요청을 해주세요")
