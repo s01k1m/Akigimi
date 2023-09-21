@@ -43,8 +43,13 @@ public class CreateAccountPasswordService {
         // 4. password+salt하여 hashing 처리한다.
         String digest = hashPort.hash(request.getPassword(),accountSalt);
 
-        // 5. accountSalt를 저장한다)
-//        commandSaltPort.save(new Salt(account,accountSalt));
+        // 5. accountSalt를 저장한다
+        if(account.getAccountType().equals(AccountType.DEPOSIT)){
+            commandSaltPort.save(new Salt(user,accountSalt, SaltType.DEPOSIT));
+        }
+        if(account.getAccountType().equals(AccountType.WITHDRAW)){
+            commandSaltPort.save(new Salt(user,accountSalt, SaltType.WITHDRAW));
+        }
 
         account.setPassword(digest, true);
         // 6. Account의 계좌 password에 digest를 저장한다.
