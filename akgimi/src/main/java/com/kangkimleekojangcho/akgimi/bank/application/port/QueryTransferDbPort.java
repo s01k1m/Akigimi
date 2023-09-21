@@ -7,5 +7,5 @@ import java.util.List;
 import java.util.Optional;
 
 public interface QueryTransferDbPort {
-    List<Transfer> findBySendAccountOrReceiveAccount(Account account);
+    List<Transfer> findByAccount(Account account);
 }

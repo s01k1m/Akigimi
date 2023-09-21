@@ -32,7 +32,7 @@ public class CheckDepositWithdrawService {
         Account account = queryAccountDbPort.findByUserAndAccountType(user,accountType)
                 .orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NO_BANK_ACCOUNT));
         // 2. Transfer 정보를 가져온다.
-        List<Transfer> transfers = queryTransferDbPort.findBySendAccountOrReceiveAccount(account);
+        List<Transfer> transfers = queryTransferDbPort.findByAccount(account);
 
         List<TransferResponse> transferResponse = new ArrayList<>();
         for(Transfer transfer: transfers){

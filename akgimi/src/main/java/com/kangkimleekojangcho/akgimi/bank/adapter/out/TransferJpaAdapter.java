@@ -22,7 +22,7 @@ public class TransferJpaAdapter implements CommandTransferDbPort, QueryTransferD
     }
 
     @Override
-    public List<Transfer> findBySendAccountOrReceiveAccount(Account account) {
-        return transferJpaRepository.findBySendAccountOrReceiveAccount(account);
+    public List<Transfer> findByAccount(Account account) {
+        return transferJpaRepository.findByAccount(account);
     }
 }
