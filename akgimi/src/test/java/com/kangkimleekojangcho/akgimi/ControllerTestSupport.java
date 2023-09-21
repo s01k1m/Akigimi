@@ -34,13 +34,13 @@ public abstract class ControllerTestSupport {
     protected MattermostSender mattermostSender;
 
     @MockBean
-    private GetBunchOfReceiptService getBunchOfReceiptService;
+    protected GetBunchOfReceiptService getBunchOfReceiptService;
     @MockBean
-    private SubtractUserIdFromAccessTokenService subtractUserIdFromAccessTokenService;
+    protected SubtractUserIdFromAccessTokenService subtractUserIdFromAccessTokenService;
     @MockBean
-    private CreateFeedService createFeedService;
+    protected CreateFeedService createFeedService;
     @MockBean
-    private GetBunchOfFeedWrittenByFollowerRequestService getBunchOfFeedWrittenByFollowerRequestService;
+    protected GetBunchOfFeedWrittenByFollowerRequestService getBunchOfFeedWrittenByFollowerRequestService;
 
     @Autowired
     protected MockMvc mockMvc;
