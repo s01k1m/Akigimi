@@ -276,6 +276,7 @@ export default function Signup() {
                 msg={"NEXT"}
                 handleClick={(e) => {
                   if (!didMatch) {
+                    // 비밀번호1 과 비밀번호2가 서로 맞지 않으면 다음 페이지로 넘어갈 수 없음
                     e.preventDefault;
                     alert("출금 비밀번호를 제대로 입력해주세요");
                     return false;
