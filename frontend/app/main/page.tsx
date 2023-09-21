@@ -13,7 +13,7 @@ import '@/styles/MainPageButton.css'
 
 const Main = () => {
 
-    const token = `eyJ0eXBlIjoiQUNDRVNTVE9LRU4iLCJhbGciOiJIUzI1NiJ9.eyJpZCI6OTk5OSwidXNlclN0YXRlIjoiUEVORElORyIsImlhdCI6MTY5NTE3NDc3NywiZXhwIjoxNjk1MzU0Nzc3fQ.58F3t3w_nBSCD0wRrwExXc4VTdPJSrGBiqRwjlQ4XjU`
+    const token = `eyJ0eXBlIjoiQUNDRVNTVE9LRU4iLCJhbGciOiJIUzI1NiJ9.eyJpZCI6OTk5OSwidXNlclN0YXRlIjoiUEVORElORyIsImlhdCI6MTY5NTI1NTQ5MywiZXhwIjoxNjk1NDM1NDkzfQ.Wwg5ar8uOp2xZmt6JO7aRyhPTHuIxduFcrx1pdV-vAM`
     const [stage, setStage] = useState<number>(0)
     const [percentage, setPercentage] = useState<number>(0)
     const [productName, setProductName] = useState<string>("")
@@ -78,14 +78,14 @@ const Main = () => {
 
 
     useEffect(() => {
-    
-    }, [])
+        // challengeData()
+    }, [stage])
   
     return (
         <div className={`background-${stage}`} style={{ width: '100%'}}>
         <div className="flex flex-col items-center justify-center" style={{ width: '100%'}}>
-            <MoneyGageBar percentage={percentage} productPrice={productPrice}  />
-           <DayGageBar challengePeriod={challengePeriod} days={days}  />
+            <MoneyGageBar percentage={percentage} productPrice={productPrice} stage={stage}  />
+           <DayGageBar challengePeriod={challengePeriod} days={days} stage={stage}   />
         </div>
         {stage === 0 &&
             <div className="flex justify-center mt-60" >
@@ -96,8 +96,8 @@ const Main = () => {
                         console.log('click')
                         inProgress()
                         setStage(1)
-                    }}
-                >
+                        }}
+                    >
                     미닝템 정하러 가기
                 </button>
             </div>
