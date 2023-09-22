@@ -104,7 +104,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 new AntPathRequestMatcher("/kakao/idtoken", HttpMethod.GET.name()),
                 new AntPathRequestMatcher("/develop/login", HttpMethod.GET.name()),
                 new AntPathRequestMatcher("/user/nickname/duplicate", HttpMethod.GET.name()),
-                new AntPathRequestMatcher("/user/reissue", HttpMethod.POST.name())
+                new AntPathRequestMatcher("/user/reissue", HttpMethod.POST.name()),
+                new AntPathRequestMatcher("/swagger-ui/*",HttpMethod.GET.name()),
+                new AntPathRequestMatcher("/v3/api-docs"),
+                new AntPathRequestMatcher("/v3/api-docs/*",HttpMethod.GET.name())
         );
         OrRequestMatcher skipList = new OrRequestMatcher(permitList);
         return skipList.matches(request);

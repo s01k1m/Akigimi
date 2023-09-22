@@ -1,5 +1,4 @@
 use akgimi;
-
 insert into users(id,kakao_profile_nickname, nickname, oauth_id, oidc_provider,simple_password, user_state) values (9999,'가나다','nick1','1','KAKAO','pGp7oK0O4bcVOHFNsDBRbwmz0k4QyGG4A3FphLS3WYM=','PENDING');
 insert into users(id,kakao_profile_nickname, nickname, oauth_id, oidc_provider, user_state) values (10000,'라마바','nick2','2','KAKAO','ACTIVE');
 insert into salt(user_id, salt_value, type)
