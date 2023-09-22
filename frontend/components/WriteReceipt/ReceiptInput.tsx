@@ -93,16 +93,16 @@ const ReceiptInput = () => {
     // token
     let token: string = "";
 
-    useEffect(() => {
-        if (typeof window !== "undefined") {
-        token = window.localStorage.getItem("access_token");
-        }
-    }, []);
-
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
         
         console.log(formData)
+
+        if (typeof window !== "undefined") {
+            token = window.localStorage.getItem("access_token");
+            }
+
+        console.log('토큰 받아지는 지 확인', token)
 
         if (formData.photo === ""){
             alert('사진을 추가해주세요')
