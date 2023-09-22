@@ -44,6 +44,7 @@ public class UserController {
     private final FollowUserService followUserService;
     private final GetFriendsInfoService getFriendsInfoService;
     private final SaveUserProfileService saveUserProfileService;
+    private final ActivateUserService activateUserService;
 
     @GetMapping("/kakao/loginurl")
     public ResponseEntity<SuccessResponse<String>> getKakaoLoginUrl() {
@@ -148,5 +149,12 @@ public class UserController {
         }
         Long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
         saveUserProfileService.save(userId, files.get(0));
+    }
+
+    @PostMapping("/user/activate")
+    public ResponseEntity<SuccessResponse<ActivateUserServiceResponse>> activateUser(HttpServletRequest servletRequest) {
+        Long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
+        ActivateUserServiceResponse response = activateUserService.activate(userId);
+        return ResponseFactory.success(response);
     }
 }
