@@ -7,6 +7,7 @@ import FollowingButton from "@/components/User/FollowingButton";
 import MypageAccouts from "@/components/User/MypageAccount";
 import FriendCard from "@/components/User/FriendCard";
 import { BiSearchAlt } from "react-icons/bi";
+
 export default function Mypage() {
   const [content, setContent] = useState<string>("account");
   let withdrawalBalance: number = 0;
@@ -56,12 +57,18 @@ export default function Mypage() {
       <div className="m-4">
         <MypageTap></MypageTap>
       </div>
-      <div className="w-full px-[44px] text-left font-black text-[20px] mt-[32px] mb-[21px] ">
-        계좌
-      </div>
-      {content == "account" ? (
-        <MypageAccouts></MypageAccouts>
-      ) : content == "follower" ? (
+      {content === "account" ? (
+        <div className="w-full">
+          <div className="w-full px-[44px] text-left font-black text-[20px] mt-[32px] mb-[21px] ">
+            계좌
+          </div>
+
+          <MypageAccouts
+            withdrawalBalance={"10000"}
+            depositBalance={"2000"}
+          ></MypageAccouts>
+        </div>
+      ) : content === "follower" ? (
         <div className="w-full relative flex flex-col justify-center items-center">
           <input
             type="text"
@@ -72,13 +79,13 @@ export default function Mypage() {
           <div className="absolute top-[5px] left-[5px] p-2">
             <BiSearchAlt size="30"></BiSearchAlt>
           </div>
-          <FriendCard></FriendCard>
+          {/* <FriendCard id imgUrl userName product gage></FriendCard> */}
+          <div>dfdf</div>
         </div>
-      ) : content == "following" ? (
-        <FriendCard></FriendCard>
-      ) : (
-        ""
-      )}
+      ) : content === "following" ? (
+        // <FriendCard></FriendCard>
+        <div>asdfdsf</div>
+      ) : null}
     </div>
   );
 }
