@@ -19,35 +19,53 @@ export default function Signup() {
   let token: string = "";
 
   useEffect(() => {
+    console.log("웰컴페이지 도착");
     if (typeof window !== "undefined") {
       token = window.localStorage.getItem("access_token");
+      console.log(window.localStorage.getItem("access_token"));
+      createSimplePW();
     }
   }, []);
 
   // 회원 정보 조회
-  const getUserInfo = async () => {
-    router.push("/login/register/withdrawal");
+  // const getUserInfo = async () => {
+  //   const formData = new FormData();
+  //   formData.append("nickname", nickname); // 파일 첨부
 
+  //   await axios
+  //     .post("/api/user/nickname", formData, {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //         "Content-Type": "multipart/form-data",
+  //       },
+  //     })
+  //     .then((response) => {
+  //       // setNickname();
+  //     });
+  // };
+  // 버튼 클릭시 함수
+
+  const createSimplePW = async () => {
+    token = window.localStorage.getItem("access_token");
+    console.log(token);
     const formData = new FormData();
-    formData.append("nickname", nickname); // 파일 첨부
-
+    formData.append("simplePassword", "123456"); // 파일 첨부
+    console.log("강제로 심플패스워드함");
     await axios
-      .post("/api/user/nickname", formData, {
+      .post("/api/user/password/simple", formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
       })
       .then((response) => {
-        // setNickname();
+        console.log("간편로그인 123456");
       });
   };
-  // 버튼 클릭시 함수
-  const handleClick = async () => {
-    router.replace("/main");
 
-    const formData = new FormData();
-    formData.append("nickname", nickname); // 파일 첨부
+  const handleClick = async () => {
+    await createSimplePW();
+    router.replace("/main");
 
     // await axios
     //   .post("/api/user/nickname", formData, {

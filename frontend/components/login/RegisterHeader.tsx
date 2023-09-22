@@ -1,4 +1,4 @@
-import { RegisterInfo } from "@/app/login/register/withdrawal/page";
+import { RegisterInfo } from "@/app/login/register/withdraw/page";
 
 type InfoProps = {
   info: RegisterInfo;
