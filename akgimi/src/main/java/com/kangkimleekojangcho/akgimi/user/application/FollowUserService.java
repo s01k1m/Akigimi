@@ -23,7 +23,7 @@ public class FollowUserService {
         // 1. follower 유저 정보를 가져온다.
         User follower = queryUserDbPort.findById(userId).orElseThrow(()->new BadRequestException(BadRequestExceptionCode.NOT_USER));
         // 2. followee 유저 정보를 가져온다.
-        User followee =queryUserDbPort.findById(followUser).orElseThrow(()->new BadRequestException(BadRequestExceptionCode.NOT_USER));
+        User followee = queryUserDbPort.findById(followUser).orElseThrow(()->new BadRequestException(BadRequestExceptionCode.NOT_USER));
         // 3. Follow
         Follow follow = Follow.builder()
                 .follower(follower)
