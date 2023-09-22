@@ -1,4 +1,4 @@
-package com.kangkimleekojangcho.akgimi;
+package com.kangkimleekojangcho.akgimi.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kangkimleekojangcho.akgimi.common.application.MattermostSender;

@@ -1,6 +1,6 @@
 package com.kangkimleekojangcho.akgimi.sns.adapter.in;
 
-import com.kangkimleekojangcho.akgimi.ControllerTestSupport;
+import com.kangkimleekojangcho.akgimi.config.ControllerTestSupport;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
