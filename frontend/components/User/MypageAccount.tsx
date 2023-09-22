@@ -4,12 +4,12 @@ import AccountButton from "./AccountButton";
 let logoList: string[] = ["/ssafybank logo.png", "/multi logo.png"];
 
 interface AccountProps {
-  withdrawalBalance: string;
+  withdrawBalance: string;
   depositBalance: string;
 }
 
 export default function MypageAccouts({
-  withdrawalBalance,
+  withdrawBalance,
   depositBalance,
 }: AccountProps) {
   return (
@@ -18,9 +18,9 @@ export default function MypageAccouts({
         <Account
           src={logoList[0]}
           name={"출금 계좌"}
-          balance={withdrawalBalance}
+          balance={withdrawBalance}
         />
-        <AccountButton src="/user/withdrawal"></AccountButton>
+        <AccountButton src="/user/withdraw"></AccountButton>
       </div>
       <div className="w-full flex justify-between my-[15px] px-[44px] items-center">
         <Account
