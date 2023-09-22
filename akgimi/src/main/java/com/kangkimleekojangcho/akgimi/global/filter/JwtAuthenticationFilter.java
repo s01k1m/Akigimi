@@ -67,7 +67,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 "/account/new",
                 "/account/new/password",
                 "/user/password/simple",
-                "/user/password/simple/check"));
+                "/user/password/simple/check",
+                "/user/profile"));
         return accessibleSet.contains(path);
     }
 
