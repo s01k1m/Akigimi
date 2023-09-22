@@ -1,8 +1,10 @@
 package com.kangkimleekojangcho.akgimi.sns.application;
 
+import com.kangkimleekojangcho.akgimi.bank.application.port.CommandTransferDbPort;
 import com.kangkimleekojangcho.akgimi.bank.application.port.QueryAccountDbPort;
 import com.kangkimleekojangcho.akgimi.bank.domain.Account;
 import com.kangkimleekojangcho.akgimi.bank.domain.AccountType;
+import com.kangkimleekojangcho.akgimi.bank.domain.Transfer;
 import com.kangkimleekojangcho.akgimi.challenge.application.port.QueryChallengeDbPort;
 import com.kangkimleekojangcho.akgimi.challenge.domain.Challenge;
 import com.kangkimleekojangcho.akgimi.global.exception.BadRequestException;
@@ -20,6 +22,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 @Service
 @Transactional
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
@@ -30,7 +34,9 @@ public class CreateFeedService {
     private final CommandFeedDbPort commandFeedDbPort;
     private final QueryChallengeDbPort queryChallengeDbPort;
     private final CommandFeedImagePort commandFeedImagePort;
+    private final CommandTransferDbPort commandTransferDbPort;
 
+    @Transactional
     public Long createFeed(CreateFeedServiceRequest createFeedServiceRequest, Long userId) {
 
         //1. 유저 확인하기
@@ -54,6 +60,16 @@ public class CreateFeedService {
 
         //5. 마지막으로 통장 계좌에 저장
         depositAccount.deposit(createFeedServiceRequest.saving());
+
+        // 6. 계좌 거래 내역 저장
+        commandTransferDbPort.save(Transfer.builder()
+                        .sendAccount(withdrawAccount)
+                        .sendAccountBalance(withdrawAccount.getBalance())
+                        .receiveAccount(depositAccount)
+                        .sendAccountBalance(depositAccount.getBalance())
+                        .amount(createFeedServiceRequest.saving())
+                        .transferDateTime(LocalDateTime.now())
+                .build());
         return feed.getFeedId();
     }
 }
