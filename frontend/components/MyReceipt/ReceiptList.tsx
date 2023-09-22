@@ -14,7 +14,7 @@ type ReceiptItem = {
 
 
 const ReceiptList = () => {
-    const userId = 13
+    const userId = 15
 
     let token: string = "";
 
@@ -45,7 +45,7 @@ const ReceiptList = () => {
         await axios
             .get(`api/receipts/${userId}`, {
                 params: {
-                    lastReceiptId: 10,
+                    lastReceiptId: 10000,
                     numberOfReceipt: 5
                 },
                 headers: {
@@ -53,7 +53,7 @@ const ReceiptList = () => {
                 }
             })
             .then((response) => {
-                console.log('피드 조회 성공', response.data.data.list)
+                console.log('영수증 조회 성공', response.data.data.list)
 
                 // 요청 성공 시에 리스트 뒤로 붙여주기
                 setReceiptItems([...receiptItems, ...(response.data.data.list)])
