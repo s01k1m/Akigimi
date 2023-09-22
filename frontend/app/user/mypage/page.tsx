@@ -10,8 +10,13 @@ import { BiSearchAlt } from "react-icons/bi";
 
 export default function Mypage() {
   const [content, setContent] = useState<string>("account");
-  let withdrawalBalance: number = 0;
+  let withdrawBalance: number = 0;
   let depositBalance: number = 0;
+
+  // const getUserInfo() => {
+
+  // }
+
   return (
     <div className="w-full flex flex-col justify-center items-center">
       <Image
@@ -64,7 +69,7 @@ export default function Mypage() {
           </div>
 
           <MypageAccouts
-            withdrawalBalance={"10000"}
+            withdrawBalance={"10000"}
             depositBalance={"2000"}
           ></MypageAccouts>
         </div>
