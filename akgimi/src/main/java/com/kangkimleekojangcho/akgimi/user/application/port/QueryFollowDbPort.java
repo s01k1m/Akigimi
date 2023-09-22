@@ -5,7 +5,7 @@ import com.kangkimleekojangcho.akgimi.user.domain.User;
 import java.util.List;
 
 public interface QueryFollowDbPort {
-    List<User> getFollowingUser(User user);
+    List<User> getFollower(User user);
 
-    List<User> getFollowedUser(User user);
+    List<User> getFollowee(User user);
 }
