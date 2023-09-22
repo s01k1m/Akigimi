@@ -4,7 +4,7 @@ interface FriendProps {
   id: number;
   imgUrl: string;
   userName: string;
-  product: string;
+  product: null | string;
   gage: number;
 }
 
@@ -18,8 +18,8 @@ const FriendCard: React.FC<FriendProps> = ({
   return (
     <div className="flex items-center w-[80%] h-[96px] bg-gray1 px-[15px]">
       <Image
-        src="/profile.jpg"
-        // src={imgUrl}
+        // src="/profile.jpg"
+        src={imgUrl}
         alt="profile img"
         width={55} // 실제 이미지의 가로 크기로 설정하세요
         height={55} // 실제 이미지의 세로 크기로 설정하세요
