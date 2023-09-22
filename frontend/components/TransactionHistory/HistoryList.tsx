@@ -31,7 +31,7 @@ const HistoryList: React.FC<ListPropsType> = ({ period, type }) => {
         await axios 
             .get(`/api/account/transaction/history`, {
                 params: {
-                    accountType: 'WITHDRAW'
+                    accountType: 'DEPOSIT'
                 },
                 headers: {
                     Authorization: `Bearer ${token}`,

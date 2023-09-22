@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "users")
 @Getter
@@ -40,7 +43,9 @@ public class User {
         this.profileImageUrl = profileImageUrl;
     }
 
-
+    public void setUserState(UserState userState) {
+        this.userState = userState;
+    }
 
     public void signUp() {
         this.userState = UserState.ACTIVE;
@@ -64,5 +69,16 @@ public class User {
 
     public void setProfileImageUrl(String profileImageUrl) {
         this.profileImageUrl = profileImageUrl;
+    }
+
+    public List<UserField> whatIsNotFilled() {
+        List<UserField> userFields = new ArrayList<>();
+        if(nickname==null){
+            userFields.add(UserField.NICKNAME);
+        }
+        if(simplePassword==null){
+            userFields.add(UserField.SIMPLE_PASSWORD);
+        }
+        return userFields;
     }
 }
