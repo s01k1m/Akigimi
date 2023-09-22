@@ -44,7 +44,7 @@ export default function Signup() {
   };
   // 버튼 클릭시 함수
   const handleClick = async () => {
-    router.replace("/");
+    router.replace("/main");
 
     const formData = new FormData();
     formData.append("nickname", nickname); // 파일 첨부
@@ -70,7 +70,7 @@ export default function Signup() {
         <div className="p-9 relative h-full w-full flex flex-col items-center">
           <div>
             <Image
-              src="/login success.png"
+              src="/images/login success.png"
               alt="로고 사진"
               width={200} // 실제 이미지의 가로 크기로 설정하세요
               height={200} // 실제 이미지의 세로 크기로 설정하세요
