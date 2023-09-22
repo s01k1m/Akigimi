@@ -14,8 +14,7 @@ import '@/styles/MainPageButton.css'
 
 const Main = () => {
 
-    const token = `eyJ0eXBlIjoiQUNDRVNTVE9LRU4iLCJhbGciOiJIUzI1NiJ9.eyJpZCI6OTk5OSwidXNlclN0YXRlIjoiUEVORElORyIsImlhdCI6MTY5NTI1NTQ5MywiZXhwIjoxNjk1NDM1NDkzfQ.Wwg5ar8uOp2xZmt6JO7aRyhPTHuIxduFcrx1pdV-vAM`
-    const [isLoading, setIsLoading] = useState<boolean>(true)
+    const [isLoading, setIsLoading] = useState<boolean>(false)
     const [stage, setStage] = useState<number>(0)
     const [percentage, setPercentage] = useState<number>(0)
     const [productName, setProductName] = useState<string>("")
@@ -24,9 +23,17 @@ const Main = () => {
     const [challengePeriod, setChallengePeriod] = useState<number>(0)
     const [days, setDays] = useState<number>(0)
     const [balance, setBalance] = useState<number>(0)
+    let token: string = "";
     
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+        token = window.localStorage.getItem("access_token");
+        }
+        console.log('토큰', token)
+    }, []);
+
     const challengeData = async () => {
-        setIsLoading(true)
+        // setIsLoading(true)
         await axios
             .get('/api/challenges/in-progress', {
                 headers: {
@@ -62,6 +69,7 @@ const Main = () => {
             itemId: 1,
             challengePeriod: 50
         };
+        console.log('버튼 눌렀을 때 토큰 잘 불러오는지 확인', token)
         await axios
             .post('/api/challenges', requestBody, {
                 headers: {
@@ -82,13 +90,13 @@ const Main = () => {
                 } else if (error.response.data.code === '012') {
                     alert('챌린지에 참여하세요')
                 }
-                console.error('챌린지 생성 에러', error)
+                console.log('챌린지 생성 에러', error)
             })
     } 
 
 
     useEffect(() => {
-        challengeData()
+        // challengeData()
     }, [stage, percentage])
   
     return (
@@ -105,7 +113,8 @@ const Main = () => {
                     {/* 물건 정하러 가기 버튼  */}
                     <button 
                         className="go-to-btn"
-                        onClick={() => {
+                        onClick={(e) => {
+                            e.preventDefault();
                             inProgress()
                             challengeData()
                             setStage(1)
