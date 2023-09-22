@@ -29,7 +29,7 @@ export default function Signup() {
 
   // handleClick() : 버튼 컴포넌트에 넘겨줄 함수 prop을 만듦
   const handleClick = async () => {
-    router.push("/login/register/withdraw");
+    token = window.localStorage.getItem("access_token");
 
     const formData = new FormData();
     formData.append("nickname", nickname); // 파일 첨부
@@ -43,6 +43,7 @@ export default function Signup() {
       })
       .then((response) => {
         console.log(response);
+        router.push("/login/register/withdraw");
       });
   };
   // duplicateCheck() : 닉네임 중복 검사 함수
