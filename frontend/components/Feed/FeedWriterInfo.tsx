@@ -15,8 +15,6 @@ interface ItemProps {
 }
 
 const FeedWriteInfo: React.FC<ItemProps> = ({ imgUrl, name, place, item, price, image, isLiked, description }) => {
-    
-    // api 가져오기
     return (
         <div>
             <div className="ms-[5vw] mb-[2vh]">
@@ -28,7 +26,7 @@ const FeedWriteInfo: React.FC<ItemProps> = ({ imgUrl, name, place, item, price, 
             <div className="mb-[1vh]">
                 <FeedImg image={image} />
             </div>
-            <div className="flex justify-center">
+            <div className="flex justify-start">
                 <Description isLiked={isLiked} description={description} />
             </div>
         </div>

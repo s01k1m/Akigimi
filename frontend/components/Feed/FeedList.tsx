@@ -1,52 +1,116 @@
 import FeedItem from "./FeedItem"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import axios from "axios"
+import { useInView } from "react-intersection-observer";
+import Footer from "@/app/Footer";
 
+type FeedItem = {
+    id: number;
+    userProfile: string;
+    akimLocation: string;
+    akimItemName: string;
+    savePrice: number;
+    userName: string;
+    image: string;
+    isLikedFeed: boolean;
+    description: string;
+  };
 type selectedProps =  {
     selectedValue: string
 }
 
 const FeedList: React.FC<selectedProps> = ({ selectedValue }) => {
-    // selectedValue 선택 된 값 파라미터로 넘기기
-    
-    // const [feedData, setFeedData] = useState<[]>()
-    // const token = sessionStorage.getItem('token')
-    // // 피드 정보 api 호출하기
-    // const getFeedData = async () => {
-    //     await axios
-    //         .get(`/feeds?lastFeedtId=${lastFeedtId}?count=${count}`, {
-    //             headers: {
-    //                 'Authorization': `Bearer ${token}`
-    //             }
-    //         })
-    //         .then((response) => {
-    //             console.log(response)
-    //             setFeedData(response.data.list)
-    //         })
-    //         .catch((error) => {
-    //             console.error('error')
-    //         })
-    // }
+    // 초기 피드 리스트
+    const [feedItems, setFeedItems] = useState<FeedItem[]>([]);
 
-    const feedItems: any = [
-        { id: 1 , userProfile:'/images/black.png', akimLocation: "투썸", akimItemName: "아메리카노", savePrice: 5100, userName: "코딩하는 조성찬1", image: "/images/black.png", description: "커피 참고 정신력으로 버텼다" },
-        { id: 2, userProfile:'/images/black.png', akimLocation: "투썸22", akimItemName: "아메리카노오", savePrice: 5100, userName: "코딩하는 조성찬2", image: "/images/black.png", description: "글시 적은 경우안녕하세요오호호호호하하하하하하 글씨가 몇자가 되면 마ㅇ인려려려 어 반가워 안녕 응 반갑다나 눈 아 응 그럼 82까지는 9해도 되 몇자ㅁ응 안녕 어 반" },
-        { id: 3, userProfile:'/images/black.png', akimLocation: "투썸33", akimItemName: "아메리카노호", savePrice: 5100, userName: "코딩하는 조성찬3", image: "/images/black.png", description: "어 화이팅" },
-    ]
+    // 새로 불러오는 리스트의 값만 담을 변수
+    let toCheckFeedId = []
+ 
+    // 관찰할 객체에 ref 달기
+    const [ref, inView] = useInView()
+
+    // 요청 보낼 마지막 lastViewId
+    const [lastViewId, setLastViewId] = useState<number>(9223372036854775807);
+
+    // 다음 피드가 불러오질 때까지 로딩
+    const [loading, setLoading] = useState<boolean>(false);
+   
+    const [feedData, setFeedData] = useState<[]>()
+    
+    let token: string = ""
+    // 피드 정보 api 호출하기 // 무한 스크롤 적용하기
+    const getFeedData = async () => {
+      setLoading(true)
+      if (typeof window !== "undefined") {
+        token = window.localStorage.getItem("access_token");
+        }
+        await axios
+            .get('/api/feeds', {
+                params: {
+                  lastFeedId: 9,
+                  numberOfFeed: 5
+                },
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then((response) => {
+                console.log('피드 조회 성공', response)
+
+                // 요청 성공 시에 리스트 뒤로 붙여주기
+                setFeedItems([...feedItems, ...(response.data.data.list)])
+
+                // 새로 가져온 값만 리스트에 담아주기
+                toCheckFeedId.push([response.data.data.list])
+
+                // 첫 번째 요청 이후에 viewId 값 상태 변경해주기
+                setLastViewId(toCheckFeedId[toCheckFeedId.length-1])
+                console.log('마지막 피드의 아이디 값은?', lastViewId)
+
+              })
+            .then(() => {
+              // 마지막 요청을 판단하는 방법
+
+            })
+            .catch((error) => {
+                console.log('영수증 조회 실패', error)
+            })
+            .finally (() => {
+              setLoading(false)
+            }
+)
+    }
+    
+    useEffect(() => {
+      // inView가 true 일 때만 실행한다
+      if (inView) {
+        console.log(inView, '무한 스크롤 요청 중이에요')
+
+        // 실행할 함수
+        getFeedData()
+      }
+    }, [inView])
+
     return (
-        <div>
-            {feedItems.map((item: any) => (
+        <div className="mx-0">
+            {feedItems && feedItems.length > 0 &&
+            feedItems.map((item: any) => (
+              <>
                 <FeedItem 
                     key={item.id} 
+                    itemId={item.id}
                     imgUrl={item.userProfile} 
-                    name={item.userName} 
-                    place={item.akimLocation} 
-                    item={item.akimItemName} 
-                    price={item.savePrice} 
-                    image={item.image} 
+                    name={item.nickname} 
+                    place={item.akgimiPlace} 
+                    item={item.notPurchasedItem} 
+                    price={item.price} 
+                    image={item.photo} 
                     isLiked={item.isLikedFeed} 
-                    description={item.description} />
+                    description={item.content} />
+              </>
             ))}
+            <div ref={ref}>스크롤을 내리고 있어요</div>
+            {loading && <div>Loading...</div>}
         </div>
     )
 }
