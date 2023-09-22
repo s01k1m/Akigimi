@@ -27,9 +27,10 @@ public class GetFriendsInfoService {
         List<User> friends = new ArrayList<>();
         if(friendType.equals("FOLLOWING")){
             friends = queryFollowDbPort.getFollowingUser(user);
-        }
-        if(friendType.equals("FOLLOWED")){
+        } else if(friendType.equals("FOLLOWED")){
             friends = queryFollowDbPort.getFollowedUser(user);
+        } else{
+            throw new BadRequestException(BadRequestExceptionCode.NO_AVAILABLE_FRIEND_TYPE);
         }
         List<FriendResponse> response = new ArrayList<>();
         for(User friend : friends){
