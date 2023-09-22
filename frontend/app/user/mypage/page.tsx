@@ -9,17 +9,29 @@ import FriendCard from "@/components/User/FriendCard";
 import { BiSearchAlt } from "react-icons/bi";
 import axios from "axios";
 import { useEffect } from "react";
+
+interface Friend {
+  id: number;
+  imgUrl: string;
+  userName: string;
+  product: string;
+  gage: number;
+}
+
+type FriendsList = Friend[];
 export default function Mypage() {
   const [content, setContent] = useState<string>("account");
   const [withdrawBalance, setWithdrawBalance] = useState<string>(0);
   const [depositBalance, setDepositBalance] = useState<string>(0);
+  const [searchWord, setSearchWord] = useState<string>("");
+  const [friendsList, setFriendsList] = useState<FriendsList>([]);
 
   // const getUserInfo() => {
 
   // }
+
   const getBalance = async () => {
     let token = window.localStorage.getItem("access_token");
-    console.log("출금밸런스");
     axios
       .get("/api/account/amount?accountType=WITHDRAW", {
         headers: {
@@ -28,10 +40,8 @@ export default function Mypage() {
         },
       })
       .then((response) => {
-        console.log(response);
         setWithdrawBalance(response.data.data.balance);
       });
-    console.log("저축밸런스");
     axios
       .get("/api/account/amount?accountType=DEPOSIT", {
         headers: {
@@ -40,14 +50,38 @@ export default function Mypage() {
         },
       })
       .then((response) => {
-        console.log(response);
         setDepositBalance(response.data.data.balance);
       });
   };
+
+  // type: FOLLOWING FOLLOWED
+  const getfriendsList = async (type: string) => {
+    let token = window.localStorage.getItem("access_token");
+    axios
+      .get(`/friends?friendType=${type}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        setFriendsList(response.data.data.friends);
+      });
+  };
+
   useEffect(() => {
-    console.log("12");
+    // Moved the initial setFriendsList here
+    setFriendsList([
+      {
+        id: 0,
+        imgUrl: "/images/profile.jpg",
+        userName: "SK",
+        product: "유니폼",
+        gage: 80,
+      },
+    ]);
+
     getBalance();
-  }, []);
+  }, []); // Empty dependency array means this runs once on component mount
 
   return (
     <div className="w-full flex flex-col justify-center items-center">
@@ -76,7 +110,7 @@ export default function Mypage() {
           className="hover:bg-gray1 w-[80px] h-[50px] rounded"
           onClick={() => {
             setContent("follower");
-            console.log("팔로워");
+            // getfriendsList("FOLLOWED");
           }}
         >
           <FollowerButton total={10} />
@@ -85,7 +119,8 @@ export default function Mypage() {
           className="hover:bg-gray1 w-[80px] h-[50px] rounded"
           onClick={() => {
             setContent("following");
-            console.log("팔로잉");
+            // setContent("FETCH following DATA ");
+            // getfriendsList("FOLLOWING");
           }}
         >
           <FollowingButton total={15} />
@@ -110,18 +145,48 @@ export default function Mypage() {
           <input
             type="text"
             placeholder="친구검색"
-            className="mb-3 w-[80%] h-12 rounded p-2 bg-gray1"
+            value={searchWord}
+            onChange={(e) => {
+              console.log(e.target.value);
+              setSearchWord(e.target.value);
+            }}
+            className="mb-3 w-[80%] ps-12 h-12 rounded p-2 bg-gray1"
           ></input>
 
-          <div className="absolute top-[5px] left-[5px] p-2">
+          <div
+            className="absolute top-2 left-16"
+            onClick={() => {
+              console.log("친구검색");
+            }}
+          >
             <BiSearchAlt size="30"></BiSearchAlt>
           </div>
-          {/* <FriendCard id imgUrl userName product gage></FriendCard> */}
-          <div>dfdf</div>
+          {friendsList?.map((person) => {
+            return (
+              <FriendCard
+                id={person.id}
+                imgUrl={person.imgUrl}
+                userName={person.userName}
+                product={person.product}
+                gage={person.gage}
+              ></FriendCard>
+            );
+          })}
         </div>
       ) : content === "following" ? (
-        // <FriendCard></FriendCard>
-        <div>asdfdsf</div>
+        <div className="w-full flex flex-col justify-center items-center">
+          {friendsList?.map((person) => {
+            return (
+              <FriendCard
+                id={person.id}
+                imgUrl={person.imgUrl}
+                userName={person.userName}
+                product={person.product}
+                gage={person.gage}
+              ></FriendCard>
+            );
+          })}
+        </div>
       ) : null}
     </div>
   );
