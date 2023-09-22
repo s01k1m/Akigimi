@@ -122,7 +122,7 @@ const ReceiptInput = () => {
             })
             .then(() => {
                 // main 챌린지 페이지로 이동
-                router.push('/main')
+                router.push('/feed')
             })
             .catch((error) => {
                 if (error.response.data.code === '012') {

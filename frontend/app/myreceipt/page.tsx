@@ -4,6 +4,7 @@ import ReceiptCircle from "@/components/WriteReceipt/ReceiptCircle"
 import ReceiptTriangle from "@/components/MyReceipt/ReceiptTriangle"
 import ReceiptList from "@/components/MyReceipt/ReceiptList"
 import { useState } from "react"
+import Footer from "../Footer"
 
 const MyReceipt = () => {
     const [challengeState, setChallengeState] = useState<number>(0)
@@ -40,7 +41,7 @@ const MyReceipt = () => {
                         <div className="retry-sticker flex items-center ps-2 -mt-2 show">재도전 중이에요</div>
                     </div>
                 }
-
+                <Footer />
             </div>
     )
 }
