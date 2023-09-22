@@ -26,6 +26,6 @@ public class LoginService {
                 .orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NOT_USER));
         String accessToken = jwtTokenIssuer.createAccessToken(user.getId());
         String refreshToken = jwtTokenIssuer.createRefreshToken(user.getId());
-        return new LoginServiceResponse(accessToken, refreshToken);
+        return new LoginServiceResponse(accessToken, refreshToken,user.getUserState());
     }
 }
