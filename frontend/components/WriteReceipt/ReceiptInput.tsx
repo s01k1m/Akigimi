@@ -2,7 +2,7 @@
 import '@/styles/WriteReceipt.css'
 import '@/styles/MainPageButton.css'
 import ReceiptCircle from './ReceiptCircle'
-import React, { ChangeEvent, useState, useRef } from 'react'
+import React, { ChangeEvent, useState, useRef, useEffect } from 'react'
 import { MouseEventHandler, FormEvent  } from 'react'
 import { AiOutlineFileAdd } from 'react-icons/ai'
 import Image from 'next/image'
@@ -20,7 +20,9 @@ interface FormData {
   }
 
 const ReceiptInput = () => {
+    // 잔액 부족한 경우 모달 창 관리
     const [isOpened, setIsOpened] = useState<boolean>(false)
+    // formData 데이터 한 번에 관리
     const [formData, setFormData] = useState({
         notPurchasedItem: '',
         saving: '',
@@ -87,15 +89,28 @@ const ReceiptInput = () => {
 
     // form 제출
     const router = useRouter()
-    const token = `eyJ0eXBlIjoiQUNDRVNTVE9LRU4iLCJhbGciOiJIUzI1NiJ9.eyJpZCI6OTk5OSwidXNlclN0YXRlIjoiUEVORElORyIsImlhdCI6MTY5NTA5MTQ0MywiZXhwIjoxNjk1MjcxNDQzfQ.ZtvhjRaPo4LfBdi8RHzm5giPsH6RP1luAVgj8EY_VDI`
+
+    // token
+    let token: string = "";
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
         
         console.log(formData)
-        
+
+        if (typeof window !== "undefined") {
+            token = window.localStorage.getItem("access_token");
+            }
+
+        console.log('토큰 받아지는 지 확인', token)
+
+        if (formData.photo === ""){
+            alert('사진을 추가해주세요')
+            return
+        } 
         // 제출 api
         await axios
-            .post('http://25.4.167.82:8080/feed', formData, {
+            .post('/api/feeds', formData, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'multipart/form-data'
@@ -103,15 +118,21 @@ const ReceiptInput = () => {
             })
             .then((response) => {
                 console.log('절약 기록 작성 성공', response.data)
+
             })
             .then(() => {
-                // feed 페이지로 이동
-                router.push('/feed')
+                // main 챌린지 페이지로 이동
+                router.push('/main')
             })
             .catch((error) => {
+                if (error.response.data.code === '012') {
+                    alert('현재 참여중인 챌린지가 없어요 챌린지를 등록해주세요')
+                } else if (error.response.data.code === '014') {
+                    console.log('계좌에 돈이 부족합니다')
+                    setIsOpened(true)
+                }
                 console.log('절약 기록 작성 실패', error)
                 // 잔액이 부족한 경우 모달창 띄우기
-                // setIsOpened(true)
             })
         
         
@@ -193,7 +214,7 @@ const ReceiptInput = () => {
                             <input 
                                 type="checkbox" 
                                 name="isOpened"
-                                checked={formData.isPublic}
+                                defaultChecked={formData.isPublic}
                                 onClick={handleCheckboxClick}
                                 className="switch me-2" 
                             />
@@ -208,9 +229,9 @@ const ReceiptInput = () => {
                 <button type="button" className="button-common-small blue-btn" onClick={handleSubmit}>기록 남기기</button>
             </div>
             {/* 추후 기능 */}
-            <div className='sticky bottom-0'>
+            <div className='flex fixed bottom-0 justify-center'>
                 {isOpened ? (
-                    <Modal change={500} /> 
+                    <Modal /> 
                 ) : (
                     null
                 )}
