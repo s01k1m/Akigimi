@@ -18,6 +18,6 @@ public class DevelopLoginService {
                 .orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NOT_USER));
         String accessToken = jwtTokenIssuer.createAccessToken(userId,user.getUserState());
         String refreshToken = jwtTokenIssuer.createRefreshToken(userId,user.getUserState());
-        return new DevelopLoginServiceResponse(accessToken, refreshToken);
+        return new DevelopLoginServiceResponse(accessToken, refreshToken,user.getUserState());
     }
 }

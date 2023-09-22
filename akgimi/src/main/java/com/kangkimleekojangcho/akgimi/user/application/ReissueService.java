@@ -24,7 +24,7 @@ public class ReissueService {
         if(refreshToken.isExpired(new Date())){
             throw new UnauthorizedException(UnauthorizedExceptionCode.TOKEN_EXPIRED);
         }
-        String accessToken = jwtTokenIssuer.createAccessToken(refreshToken.getUserId());
+        String accessToken = jwtTokenIssuer.createAccessToken(refreshToken.getUserId(),refreshToken.getUserState());
         return new ReissueServiceResponse(accessToken);
     }
 }

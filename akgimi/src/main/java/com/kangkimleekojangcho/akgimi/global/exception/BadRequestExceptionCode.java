@@ -27,7 +27,8 @@ public enum BadRequestExceptionCode {
     NO_TRANSFER("018","거래 내역이 존재하지 않습니다."),
     NO_AVAILABLE_ACCOUNT_TYPE("019", "유효하지 않은 계좌 타입입니다."),
     NO_SALT("020", "솔트가 존재하지 않습니다"),
-    NOT_AVAILABLE_PASSWORD("021", "패스워드가 맞지 않습니다");
+    NOT_AVAILABLE_PASSWORD("021", "패스워드가 맞지 않습니다"),
+    NO_AVAILABLE_FRIEND_TYPE("022","친구의 타입이 유효하지 않습니다.");
     private final String code;
     private final String descriptionMessage;
 }
