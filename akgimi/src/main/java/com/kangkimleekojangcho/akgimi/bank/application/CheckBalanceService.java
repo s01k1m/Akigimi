@@ -24,6 +24,6 @@ public class CheckBalanceService {
                 .orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NOT_USER));
         Account account = queryAccountDbPort.findByUserAndAccountType(user,accountType)
                 .orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NO_BANK_ACCOUNT));
-        return new CheckBalanceServiceResponse(account.getBalance());
+        return CheckBalanceServiceResponse.builder().balance(account.getBalance()).accountNumber(account.getAccountNumber()).build();
     }
 }
