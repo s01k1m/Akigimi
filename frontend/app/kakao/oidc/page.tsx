@@ -75,7 +75,7 @@ export default function Login() {
         // TODO: 회원이므로 6자리 로그인으로 페이지 전환해야됨
         console.log(response.data.data.userState);
         if (response.data.data.userState === "PENDING") {
-          router.replace("/login/register/withdrawal");
+          router.replace("/login/register/withdraw");
           console.log(typeof response.data.data.userState);
         } else {
           router.replace("/main"); // 이거 중간평가용 임시임 나중에 6자리 로그인으로 변경해야함

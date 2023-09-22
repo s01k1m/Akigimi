@@ -118,9 +118,13 @@ export default function CreateWithdrawalAccount() {
     const formData = new FormData();
     formData.append("accountType", "WITHDRAWAL");
     formData.append("bank", "SSAFY");
+    const payload = {
+      accountType: "WITHDRAW",
+      bank: "SSAFY",
+    };
 
     await axios
-      .post("/api/account/new", formData, {
+      .post("/api/account/new", payload, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -204,7 +208,7 @@ export default function CreateWithdrawalAccount() {
 
             <AccountWrapper className="flex justify-center">
               <AccountNum
-                // htmlFor="withdrawalAccount"
+                // htmlFor="withdrawAccount"
                 onClick={() => {
                   console.log("클릭");
                 }}
@@ -223,7 +227,7 @@ export default function CreateWithdrawalAccount() {
                 )}
               </AccountNum>
               <input
-                id="withdrawalAccount"
+                id="withdrawAccount"
                 className="bg-white py-2 px-8 m-4 text-white"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   storeAccount(e)
