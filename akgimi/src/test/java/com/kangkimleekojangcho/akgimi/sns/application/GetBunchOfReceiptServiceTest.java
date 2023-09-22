@@ -4,7 +4,6 @@ import com.kangkimleekojangcho.akgimi.bank.domain.Account;
 import com.kangkimleekojangcho.akgimi.bank.domain.AccountType;
 import com.kangkimleekojangcho.akgimi.bank.domain.Bank;
 import com.kangkimleekojangcho.akgimi.challenge.domain.Challenge;
-import com.kangkimleekojangcho.akgimi.common.application.port.BeanBusinessValidationService;
 import com.kangkimleekojangcho.akgimi.product.domain.Product;
 import com.kangkimleekojangcho.akgimi.sns.application.request.GetBunchOfReceiptServiceRequest;
 import com.kangkimleekojangcho.akgimi.sns.application.response.GetBunchOfReceiptServiceResponse;
@@ -12,20 +11,16 @@ import com.kangkimleekojangcho.akgimi.sns.domain.Feed;
 import com.kangkimleekojangcho.akgimi.user.domain.KakaoNickname;
 import com.kangkimleekojangcho.akgimi.user.domain.User;
 import com.kangkimleekojangcho.akgimi.user.domain.UserState;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import org.testcontainers.shaded.org.apache.commons.lang3.builder.ToStringExclude;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -36,51 +31,111 @@ class GetBunchOfReceiptServiceTest extends SnsServiceIntegrationTestSupport {
     private GetBunchOfReceiptService getBunchOfReceiptService;
 
     private static final int NUMBER_OF_PUBLIC = 10;
-
-    @DisplayName("[happy] 다른 유저가 요청했을 때 정확한 데이터가 주어지면 요청에 따라 영수증 리스트를 반환한다.")
-    @Test
-    void givenValidData_whenGetBunchOfReceipt_thenReturnData() throws Exception {
+    @DisplayName("[happy]본인의 영수증을 요청했을 때 정확한 데이터가 주어지면 요청에 따라 영수증 리스트를 반환한다.")
+    @MethodSource("givenSameUserAnsAnswer")
+    @ParameterizedTest
+    void givenValidData_whenSameUserRequestGetBunchOfReceipt_thenReturnData(
+            User requestUser,
+            int size,
+            int answer
+    ) throws Exception {
         //given
         GetBunchOfReceiptServiceRequest getBunchOfReceiptServiceRequest =
                 GetBunchOfReceiptServiceRequest.builder()
                         .lastReceiptId(Long.MAX_VALUE)
-                        .numberOfReceipt(100)
+                        .numberOfReceipt(size)
                         .build();
-        User user = commandUserDbPort.save(User.builder()
+        requestUser = commandUserDbPort.save(requestUser);
+        prepareForSelectReceipt(requestUser);
+
+        //when
+        GetBunchOfReceiptServiceResponse getBunchOfReceiptServiceResponse
+                = getBunchOfReceiptService.getBunchOfReceipt(
+                requestUser.getId(), requestUser.getId(), getBunchOfReceiptServiceRequest);
+
+        //then
+        assertThat(getBunchOfReceiptServiceResponse.bunchOfBriefReceiptInfo()).isNotNull();
+        assertThat(getBunchOfReceiptServiceResponse.bunchOfBriefReceiptInfo().size()).isEqualTo(answer);
+    }
+
+    @DisplayName("[happy]본인의 영수증이 아닌 다른 유저의 영수증을 요청했을 때 정확한 데이터가 주어지면 요청에 따라 영수증 리스트를 반환한다.")
+    @MethodSource("giveDifferentUserAndAnswer")
+    @ParameterizedTest
+    void givenValidData_whenDifferentUserRequestGetBunchOfReceipt_thenReturnData(
+            User requestUser,
+            User receiptOwner,
+            int size,
+            int answer
+    ) throws Exception {
+        //given
+        GetBunchOfReceiptServiceRequest getBunchOfReceiptServiceRequest =
+                GetBunchOfReceiptServiceRequest.builder()
+                        .lastReceiptId(Long.MAX_VALUE)
+                        .numberOfReceipt(size)
+                        .build();
+        requestUser = commandUserDbPort.save(requestUser);
+        receiptOwner = commandUserDbPort.save(receiptOwner);
+        prepareForSelectReceipt(requestUser);
+
+        //when
+        GetBunchOfReceiptServiceResponse getBunchOfReceiptServiceResponse
+                = getBunchOfReceiptService.getBunchOfReceipt(
+                requestUser.getId(), receiptOwner.getId(), getBunchOfReceiptServiceRequest);
+
+        //then
+        assertThat(getBunchOfReceiptServiceResponse.bunchOfBriefReceiptInfo()).isNotNull();
+        assertThat(getBunchOfReceiptServiceResponse.bunchOfBriefReceiptInfo().size()).isEqualTo(answer);
+    }
+
+
+    private static Stream<Arguments> givenSameUserAnsAnswer() {
+        User user = User.builder()
                 .kakaoProfileNickname(new KakaoNickname("카카오프로필"))
                 .userState(UserState.ACTIVE)
                 .nickname("돌아다니는 카카오")
                 .oauthId("abcde")
-                .build());
-        prepareForSelectReceipt(user);
+                .build();
+        return Stream.of(
+                Arguments.of(
+                        user, 100, 20
+                ),
+                Arguments.of(
+                        user, 0, 0
+                ),
+                Arguments.of(
+                        user, 10, 10
+                )
+        );
+    }
 
-        User user2 = commandUserDbPort.save(User.builder()
+    //TODO: bad case추가해야 함. 아직 어떻게 bad case를 설정해줘야 할지 모르겠음. 없는 유저가 보내는 요청도 처리해야 되니까.. 다만들어?
+
+    private static Stream<Arguments> giveDifferentUserAndAnswer() {
+        User user = User.builder()
+                .kakaoProfileNickname(new KakaoNickname("카카오프로필"))
+                .userState(UserState.ACTIVE)
+                .nickname("돌아다니는 카카오")
+                .oauthId("abcde")
+                .build();
+        User user2 = User.builder()
                 .kakaoProfileNickname(new KakaoNickname("카카오프로필"))
                 .userState(UserState.ACTIVE)
                 .nickname("돌아다니는 카카오2")
                 .oauthId("abcde")
-                .build());
+                .build();
+        return Stream.of(
+                Arguments.of(
+                        user, user2, 100, 10
+                ),
+                Arguments.of(
+                        user, user2, 0, 0
+                ),
+                Arguments.of(
+                        user, user2, 5, 5
+                )
+        );
 
-        //when
-        GetBunchOfReceiptServiceResponse getBunchOfReceiptServiceResponse
-                = getBunchOfReceiptService.getBunchOfReceipt(user.getId(),user2.getId(), getBunchOfReceiptServiceRequest);
-
-
-        //then
-        assertThat(getBunchOfReceiptServiceResponse.bunchOfBriefReceiptInfo()).isNotNull();
-        assertThat(getBunchOfReceiptServiceResponse.bunchOfBriefReceiptInfo().size()).isEqualTo(10);
     }
-
-//    @DisplayName("[bad] 잘못된 데이터가 주어지면 영수증 리스트가 아닌 오류를 반환한다.")
-//    @Test
-//    public void givenInvalidData_whenGetBunchOfReceipt_thenThrowError() throws Exception {
-//        //given
-//        //테스트 진행 방향. -> S3 오류 잡기. 나머지는 어차피 최적화하면서 변경해야함.
-//
-//        //when
-//
-//        //then
-//    }
 
     private void prepareForSelectReceipt(User user) {
         commandUserDbPort.save(user);
