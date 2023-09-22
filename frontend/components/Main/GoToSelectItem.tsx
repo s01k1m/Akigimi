@@ -7,16 +7,18 @@ import axios from 'axios'
 const GoToSelectItem = () => {
     // const router = useRouter()
 
-    let token: string = "";
-
-    useEffect(() => {
-        if (typeof window !== "undefined") {
-            console.log('로컬스토리지 접근 성공')
-        token = window.localStorage.getItem("access_token");
-        } else {
-            console.log('로컬 스토리지 접근 실패')
-        }
-    }, []);
+    const token: string = 'eyJ0eXBlIjoiQUNDRVNTVE9LRU4iLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNjk1MzQwNjQwLCJleHAiOjE2OTcxNDA2NDB9.PT-QYPdwlHlPBsdG0ck6Iv6iZSHkMQAoecwsXXhdQGc'
+    // useEffect(() => {
+    
+    //     if (typeof window !== "undefined") {
+    //         console.log('로컬스토리지 접근 성공')
+    //     token = window.localStorage.getItem("access_token");
+    //     } else {
+    //         console.log('로컬 스토리지 접근 실패')
+    //     }
+    
+    //     console.log('콘솔 창 왜 안직혀')
+    // }, []);
 
     const inProgress = async () => {
         const requestBody = {
