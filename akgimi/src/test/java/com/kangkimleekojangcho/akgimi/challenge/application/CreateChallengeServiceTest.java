@@ -1,4 +1,5 @@
 package com.kangkimleekojangcho.akgimi.challenge.application;
+import com.kangkimleekojangcho.akgimi.ServiceIntegrationTestSupport;
 import com.kangkimleekojangcho.akgimi.bank.application.port.CommandAccountDbPort;
 import com.kangkimleekojangcho.akgimi.bank.domain.Account;
 import com.kangkimleekojangcho.akgimi.bank.domain.AccountType;
@@ -19,8 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
 
-@SpringBootTest
-class CreateChallengeServiceTest{
+class CreateChallengeServiceTest extends ServiceIntegrationTestSupport {
     private User user;
     private Product product;
     private Account depositAccount;
@@ -76,7 +76,7 @@ class CreateChallengeServiceTest{
 
     @DisplayName("[happy] 새로운 챌린지를 생성할 수 있어요.")
     @Test
-    void create(){
+    void givenValidData_whenUserRequestCreateChallenge_thenCreateChallenge(){
         //given
 
         //when
