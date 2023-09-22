@@ -29,7 +29,7 @@ export default function Signup() {
 
   // handleClick() : 버튼 컴포넌트에 넘겨줄 함수 prop을 만듦
   const handleClick = async () => {
-    router.push("/login/register/withdrawal");
+    router.push("/login/register/withdraw");
 
     const formData = new FormData();
     formData.append("nickname", nickname); // 파일 첨부
