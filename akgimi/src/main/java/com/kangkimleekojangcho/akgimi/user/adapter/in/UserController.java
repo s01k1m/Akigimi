@@ -37,6 +37,7 @@ public class UserController {
     private final ReissueService reissueService;
     private final KakaoProperties kakaoProperties;
     private final FollowUserService followUserService;
+    private final GetFriendsInfoService getFriendsInfoService;
 
     @GetMapping("/kakao/loginurl")
     public ResponseEntity<SuccessResponse<String>> getKakaoLoginUrl() {
@@ -124,6 +125,13 @@ public class UserController {
     public ResponseEntity<SuccessResponse<Boolean>> followUser(@RequestBody FollowRequest request, HttpServletRequest servletRequest) {
         long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
         boolean response = followUserService.followUser(userId, request.getFollowee());
+        return ResponseFactory.success(response);
+    }
+
+    @GetMapping("/friends")
+    public ResponseEntity<SuccessResponse<FriendsServiceResponse>> getFriendsInfo(@RequestParam("friendType") String friendType, HttpServletRequest servletRequest){
+        Long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
+        FriendsServiceResponse response = getFriendsInfoService.get(userId,friendType);
         return ResponseFactory.success(response);
     }
 }
