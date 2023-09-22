@@ -23,14 +23,14 @@ public class ReceiptController {
     private final GetBunchOfReceiptService getBunchOfReceiptService;
     private final SubtractUserIdFromAccessTokenService userIdFromAccessTokenService;
 
-    @GetMapping("/receipts/{userId}")
+    @GetMapping("/receipts/{receiptOwnerId}")
     ResponseEntity<SuccessResponse<GetBunchOfReceiptServiceResponse>> getBunchOfReceipt(
             @Valid GetBunchOfReceiptRequest getBunchOfReceiptRequest,
-            @PathVariable Long userId,
+            @PathVariable Long receiptOwnerId,
             HttpServletRequest servletRequest
     ) {
-//        Long userId = userIdFromAccessTokenService.subtract(servletRequest);
+        Long requestUserId = userIdFromAccessTokenService.subtract(servletRequest);
         return ResponseFactory.success(getBunchOfReceiptService.getBunchOfReceipt(
-                userId, getBunchOfReceiptRequest.toServiceRequest()));
+                requestUserId, receiptOwnerId, getBunchOfReceiptRequest.toServiceRequest()));
     }
 }

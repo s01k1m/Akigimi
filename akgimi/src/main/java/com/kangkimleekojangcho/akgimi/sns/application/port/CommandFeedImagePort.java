@@ -5,5 +5,5 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Optional;
 
 public interface CommandFeedImagePort {
-    Optional<String> save(MultipartFile file, long userId);
+    String save(MultipartFile file, long userId);
 }

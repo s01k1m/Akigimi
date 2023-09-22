@@ -1,6 +1,8 @@
 package com.kangkimleekojangcho.akgimi.sns.adapter.out;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.kangkimleekojangcho.akgimi.global.exception.ServerErrorException;
+import com.kangkimleekojangcho.akgimi.global.exception.ServerErrorExceptionCode;
 import com.kangkimleekojangcho.akgimi.sns.application.port.CommandFeedImagePort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,7 +26,7 @@ public class FeedImageS3Adapter implements CommandFeedImagePort {
     private String region;
 
     @Override
-    public Optional<String> save(MultipartFile file, long userId) {
+    public String save(MultipartFile file, long userId) {
         try {
             String fileName = String.valueOf(userId);
 
@@ -37,10 +39,9 @@ public class FeedImageS3Adapter implements CommandFeedImagePort {
             objectMetadata.setContentType(file.getContentType());
             objectMetadata.setContentLength(file.getSize());
             amazonS3Client.putObject(bucket, fileName, file.getInputStream(), objectMetadata);
-            return Optional.of(fileUrl);
+            return fileUrl;
         } catch (IOException e) {
-            e.printStackTrace();
-            return Optional.empty();
+            throw new ServerErrorException(ServerErrorExceptionCode.S3_BAD_CONNECTION);
         }
     }
 }
