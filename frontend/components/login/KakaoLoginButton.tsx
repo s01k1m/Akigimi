@@ -61,7 +61,7 @@ const KakaoLoginButton = () => {
               {/* <Button.KakaoButton onClick={kakaoLogin}> */}
               <Button.KakaoButton>
                 <Image
-                  src="/kakao logo.png"
+                  src="/images/kakao logo.png"
                   alt="카카오 로고 사진"
                   width="20"
                   height="20"
