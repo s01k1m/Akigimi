@@ -14,7 +14,7 @@ type ReceiptItem = {
 
 
 const ReceiptList = () => {
-    const userId = 13
+    const userId = 15
 
     let token: string = "";
 
