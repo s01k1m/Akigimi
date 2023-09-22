@@ -12,12 +12,12 @@ import java.util.List;
 public class QueryFollowJpaAdapter implements QueryFollowDbPort {
     private final FollowJpaRepository followJpaRepository;
     @Override
-    public List<User> getFollowingUser(User user) {
+    public List<User> getFollower(User user) {
         return followJpaRepository.findByFollower(user);
     }
 
     @Override
-    public List<User> getFollowedUser(User user) {
+    public List<User> getFollowee(User user) {
         return followJpaRepository.findByFollowee(user);
     }
 }

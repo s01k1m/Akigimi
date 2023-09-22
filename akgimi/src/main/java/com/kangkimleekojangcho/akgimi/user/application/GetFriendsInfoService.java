@@ -26,9 +26,9 @@ public class GetFriendsInfoService {
         User user = queryUserDbPort.findById(userId).orElseThrow(()->new BadRequestException(BadRequestExceptionCode.NOT_USER));
         List<User> friends = new ArrayList<>();
         if(friendType.equals("FOLLOWING")){
-            friends = queryFollowDbPort.getFollowingUser(user);
+            friends = queryFollowDbPort.getFollower(user);
         } else if(friendType.equals("FOLLOWED")){
-            friends = queryFollowDbPort.getFollowedUser(user);
+            friends = queryFollowDbPort.getFollowee(user);
         } else{
             throw new BadRequestException(BadRequestExceptionCode.NO_AVAILABLE_FRIEND_TYPE);
         }
