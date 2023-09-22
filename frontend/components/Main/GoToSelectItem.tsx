@@ -1,14 +1,26 @@
 'use client'
 import '@/styles/MainPageButton.css'
 import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 import axios from 'axios'
 
 const GoToSelectItem = () => {
     // const router = useRouter()
-
-    const token = `eyJ0eXBlIjoiQUNDRVNTVE9LRU4iLCJhbGciOiJIUzI1NiJ9.eyJpZCI6OTk5OSwidXNlclN0YXRlIjoiUEVORElORyIsImlhdCI6MTY5NTE3NDc3NywiZXhwIjoxNjk1MzU0Nzc3fQ.58F3t3w_nBSCD0wRrwExXc4VTdPJSrGBiqRwjlQ4XjU`
-
+    
     const inProgress = async () => {
+        console.log('콘솔로그가 안찍혀')
+        let token: string = ''
+        useEffect(() => {
+        
+            if (typeof window !== "undefined") {
+                console.log('로컬스토리지 접근 성공')
+            token = window.localStorage.getItem("access_token");
+            } else {
+                console.log('로컬 스토리지 접근 실패')
+            }
+        
+            console.log('콘솔 창 왜 안직혀')
+        }, []);
         const requestBody = {
             itemId: 1,
             challengePeriod: 50
@@ -27,7 +39,7 @@ const GoToSelectItem = () => {
                 if (error.response.data.code === '011') {
                     console.log('자원이 존재하지 않는 경우')
                 }
-                console.error('챌린지 생성 에러', error)
+                console.error('챌린지 생성 에러', error, token)
             })
     } 
 

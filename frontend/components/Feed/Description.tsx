@@ -16,7 +16,7 @@ const Description: React.FC<DescriptionProps> = ({ isLiked, description }) => {
         setLiked((prevLiked) => !prevLiked);
     };
     return (
-        <div className="flex w-[50vw] max-w-xs">
+        <div className="flex w-[50%] max-w-xs ms-[5vw]">
              <div onClick={handleToggleLike} className="me-[1vw] mb-2">
             {liked ? (
                 <AiOutlineHeart 
