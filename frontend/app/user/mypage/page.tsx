@@ -7,15 +7,47 @@ import FollowingButton from "@/components/User/FollowingButton";
 import MypageAccouts from "@/components/User/MypageAccount";
 import FriendCard from "@/components/User/FriendCard";
 import { BiSearchAlt } from "react-icons/bi";
-
+import axios from "axios";
+import { useEffect } from "react";
 export default function Mypage() {
   const [content, setContent] = useState<string>("account");
-  let withdrawBalance: number = 0;
-  let depositBalance: number = 0;
+  const [withdrawBalance, setWithdrawBalance] = useState<string>(0);
+  const [depositBalance, setDepositBalance] = useState<string>(0);
 
   // const getUserInfo() => {
 
   // }
+  const getBalance = async () => {
+    let token = window.localStorage.getItem("access_token");
+    console.log("출금밸런스");
+    axios
+      .get("/api/account/amount?accountType=WITHDRAW", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        setWithdrawBalance(response.data.data.balance);
+      });
+    console.log("저축밸런스");
+    axios
+      .get("/api/account/amount?accountType=DEPOSIT", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        setDepositBalance(response.data.data.balance);
+      });
+  };
+  useEffect(() => {
+    console.log("12");
+    getBalance();
+  }, []);
 
   return (
     <div className="w-full flex flex-col justify-center items-center">
@@ -69,8 +101,8 @@ export default function Mypage() {
           </div>
 
           <MypageAccouts
-            withdrawBalance={"10000"}
-            depositBalance={"2000"}
+            withdrawBalance={withdrawBalance}
+            depositBalance={depositBalance}
           ></MypageAccouts>
         </div>
       ) : content === "follower" ? (
