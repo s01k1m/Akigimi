@@ -56,6 +56,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         shouldNotUseApplicationWhenUserHasRefreshToken(requestUriValue, accessToken);
         shouldNotReissueWhenUserHasRefreshToken(requestUriValue, accessToken);
+        log.info("ID가 '{}'인 유저가 요청 메시지를 보냅니다.", accessToken.getUserId());
         filterChain.doFilter(request, response);
     }
 
@@ -67,7 +68,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 "/account/new",
                 "/account/new/password",
                 "/user/password/simple",
-                "/user/password/simple/check"));
+                "/user/password/simple/check",
+                "/user/profile"));
         return accessibleSet.contains(path);
     }
 
