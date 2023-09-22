@@ -28,7 +28,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(HttpBusinessException.class)
     public ResponseEntity<FailResponse> httpBusinessException(HttpBusinessException e) {
-        e.printStackTrace();
+        log.error("비즈니스 에러 예외 발생! << code: {}", e.getCode());
+        log.error("에러 로그: {}",getPrintStackTrace(e));
         return ResponseFactory.fail(e);
     }
 
