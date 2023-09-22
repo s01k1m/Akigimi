@@ -3,7 +3,6 @@ import React, { useRef, useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { redirect, useRouter } from "next/navigation";
 import { BasicButton } from "@/components/login/BasicButton";
-import Image from "next/image";
 import styled from "styled-components";
 
 export interface RegisterInfo {
@@ -39,13 +38,13 @@ const AccountNum = styled.div`
   text-align: center;
 `;
 
-export default function Signup() {
+export default function CreateWithdrawalAccount() {
   const [isLoading, setIsLoading] = useState<boolean>(false); // 페이지 로딩 중인지 확인하기 위하여
   const [password1, setPassword1] = useState<string>("");
   const [password2, setPassword2] = useState<string>(undefined);
   const [didMatch, setDidMatch] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const [accountNum, setAccountNum] = useState<string>("0"); // 계좌 번호
+  const [accountNum, setAccountNum] = useState<string>("0000000000000000"); // 계좌 번호
   // let accountNum: number = 0;
   const router = useRouter();
   const [content, setContent] = useState<RegisterInfo[] | undefined>([]);
@@ -62,6 +61,7 @@ export default function Signup() {
     title: "출금계좌를 연결하고 있어요!",
     menual: "필수 정보를 입력해주세요",
   };
+
   const [accountNumArr, setAccountNumArr] = useState<Array<string>>([]); // 계좌번호를 ui를 위해 4자리씩 끊어서 Array로 저장
 
   const calculateAccount = () => {
@@ -116,7 +116,7 @@ export default function Signup() {
   // 백에서 데이터 가져오기
   const getFakeAccount = async () => {
     const formData = new FormData();
-    formData.append("accountType", "DEPOSIT");
+    formData.append("accountType", "WITHDRAWAL");
     formData.append("bank", "SSAFY");
 
     await axios
@@ -133,21 +133,39 @@ export default function Signup() {
   };
   // 버튼에 전달할 함수
   // TODO: 백 아직 완성 안되서 이거 완성되면 연결할 것
-  const handleClick = async () => {
-    router.push("/api/account/new/password");
 
-    const formData = new FormData();
-    formData.append("bank", password1); // 파일 첨부
+  // 계좌 비밀번호를 전송하는 함수
+  const handleClick = async () => {
+    // router.push("/api/account/new/password");
+    token = window.localStorage.getItem("access_token");
+    // const formData = new FormData();
+    // formData.append("bank", "SSAFY");
+    // formData.append("accountType", "WITHDRAW");
+    // formData.append("accountNumber", accountNum);
+    // formData.append("password", password1);
+
+    const payload: {
+      bank: string;
+      accountType: string;
+      accountNumber: string;
+      password: string;
+    } = {
+      bank: "SSAFY",
+      accountType: "WITHDRAW",
+      accountNumber: accountNum,
+      password: password1,
+    };
 
     await axios
-      .post("/api/user/nickname", formData, {
+      .post("/api/account/new/password", payload, {
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
+          "Content-Type": "application/json",
         },
       })
       .then((response) => {
-        console.log(response);
+        console.log(response.data.message);
+        router.push("/login/register/deposit");
       });
   };
 
@@ -165,9 +183,9 @@ export default function Signup() {
           </div>
 
           <div className="bg-gray1 p-8 rounded flex flex-wrap  justify-center items-center shadow-xl mb-14">
-            <div className="w-full flex justify-start mb-3 ">
+            <div className="w-full flex justify-start mb-3">
               <select
-                className="rounded-full w-40 ps-4 pl-6 py-2"
+                className="rounded-full w-40 ps-4 pl-6 py-2 bg-tossblue text-white font-bold shadow-lg shadow-gray-400"
                 onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                   setSelected(e.target.value);
                 }}
@@ -206,7 +224,7 @@ export default function Signup() {
               </AccountNum>
               <input
                 id="withdrawalAccount"
-                className="bg-white p-2 m-4 text-white"
+                className="bg-white py-2 px-8 m-4 text-white"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   storeAccount(e)
                 }
