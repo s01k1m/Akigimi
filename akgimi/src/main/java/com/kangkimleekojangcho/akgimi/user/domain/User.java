@@ -61,4 +61,8 @@ public class User {
     public void setSimplePassword(String simplePassword) {
         this.simplePassword = simplePassword;
     }
+
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+    }
 }
