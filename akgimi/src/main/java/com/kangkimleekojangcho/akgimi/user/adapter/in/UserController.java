@@ -18,6 +18,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -38,6 +41,7 @@ public class UserController {
     private final KakaoProperties kakaoProperties;
     private final FollowUserService followUserService;
     private final GetFriendsInfoService getFriendsInfoService;
+    private final SaveUserProfileService saveUserProfileService;
 
     @GetMapping("/kakao/loginurl")
     public ResponseEntity<SuccessResponse<String>> getKakaoLoginUrl() {
@@ -133,5 +137,14 @@ public class UserController {
         Long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
         FriendsServiceResponse response = getFriendsInfoService.get(userId,friendType);
         return ResponseFactory.success(response);
+    }
+
+    @PostMapping("/user/profile")
+    public void uploadProfile(@RequestParam("files") List<MultipartFile> files, HttpServletRequest servletRequest) {
+        if(files.size()!=1){
+            throw new BadRequestException(BadRequestExceptionCode.INVALID_INPUT, "한 개의 이미지를 업로드해야 합니다.");
+        }
+        Long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
+        saveUserProfileService.save(userId, files.get(0));
     }
 }
