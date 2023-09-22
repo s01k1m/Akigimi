@@ -31,8 +31,10 @@ class GetBunchOfReceiptServiceTest extends SnsServiceIntegrationTestSupport {
     private GetBunchOfReceiptService getBunchOfReceiptService;
 
     private static final int NUMBER_OF_PUBLIC = 10;
+
+    //TODO: 사용자의 상태도 봐야함
     @DisplayName("[happy]본인의 영수증을 요청했을 때 정확한 데이터가 주어지면 요청에 따라 영수증 리스트를 반환한다.")
-    @MethodSource("givenSameUserAnsAnswer")
+    @MethodSource("givenSameUserAndSizeAndAnswer")
     @ParameterizedTest
     void givenValidData_whenSameUserRequestGetBunchOfReceipt_thenReturnData(
             User requestUser,
@@ -59,7 +61,7 @@ class GetBunchOfReceiptServiceTest extends SnsServiceIntegrationTestSupport {
     }
 
     @DisplayName("[happy]본인의 영수증이 아닌 다른 유저의 영수증을 요청했을 때 정확한 데이터가 주어지면 요청에 따라 영수증 리스트를 반환한다.")
-    @MethodSource("giveDifferentUserAndAnswer")
+    @MethodSource("giveDifferentUserAndSizeAndAnswer")
     @ParameterizedTest
     void givenValidData_whenDifferentUserRequestGetBunchOfReceipt_thenReturnData(
             User requestUser,
@@ -88,7 +90,7 @@ class GetBunchOfReceiptServiceTest extends SnsServiceIntegrationTestSupport {
     }
 
 
-    private static Stream<Arguments> givenSameUserAnsAnswer() {
+    private static Stream<Arguments> givenSameUserAndSizeAndAnswer() {
         User user = User.builder()
                 .kakaoProfileNickname(new KakaoNickname("카카오프로필"))
                 .userState(UserState.ACTIVE)
@@ -110,7 +112,7 @@ class GetBunchOfReceiptServiceTest extends SnsServiceIntegrationTestSupport {
 
     //TODO: bad case추가해야 함. 아직 어떻게 bad case를 설정해줘야 할지 모르겠음. 없는 유저가 보내는 요청도 처리해야 되니까.. 다만들어?
 
-    private static Stream<Arguments> giveDifferentUserAndAnswer() {
+    private static Stream<Arguments> giveDifferentUserAndSizeAndAnswer() {
         User user = User.builder()
                 .kakaoProfileNickname(new KakaoNickname("카카오프로필"))
                 .userState(UserState.ACTIVE)
