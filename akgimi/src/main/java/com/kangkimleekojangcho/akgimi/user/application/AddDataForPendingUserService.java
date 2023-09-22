@@ -24,8 +24,8 @@ public class AddDataForPendingUserService {
             throw new BadRequestException(BadRequestExceptionCode.ALREADY_USER);
         }
 
-        String accessToken = jwtTokenIssuer.createAccessToken(userId);
-        String refreshToken = jwtTokenIssuer.createRefreshToken(userId);
+        String accessToken = jwtTokenIssuer.createAccessToken(userId,user.getUserState());
+        String refreshToken = jwtTokenIssuer.createRefreshToken(userId,user.getUserState());
         user.signUp();
         return new AddDataForPendingUserServiceResponse(accessToken, refreshToken);
     }
