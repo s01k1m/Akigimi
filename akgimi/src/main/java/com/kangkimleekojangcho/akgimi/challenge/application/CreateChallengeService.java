@@ -1,5 +1,8 @@
 package com.kangkimleekojangcho.akgimi.challenge.application;
 
+import com.kangkimleekojangcho.akgimi.bank.application.port.QueryAccountDbPort;
+import com.kangkimleekojangcho.akgimi.bank.domain.Account;
+import com.kangkimleekojangcho.akgimi.bank.domain.AccountType;
 import com.kangkimleekojangcho.akgimi.challenge.application.port.CommandChallengeDbPort;
 import com.kangkimleekojangcho.akgimi.challenge.application.port.QueryChallengeDbPort;
 import com.kangkimleekojangcho.akgimi.challenge.application.request.CreateChallengeServiceRequest;
@@ -23,16 +26,19 @@ public class CreateChallengeService{
     private final QueryUserDbPort queryUserDbPort;
     private final QueryProductDbPort queryProductDbPort;
     private final QueryChallengeDbPort queryChallengeDbPort;
+    private final QueryAccountDbPort queryAccountDbPort;
 
     public CreateChallengeServiceResponse create(Long userId, CreateChallengeServiceRequest request) {
         User user = queryUserDbPort.findById(userId).orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NOT_USER));
         queryChallengeDbPort.findInProgressChallengeByUserId(userId).ifPresent(challenge -> {
             throw new BadRequestException(BadRequestExceptionCode.ALREADY_PARTICIPATE_IN_CHALLENGE);});
         Product product = queryProductDbPort.findById(request.getItemId()).orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NO_PRODUCT));
+        Account depositAccount = queryAccountDbPort.findByUserAndAccountType(user, AccountType.DEPOSIT).orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NO_BANK_ACCOUNT));
+
         Challenge challenge = Challenge.builder()
                 .user(user)
                 .product(product)
-                //TODO: accumulatedAmount()
+                .accumulatedAmount(depositAccount.getBalance())
                 .challengePeriod(request.getChallengePeriod())
                 .challengeStartDate(LocalDate.now())
                 .challengeEndDate(LocalDate.now().plusDays(request.getChallengePeriod()))
