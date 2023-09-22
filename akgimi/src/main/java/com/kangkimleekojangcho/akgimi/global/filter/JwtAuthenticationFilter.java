@@ -7,6 +7,7 @@ import com.kangkimleekojangcho.akgimi.jwt.application.CreateJwtTokenService;
 import com.kangkimleekojangcho.akgimi.jwt.application.ExtractTokenStringService;
 import com.kangkimleekojangcho.akgimi.user.application.port.QueryBlackListPort;
 import com.kangkimleekojangcho.akgimi.user.domain.JwtToken;
+import com.kangkimleekojangcho.akgimi.user.domain.UserState;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,11 +20,12 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 @Log4j2
@@ -48,9 +50,25 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (accessToken.isAccessToken() && queryBlackListPort.find(tokenString)) {
             throw new UnauthorizedException(UnauthorizedExceptionCode.LOGOUT_TOKEN);
         }
+        if(UserState.PENDING.equals(accessToken.getUserState()) &&
+        !isAccessiblePathForPendingUser(requestUriValue)){
+            throw new UnauthorizedException(UnauthorizedExceptionCode.NOT_ENOUGH_INFO);
+        }
         shouldNotUseApplicationWhenUserHasRefreshToken(requestUriValue, accessToken);
         shouldNotReissueWhenUserHasRefreshToken(requestUriValue, accessToken);
         filterChain.doFilter(request, response);
+    }
+
+    private boolean isAccessiblePathForPendingUser(String path) {
+        HashSet<String> accessibleSet = new HashSet<>(List.of("/user/accesstoken/reissue",
+                "/user/nickname/duplicate",
+                "/user/nickname/recommend",
+                "/user/nickname",
+                "/account/new",
+                "/account/new/password",
+                "/user/password/simple",
+                "/user/password/simple/check"));
+        return accessibleSet.contains(path);
     }
 
     // Access Token 재발급 요청 api 인데, access token을 전달했을 경우인지 체크
