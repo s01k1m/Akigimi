@@ -8,5 +8,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Builder
 public class CheckBalanceServiceResponse {
+    private final String accountNumber;
     private final Long balance;
 }
