@@ -21,8 +21,8 @@ interface Friend {
 type FriendsList = Friend[];
 export default function Mypage() {
   const [content, setContent] = useState<string>("account");
-  const [withdrawBalance, setWithdrawBalance] = useState<string>(0);
-  const [depositBalance, setDepositBalance] = useState<string>(0);
+  const [withdrawBalance, setWithdrawBalance] = useState<string>("");
+  const [depositBalance, setDepositBalance] = useState<string>("");
   const [searchWord, setSearchWord] = useState<string>("");
   const [friendsList, setFriendsList] = useState<FriendsList>([]);
 
