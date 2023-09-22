@@ -13,6 +13,7 @@ import com.kangkimleekojangcho.akgimi.user.adapter.in.response.GetUserInfoServic
 import com.kangkimleekojangcho.akgimi.user.application.*;
 import com.kangkimleekojangcho.akgimi.user.application.response.*;
 import com.kangkimleekojangcho.akgimi.user.config.KakaoProperties;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
 public class UserController {
     private final LoginService loginService;
     private final SignUpService signUpService;
