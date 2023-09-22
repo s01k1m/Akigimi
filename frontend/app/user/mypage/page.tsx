@@ -57,8 +57,9 @@ export default function Mypage() {
   // type: FOLLOWING FOLLOWED
   const getfriendsList = async (type: string) => {
     let token = window.localStorage.getItem("access_token");
+
     axios
-      .get(`/friends?friendType=${type}`, {
+      .get(`/api/friends?friendType=${type}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -110,7 +111,7 @@ export default function Mypage() {
           className="hover:bg-gray1 w-[80px] h-[50px] rounded"
           onClick={() => {
             setContent("follower");
-            // getfriendsList("FOLLOWED");
+            getfriendsList("FOLLOWED");
           }}
         >
           <FollowerButton total={10} />
@@ -120,7 +121,7 @@ export default function Mypage() {
           onClick={() => {
             setContent("following");
             // setContent("FETCH following DATA ");
-            // getfriendsList("FOLLOWING");
+            getfriendsList("FOLLOWING");
           }}
         >
           <FollowingButton total={15} />
