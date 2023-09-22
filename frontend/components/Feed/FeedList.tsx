@@ -2,6 +2,7 @@ import FeedItem from "./FeedItem"
 import { useState, useEffect } from "react"
 import axios from "axios"
 import { useInView } from "react-intersection-observer";
+import Footer from "@/app/Footer";
 
 type FeedItem = {
     id: number;
@@ -35,11 +36,14 @@ const FeedList: React.FC<selectedProps> = ({ selectedValue }) => {
     const [loading, setLoading] = useState<boolean>(false);
    
     const [feedData, setFeedData] = useState<[]>()
-    const token = window.localStorage.getItem('accessToken')
-
+    
+    let token: string = ""
     // 피드 정보 api 호출하기 // 무한 스크롤 적용하기
     const getFeedData = async () => {
       setLoading(true)
+      if (typeof window !== "undefined") {
+        token = window.localStorage.getItem("access_token");
+        }
         await axios
             .get('/api/feeds', {
                 params: {
