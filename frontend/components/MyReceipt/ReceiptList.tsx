@@ -14,14 +14,7 @@ type ReceiptItem = {
 
 
 const ReceiptList = () => {
-    // 영수증 기록 api 불러오기 (정렬, date 값 가공해서 달라고 요청하기)
-    const ReceiptItems = [
-        { id: 1, akimPlace:'GS편의점', saving: 6000, date: '23.08.04', imgUrl: '/images/character1.png'},
-        { id: 2, akimPlace:'GS편의점2', saving: 6500, date: '', imgUrl: '/images/character1.png'},
-        { id: 3, akimPlace:'CU편의점2', saving: 2000, date: '23.08.05', imgUrl: '/images/character1.png'},
-    ]
-
-    const userId = window.localStorage.getItem('userId')
+    const userId = 13
 
     let token: string = "";
 
@@ -29,6 +22,7 @@ const ReceiptList = () => {
         if (typeof window !== "undefined") {
         token = window.localStorage.getItem("access_token");
         }
+        receiptData()
     }, []);
 
     // api 로 불러올 모든 아이템
@@ -49,7 +43,7 @@ const ReceiptList = () => {
     // api 데이터 불러오기
     const receiptData = async () => {
         await axios
-            .get(`receipts/${userId}`, {
+            .get(`api/receipts/${userId}`, {
                 params: {
                     lastReceiptId: 10,
                     numberOfReceipt: 5
@@ -59,7 +53,7 @@ const ReceiptList = () => {
                 }
             })
             .then((response) => {
-                console.log('피드 조회 성공', response)
+                console.log('피드 조회 성공', response.data.data.list)
 
                 // 요청 성공 시에 리스트 뒤로 붙여주기
                 setReceiptItems([...receiptItems, ...(response.data.data.list)])
@@ -91,10 +85,10 @@ const ReceiptList = () => {
             {receiptItems.map((item: any) => (
                 <ReceiptItem
                     key={item.id}
-                    akimPlace={item.akimPlace}
-                    saving={item.saving}
-                    date={item.date}
-                    imgUrl={item.imgUrl} 
+                    akimPlace={item.akgimiPlace}
+                    saving={item.price}
+                    date={item.createdDateTime}
+                    imgUrl={item.photo} 
                   />
             ))}
         </div>

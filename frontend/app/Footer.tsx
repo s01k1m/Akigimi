@@ -1,20 +1,15 @@
-'use client'
 import Link from "next/link"
 import { AiOutlineHome, AiOutlinePlusSquare } from 'react-icons/ai'
 import { PiUsersBold } from 'react-icons/pi'
 import { BiUser } from 'react-icons/bi'
-import { useRouter } from "next/navigation"
 const Footer = () => {
-    const route = useRouter()
     return (
         <div className="flex w-full drop-shadow-2xl sticky bottom-0 bg-slate-100 justify-center gap-[20px] rounded-md">
-                <div className="flex flex-col items-center"
-                    onClick={() => route.push('/main')}
-                >
+
+                <Link href={'/main'} className="flex flex-col items-center">
                     <p>홈</p>
                     <AiOutlineHome size={40} />
-                </div>
-             
+                </Link>
   
                 <Link href={'/write/receipt'} className="flex flex-col items-center">
                     <p>기록 남기기</p>

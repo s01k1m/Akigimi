@@ -12,7 +12,7 @@ const ReceiptItem: React.FC<itemProps> = ({ akimPlace, saving, date, imgUrl }) =
     return (
         <div>
             {date? (
-                <div className="receipt-date mb-2">{date}</div>
+                null
             ) : null}
             <div className="flex flex-col mb-[2vh] bg-white w-[50vw] rounded-xl h-[100px] max-w-[280px] min-w-[200px]">
                 <div className="flex flex-end align-bottom ms-[5%] mt-[1vh]">
