@@ -19,26 +19,14 @@ public class JwtTokenIssuer {
 
     private final JwtConfigProperties jwtConfigProperties;
 
-    public String createAccessToken(Long id) {
-        Claims claims = Jwts.claims();
-        claims.put("id", id);
-        return createJwt(claims, "ACCESSTOKEN", jwtConfigProperties.getAccessTokenValidTimeInMillisecondUnit());
-    }
-
-    public String createRefreshToken(Long id) {
-        Claims claims = Jwts.claims();
-        claims.put("id", id);
-        return createJwt(claims, "REFRESHTOKEN", jwtConfigProperties.getRefreshTokenValidTimeInMillisecondUnit());
-    }
-
-    public String createAccessToken(Long id, UserState userState) {
+    public String createAccessToken(Long id,UserState userState) {
         Claims claims = Jwts.claims();
         claims.put("id", id);
         claims.put("userState", userState.name());
         return createJwt(claims, "ACCESSTOKEN", jwtConfigProperties.getAccessTokenValidTimeInMillisecondUnit());
     }
 
-    public String createRefreshToken(Long id, UserState userState) {
+    public String createRefreshToken(Long id,UserState userState) {
         Claims claims = Jwts.claims();
         claims.put("id", id);
         claims.put("userState", userState.name());
