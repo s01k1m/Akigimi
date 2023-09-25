@@ -41,12 +41,12 @@ public class Feed extends BaseTimeEntity {
 
     private String imageUrl;
 
-    @ManyToOne
     @JoinColumn(name="user_id")
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
     @JoinColumn(name="challenge_id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Challenge challenge;
 
     @OneToMany(mappedBy = "feed", fetch = FetchType.LAZY)
