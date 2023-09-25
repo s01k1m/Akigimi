@@ -32,11 +32,13 @@ public class SignUpService {
                 .oidcProvider(OidcProvider.KAKAO)
                 .userState(UserState.PENDING)
                 .kakaoProfileNickname(new KakaoNickname(idToken.getNickname()))
+                .profileImageUrl(idToken.getProfileImageUrl())
                 .build();
+
         user = commandUserDbPort.save(user);
         Long id = user.getId();
         String accessToken = jwtTokenIssuer.createAccessToken(id,user.getUserState());
         String refreshToken = jwtTokenIssuer.createRefreshToken(id,user.getUserState());
-        return new SignUpServiceResponse(accessToken, refreshToken);
+        return new SignUpServiceResponse(user.getId(),accessToken, refreshToken);
     }
 }
