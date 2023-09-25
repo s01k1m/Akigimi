@@ -29,6 +29,7 @@ public class RecommendNicknamesService {
             String prefix = RecommendNicknamePrefix.pick(randomIdx);
             User user = userDbPort.findById(userId).orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NOT_USER));
             String kakaoProfileNickname = user.getKakaoProfileNickname();
+            kakaoProfileNickname = kakaoProfileNickname.substring(0,Math.min(kakaoProfileNickname.length()-1,4));
             String randomPostfix = randomNumberPort.generateDigit(10);
             nickname = new Nickname(prefix + ' ' + kakaoProfileNickname + randomPostfix);
             if(!userDbPort.existsByNickname(nickname.getValue())){
