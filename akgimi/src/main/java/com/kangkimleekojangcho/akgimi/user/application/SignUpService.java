@@ -32,7 +32,9 @@ public class SignUpService {
                 .oidcProvider(OidcProvider.KAKAO)
                 .userState(UserState.PENDING)
                 .kakaoProfileNickname(new KakaoNickname(idToken.getNickname()))
+                .profileImageUrl(idToken.getProfile_image_url())
                 .build();
+
         user = commandUserDbPort.save(user);
         Long id = user.getId();
         String accessToken = jwtTokenIssuer.createAccessToken(id,user.getUserState());
