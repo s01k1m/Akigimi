@@ -5,12 +5,12 @@ import { BiUser } from 'react-icons/bi'
 import { AiOutlineSearch } from 'react-icons/ai'
 const Footer = () => {
     return (
-        <div className="flex drop-shadow-2xl fixed bottom-0 bg-slate-100 gap-[30px] rounded-xl">
-                <Link href={'/main'} className="flex flex-col items-center ms-[30px]">
+        <div className="flex drop-shadow-2xl fixed bottom-0 bg-slate-100 gap-[20px] rounded-xl">
+                <Link href={'/main'} className="flex flex-col items-center">
                     <p>홈</p>
                     <AiOutlineHome size={40} />
                 </Link>
-                <Link href={'/item/search'} className="ms-[5px]">
+                <Link href={'/item/search'}>
                     <p>검색</p>
                     <AiOutlineSearch size={40} />
                 </Link>
@@ -23,7 +23,7 @@ const Footer = () => {
                     <PiUsersBold size={40} />
                 </Link>
 
-                <Link href={'/user/mypage'} className="flex flex-col items-center me-[25px]">
+                <Link href={'/user/mypage'} className="flex flex-col items-center">
                     <p>마이 페이지</p>
                     <BiUser size={40} />
                 </Link>

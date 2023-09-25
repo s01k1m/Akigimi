@@ -10,6 +10,7 @@ import GoToRetryBtn from "@/components/Main/GoToRetryBtn"
 import axios from 'axios'
 import { useState, useEffect } from "react"
 import Footer from "../Footer"
+import ChallengeSkelleton from "@/components/Main/ChallengeSkelleton"
 import { useRouter } from "next/navigation"
 import '@/styles/MainPageButton.css'
 
@@ -104,8 +105,7 @@ const Main = () => {
     return (
         <>
         {isLoading ? (
-            <div>로딩 중</div>
-
+            <ChallengeSkelleton />
         ) : (
             <div className={`background-${stage}`} style={{ width: '100%'}}>
             <div className="flex flex-col items-center justify-center" style={{ width: '100%'}}>
