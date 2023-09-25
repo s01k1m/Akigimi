@@ -32,7 +32,7 @@ public class SignUpService {
                 .oidcProvider(OidcProvider.KAKAO)
                 .userState(UserState.PENDING)
                 .kakaoProfileNickname(new KakaoNickname(idToken.getNickname()))
-                .profileImageUrl(idToken.getProfile_image_url())
+                .profileImageUrl(idToken.getProfileImageUrl())
                 .build();
 
         user = commandUserDbPort.save(user);

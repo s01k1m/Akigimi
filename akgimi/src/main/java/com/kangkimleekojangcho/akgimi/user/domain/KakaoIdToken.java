@@ -15,14 +15,14 @@ public class KakaoIdToken {
 
     private final String nickname;
 
-    private final String profile_image_url;
+    private final String profileImageUrl;
 
-    public KakaoIdToken(String iss, String aud, String sub, String email, String nickname, String profile_image_url) {
+    public KakaoIdToken(String iss, String aud, String sub, String email, String nickname, String profileImageUrl) {
         this.iss = iss;
         this.aud = aud;
         this.sub = sub;
         this.email = email;
         this.nickname = nickname;
-        this.profile_image_url = profile_image_url;
+        this.profileImageUrl = profileImageUrl;
     }
 }
