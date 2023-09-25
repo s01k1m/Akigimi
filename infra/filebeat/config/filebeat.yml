@@ -1,0 +1,87 @@
+filebeat.inputs:
+- type: filestream
+  enabled: true
+  paths:
+    - /usr/share/application/log/error/*.log
+  parsers:
+    - ndjson:
+        keys_under_root: true
+        overwrite_keys: true
+        message_key: log
+    - multiline:
+        type: pattern
+        pattern: '^\[\d+:\d+:\d+[/]\d+[.]\d+[:]'
+        negate: true
+        match: after
+  processors:
+    - add_tags:
+        tags: [ app_log ]
+        target: "log_type"
+  # state options
+  # file handler의 timeout 설정.
+  # 설정한 시간 이상으로 파일 읽기 작업을 하지 않으면 핸들러 닫는다.
+  close_inactive: 24h
+  #최종 변경일시로 읽기 대상 제외 지정.
+  ignore_older: 24h
+  #clean_inactive에 설정된 시간보다 수정된 시간이 오래되어있으면 registry에서 삭제
+  clean_inactive: 72h
+  #clean_removed : 디스크에서 찾을 수 없는 파일의 정보를 registry에서 삭제.
+  clean_removed: true
+
+- type: filestream
+  enabled: true
+  paths:
+    - /usr/share/nginx/application/access/*.log
+    - /usr/share/nginx/application/error/*.log
+  parsers:
+    - ndjson:
+        keys_under_root: true
+        overwrite_keys: true
+        message_key: log
+    - multiline:
+        type: pattern
+        pattern: '^\[\d+:\d+:\d+[/]\d+[.]\d+[:]'
+        negate: true
+        match: after
+  processors:
+    - add_tags:
+        tags: [ nginx_log ]
+        target: "log_type"
+
+
+  close_inactive: 24h
+  ignore_older: 24h
+  clean_inactive: 72h
+  clean_removed: true
+
+- type: container
+  paths:
+    - '/var/lib/docker/containers/*/*.log'
+  parsers:
+    - ndjson:
+        keys_under_root: true
+        overwrite_keys: true
+        message_key: log
+    - multiline:
+        type: pattern
+        pattern: '^\['
+        negate: true
+        match: after
+  processors:
+    - add_tags:
+        tags: [ container_log ]
+        target: "log_type"
+  close_inactive: 24h
+  ignore_older: 24h
+  clean_inactive: 72h
+  clean_removed: true
+
+processors:
+  - add_locale: ~
+
+setup.kibana:
+  host: "localhost:5601"
+
+output.logstash:
+  enabled: true
+  hosts: "logstash:5044"
