@@ -4,24 +4,28 @@ import com.kangkimleekojangcho.akgimi.sns.application.response.BriefFeedInfo;
 import com.kangkimleekojangcho.akgimi.sns.application.response.BriefReceiptInfo;
 import com.kangkimleekojangcho.akgimi.sns.application.response.QBriefFeedInfo;
 import com.kangkimleekojangcho.akgimi.sns.application.response.QBriefReceiptInfo;
-import com.kangkimleekojangcho.akgimi.sns.domain.QFeed;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Objects;
+
+import static com.kangkimleekojangcho.akgimi.sns.domain.QFeed.feed;
+import static com.kangkimleekojangcho.akgimi.user.domain.QFollow.follow;
 
 @Repository
 @RequiredArgsConstructor
 public class FeedQuerydslRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
-    private final QFeed feed = QFeed.feed;
-
 
     public List<BriefFeedInfo> findByUser_IdAndLastFeedIdAndNumberOfFeed(
-            Long userId, Long lastFeedId, Integer numberOfFeed) {
+            Long requestUserId,
+            Long lastFeedId,
+            Integer numberOfFeed
+    ) {
 
         List<BriefFeedInfo> result = jpaQueryFactory.select(
                         new QBriefFeedInfo(
@@ -37,16 +41,22 @@ public class FeedQuerydslRepository {
                                 feed.imageUrl.as("photo")
                         )
                 )
-                .from(feed)
-                //TODO: 팔로우 기능 만들어지면 팔로우된 유저만 처리하도록 해주기.
-                .where(ltFeedId(lastFeedId),
-                        feed.user.id.eq(userId))
-                .orderBy(feed.feedId.desc())
+                .from(feed, follow)
+                .where(ltFeedId(lastFeedId), //최신순으로부터 가져온다.
+                        feed.user.id.eq(requestUserId)
+                                .or(feed.isPublic.eq(true)
+                                        .and(follow.followee.eq(feed.user))
+                                )
+                ).orderBy(feed.feedId.desc())
                 .limit(numberOfFeed).fetch();
+
         return result;
     }
 
-    public List<BriefReceiptInfo> findReceiptByUser_IdAndLastReceiptIdAndNumberOfReceipt(Long userId, Long lastReceiptId, Integer numberOfReceipt) {
+    public List<BriefReceiptInfo> findReceiptByUser_IdAndLastReceiptIdAndNumberOfReceipt(
+            Long requestUserId, Long receiptOwnerId,
+            Long lastReceiptId, Integer numberOfReceipt
+    ) {
         List<BriefReceiptInfo> result = jpaQueryFactory.select(
                         new QBriefReceiptInfo(
                                 feed.price.as("price"),
@@ -58,10 +68,17 @@ public class FeedQuerydslRepository {
                 )
                 .from(feed)
                 .where(ltFeedId(lastReceiptId),
-                        feed.user.id.eq(userId))
+                        feed.user.id.eq(requestUserId), isMine(requestUserId, receiptOwnerId))
                 .orderBy(feed.feedId.desc())
                 .limit(numberOfReceipt).fetch();
         return result;
+    }
+
+    private BooleanExpression isMine(Long userId, Long receiptOwnerId) {
+        if (Objects.equals(userId, receiptOwnerId)) {
+            return null; //null 반환되면 조건문 자동 제거
+        }
+        return feed.isPublic.eq(true);
     }
 
     private BooleanExpression ltFeedId(Long feedId) {

@@ -1,6 +1,6 @@
 package com.kangkimleekojangcho.akgimi.sns.adapter.in;
 
-import com.kangkimleekojangcho.akgimi.ControllerTestSupport;
+import com.kangkimleekojangcho.akgimi.config.ControllerTestSupport;
 import com.kangkimleekojangcho.akgimi.sns.adapter.in.request.CreateFeedRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,14 +9,10 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.stream.Stream;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -28,7 +24,7 @@ class FeedControllerTest extends ControllerTestSupport {
 
     private static final String FEED_BASE_URL = "/feeds";
 
-    @DisplayName("[happy]유저가 올바른 정보를 입력했을 때 정확한 파싱결과를 도출한다.")
+    @DisplayName("[happy]피드 생성 시 유저가 올바른 정보를 입력했을 때 정확한 파싱결과를 도출한다.")
     @Test
     void parsingRequestTest() throws Exception {
         MockMultipartFile file = new MockMultipartFile("image",
@@ -62,7 +58,7 @@ class FeedControllerTest extends ControllerTestSupport {
     }
 
     @ParameterizedTest
-    @DisplayName("[bad]유저가 잘못된 정보를 입력했을 때 올바른 오류를 반환한다.")
+    @DisplayName("[bad]피드 생성 요청 시 유저가 잘못된 정보를 입력했을 때 올바른 오류를 반환한다.")
     @MethodSource("generateData")
     void requestValidationTest(String notPurchasedItem, Long saving,
                                String akgimiPlace, String content,
@@ -105,7 +101,7 @@ class FeedControllerTest extends ControllerTestSupport {
         );
     }
 
-    @DisplayName("[happy] 유저가 올바른 입력값을 가지고 피드목록을 요청하면 팔로잉한 사람들의 피드리스트를 반환한다.")
+    @DisplayName("[happy] 피드 요청 시 유저가 올바른 입력값을 가지고 있으면 팔로잉한 사람들의 피드리스트를 반환한다.")
     @Test
     void givenValidInput_whenUserRequestBunchOfFeed_thenReturnBunchOfFeed() throws Exception {
         //given
@@ -121,7 +117,7 @@ class FeedControllerTest extends ControllerTestSupport {
                 .andExpect(status().isOk());
     }
 
-    @DisplayName("[bad] 유저가 잘못된 입력값을 가지고 피드목록을 요청하면 에러를 반환한다.")
+    @DisplayName("[bad] 피드 요청 시 유저가 잘못된 입력값을 가지고 요청하면 에러를 반환한다.")
     @MethodSource("generateWrongFeedRequestData")
     @ParameterizedTest
     void givenValidInput_whenUserRequestBunchOfFeed_thenThrowsError(Long lastFeedId, Integer numberOfFeed) throws Exception {
