@@ -74,5 +74,6 @@ notification:
     title: ${MM_title}
     text: ${MM_text}
     footer: ${MM_footer}
-
-
+#
+#logging:
+#  config: classpath:log4j2-dev.xml
