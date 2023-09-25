@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="info">
+    <Properties>
+        <Property name="consoleLayout">%style{%d{yyyy/MM/dd HH:mm:ss,SSS}}{cyan} %highlight{[%-5p]}{FATAL=bg_red,
+            ERROR=red, INFO=green, DEBUG=blue}[%C][line:%L]%style{[%t]}{yellow}- %m%n
+        </Property>
+        <!--        <Property name="fileLayout">%d [%t] %-5level %c(%M:%L) - %m%n</Property>-->
+        <Property name="fileLayout">[%t] %-5level %d %c(%M:%L) - %m%n</Property>
+    </Properties>
+    <Appenders>
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${consoleLayout}" disableAnsi="false"/>
+        </Console>
+    </Appenders>
+
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="console"/>
+        </Root>
+    </Loggers>
+</Configuration>
