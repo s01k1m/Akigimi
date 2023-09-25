@@ -15,7 +15,7 @@ import '@/styles/MainPageButton.css'
 
 const Main = () => {
     const router = useRouter()
-    const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [isLoading, setIsLoading] = useState<boolean>(true)
     const [stage, setStage] = useState<number>(1)
     const [percentage, setPercentage] = useState<number>(0)
     const [productName, setProductName] = useState<string>("")
@@ -34,7 +34,6 @@ const Main = () => {
     }, []);
 
     const challengeData = async () => {
-        // setIsLoading(true)
         await axios
             .get('/api/challenges/in-progress', {
                 headers: {
@@ -55,7 +54,9 @@ const Main = () => {
                 setPercentage(data.percentage)
                 setProductImg(data.productImgUrl)
                 setBalance(data.balance)
+                setIsLoading(false)
             })
+            
             .catch((error) => {
                 console.error('챌린지 조회 에러', error)
             })
@@ -98,12 +99,14 @@ const Main = () => {
 
     useEffect(() => {
         challengeData()
-    }, [stage, percentage])
+    }, [])
   
     return (
         <>
-        {!isLoading ? (
+        {isLoading ? (
+            <div>로딩 중</div>
 
+        ) : (
             <div className={`background-${stage}`} style={{ width: '100%'}}>
             <div className="flex flex-col items-center justify-center" style={{ width: '100%'}}>
                 <MoneyGageBar percentage={percentage} productPrice={productPrice} balance={balance} stage={stage}  />
@@ -142,12 +145,13 @@ const Main = () => {
                 <CharacterImg stage={stage}  />
             </div>
             
+            <div className="flex justify-center w-[100%]">
+                <Footer />
+            </div>
 
             </div>
-        ) : (
-            <div>로딩 중</div>
+            
         )}
-        <Footer />
         </>
     )
 }
