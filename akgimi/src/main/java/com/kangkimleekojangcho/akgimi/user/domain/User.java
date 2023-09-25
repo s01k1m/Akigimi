@@ -38,7 +38,9 @@ public class User {
         this.nickname = nickname;
         this.oidcProvider = oidcProvider;
         this.userState = userState;
-        this.kakaoProfileNickname = kakaoProfileNickname.getValue();
+        if(kakaoProfileNickname!=null) {
+            this.kakaoProfileNickname = kakaoProfileNickname.getValue();
+        }
         this.simplePassword = simplePassword;
         this.profileImageUrl = profileImageUrl;
     }
@@ -80,5 +82,9 @@ public class User {
             userFields.add(UserField.SIMPLE_PASSWORD);
         }
         return userFields;
+    }
+
+    public void setKakaoProfileNickname(String kakaoProfileNickname) {
+        this.kakaoProfileNickname = kakaoProfileNickname;
     }
 }
