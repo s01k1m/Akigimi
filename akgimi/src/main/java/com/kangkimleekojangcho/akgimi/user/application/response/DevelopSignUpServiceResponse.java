@@ -2,7 +2,6 @@ package com.kangkimleekojangcho.akgimi.user.application.response;
 
 import com.kangkimleekojangcho.akgimi.user.domain.User;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 @Getter
 public class DevelopSignUpServiceResponse {
@@ -16,9 +15,9 @@ public class DevelopSignUpServiceResponse {
         this.refreshToken = refreshToken;
     }
 
-    public static DevelopSignUpServiceResponse from(User user,
-                                                    String accessToken,
-                                                    String refreshToken){
+    public static DevelopSignUpServiceResponse of(User user,
+                                                  String accessToken,
+                                                  String refreshToken){
         return new DevelopSignUpServiceResponse(
                 user.getId(),
                 accessToken,

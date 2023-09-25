@@ -6,8 +6,8 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public enum RecommendNicknamePrefix {
+    // prefix의 최대 길이는 5입니다. `열심히_하는`은 길이가 6이므로, prefix로 설정할 수 없습니다.
     노력하는,
-    열심히_하는,
     잘생긴,
     돌아다니는,
     부끄러운,
@@ -20,7 +20,6 @@ public enum RecommendNicknamePrefix {
     집_가는,
     정신_없는,
     누워_있는,
-
     ;
     @Override
     public String toString() {
