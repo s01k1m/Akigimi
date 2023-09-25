@@ -19,7 +19,7 @@ const MoneyGageBar: React.FC<MoneyPropsType> = ({ percentage, productPrice, stag
     return (
         <>
         {stage===0 ? (
-            <div className='Gage-Bar mt-[62px] mb-4 relative flex items-center justify-center'>
+            <div className='Gage-Bar mt-[30px] mb-4 relative flex items-center justify-center'>
                 <Image 
                     src="/images/gift.png" 
                     alt="gift" 
@@ -31,7 +31,7 @@ const MoneyGageBar: React.FC<MoneyPropsType> = ({ percentage, productPrice, stag
                 </p>
             </div>
         ) : (
-            <div className='Gage-Bar mt-[62px] mb-4 relative flex items-center justify-center'>
+            <div className='Gage-Bar mt-[30px] mb-4 relative flex items-center justify-center'>
                 <Image 
                     src="/images/gift.png" 
                     alt="gift" 
