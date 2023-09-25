@@ -45,6 +45,7 @@ public class UserController {
     private final GetFriendsInfoService getFriendsInfoService;
     private final SaveUserProfileService saveUserProfileService;
     private final ActivateUserService activateUserService;
+    private final CheckUserCanBeActivatedService checkUserCanBeActivatedService;
 
     @GetMapping("/kakao/loginurl")
     public ResponseEntity<SuccessResponse<String>> getKakaoLoginUrl() {
@@ -85,13 +86,6 @@ public class UserController {
     public ResponseEntity<SuccessResponse<RecommendNicknamesServiceResponse>> recommendNicknames(HttpServletRequest servletRequest) {
         Long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
         RecommendNicknamesServiceResponse response = recommendNicknamesService.recommend(userId);
-        return ResponseFactory.success(response);
-    }
-
-    @GetMapping("/user/generated-withdrawal-account")
-    public ResponseEntity<SuccessResponse<GenerateWithdrawalAccountServiceResponse>> generateWithdrawalAccount(HttpServletRequest servletRequest) {
-        Long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
-        GenerateWithdrawalAccountServiceResponse response = generateWithdrawalAccountService.generate(userId);
         return ResponseFactory.success(response);
     }
 
@@ -149,6 +143,13 @@ public class UserController {
         }
         Long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
         saveUserProfileService.save(userId, files.get(0));
+    }
+
+    @GetMapping("/user/can-activate")
+    public ResponseEntity<SuccessResponse<CheckUserCanBeActivatedServiceResponse>> canActivate(HttpServletRequest servletRequest) {
+        Long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
+        CheckUserCanBeActivatedServiceResponse response = checkUserCanBeActivatedService.check(userId);
+        return ResponseFactory.success(response);
     }
 
     @PostMapping("/user/activate")
