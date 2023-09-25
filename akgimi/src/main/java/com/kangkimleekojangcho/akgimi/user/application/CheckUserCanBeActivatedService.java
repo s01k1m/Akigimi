@@ -13,6 +13,7 @@ import com.kangkimleekojangcho.akgimi.user.domain.UserField;
 import com.kangkimleekojangcho.akgimi.user.domain.UserState;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,18 +24,19 @@ import java.util.Optional;
 public class CheckUserCanBeActivatedService {
     private final QueryUserDbPort queryUserDbPort;
     private final QueryAccountDbPort queryAccountDbPort;
+    @Transactional(readOnly = true)
     public CheckUserCanBeActivatedServiceResponse check(Long userId) {
         User user = queryUserDbPort.findById(userId).orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NOT_USER));
         if(!UserState.PENDING.equals(user.getUserState())){
-            return alreadyActivated();
+            return notifyAlreadyActivated();
         }
         List<UserField> unfilledFields = user.whatIsNotFilled();
-        checkWithdrawlAccount(user, unfilledFields);
+        checkWithdrawAccount(user, unfilledFields);
         checkDepositAccount(user, unfilledFields);
         if(!unfilledFields.isEmpty()){
-            return fieldNotFilled(unfilledFields);
+            return notifyFieldNotFilled(unfilledFields);
         }
-        return success();
+        return notifySuccess();
     }
 
     private void checkDepositAccount(User user, List<UserField> unfilledFields) {
@@ -47,7 +49,7 @@ public class CheckUserCanBeActivatedService {
         }
     }
 
-    private void checkWithdrawlAccount(User user, List<UserField> unfilledFields) {
+    private void checkWithdrawAccount(User user, List<UserField> unfilledFields) {
         Optional<Account> withdrawOpt = queryAccountDbPort.findByUserAndAccountType(user, AccountType.WITHDRAW);
         if(withdrawOpt.isEmpty()){
             unfilledFields.add(UserField.WITHDRAW);
@@ -57,20 +59,20 @@ public class CheckUserCanBeActivatedService {
         }
     }
 
-    private static CheckUserCanBeActivatedServiceResponse success() {
+    private static CheckUserCanBeActivatedServiceResponse notifySuccess() {
         return new CheckUserCanBeActivatedServiceResponse(
                 true, null, null
         );
     }
 
-    private static CheckUserCanBeActivatedServiceResponse fieldNotFilled(List<UserField> unfilledFields) {
+    private static CheckUserCanBeActivatedServiceResponse notifyFieldNotFilled(List<UserField> unfilledFields) {
         return new CheckUserCanBeActivatedServiceResponse(
                 false, ActivateUserFailureCause.NOT_FILLED,
                 unfilledFields
         );
     }
 
-    private static CheckUserCanBeActivatedServiceResponse alreadyActivated() {
+    private static CheckUserCanBeActivatedServiceResponse notifyAlreadyActivated() {
         return new CheckUserCanBeActivatedServiceResponse(
                 false, ActivateUserFailureCause.ALREADY_ACTIVE,
                 new ArrayList<>()
