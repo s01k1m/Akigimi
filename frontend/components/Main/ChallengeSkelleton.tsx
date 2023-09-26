@@ -12,7 +12,7 @@ const ChallengeSkelleton = () => {
                 <MoneyGageBar percentage={10} productPrice={0} balance={0} stage={1}  />
                 <DayGageBar challengePeriod={0} days={0} stage={1}   />
             </div>
-            <div className="flex">
+            <div className="flex mt-[52vh]">
                 <IconBtn />
             </div>
             
