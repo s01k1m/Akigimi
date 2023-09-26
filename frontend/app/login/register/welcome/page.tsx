@@ -23,7 +23,6 @@ export default function Signup() {
     if (typeof window !== "undefined") {
       token = window.localStorage.getItem("access_token");
       console.log(window.localStorage.getItem("access_token"));
-      createSimplePW();
     }
   }, []);
 
@@ -45,27 +44,8 @@ export default function Signup() {
   // };
   // 버튼 클릭시 함수
 
-  const createSimplePW = async () => {
-    token = window.localStorage.getItem("access_token");
-    console.log(token);
-    const formData = new FormData();
-    formData.append("simplePassword", "123456"); // 파일 첨부
-    console.log("강제로 심플패스워드함");
-    await axios
-      .post("/api/user/password/simple", formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((response) => {
-        console.log("간편로그인 123456");
-      });
-  };
-
   const handleClick = async () => {
-    await createSimplePW();
-    router.replace("/main");
+    router.replace("/login");
 
     // await axios
     //   .post("/api/user/nickname", formData, {
@@ -94,7 +74,7 @@ export default function Signup() {
               height={200} // 실제 이미지의 세로 크기로 설정하세요
             ></Image>
             <div className="header text-[22px] pt-2 pb-[14px] font-bold">
-              {nickname}님<br />
+              {window.sessionStorage.getItem("nickname")}님<br />
               아끼머가 되신 걸 환영해요
             </div>
           </div>
