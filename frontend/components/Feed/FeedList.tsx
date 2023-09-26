@@ -29,7 +29,7 @@ const FeedList: React.FC<selectedProps> = ({ selectedValue }) => {
     const [ref, inView] = useInView()
 
     // 요청 보낼 마지막 lastViewId
-    const [lastViewId, setLastViewId] = useState<number>(10000000);
+    const [lastViewId, setLastViewId] = useState<number>(922337203685477580);
 
     // 다음 피드가 불러오질 때까지 로딩
     const [loading, setLoading] = useState<boolean>(false);

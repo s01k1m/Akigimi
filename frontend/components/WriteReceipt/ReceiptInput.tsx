@@ -8,7 +8,7 @@ import { AiOutlineFileAdd } from 'react-icons/ai'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
-import Modal from './Modal'
+
 
 
 interface FormData {
@@ -100,12 +100,12 @@ const ReceiptInput = () => {
         e.preventDefault()
         
         console.log(formData)
+        console.log('계좌 잔액은', balance)
 
         if (typeof window !== "undefined") {
             token = window.localStorage.getItem("access_token");
             }
 
-            
         if (formData.photo === ""){
             alert('사진을 추가해주세요')
             return
@@ -137,13 +137,48 @@ const ReceiptInput = () => {
                     alert('빠짐없이 입력해주세요')
                 }
                 console.log('절약 기록 작성 실패', error)
-                // 잔액이 부족한 경우 모달창 띄우기
             })
         
         
     }
     // content 글자수 세기
     const [inputCount, setInputCount] = useState<number>(0)
+
+    // 계좌 잔액
+    const [balance, setBalance] = useState<number>(0)
+
+    // 계좌 조회 API
+    const checkBalance = async () => {
+        
+        let token: string = "";
+
+        useEffect(() => {
+            if (typeof window !== "undefined") {
+            token = window.localStorage.getItem("access_token");
+            }
+        }, []);
+        console.log('토큰은', token)
+
+        await axios
+        .get('/api/account/amount', {
+            params: {
+                accountType: 'DEPOSIT'
+            },
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            }
+        })
+        .then((response) => {
+            setBalance(response.data.data.balance)
+            console.log('계좌 잔액 조회 성공', response.data)
+            
+        })
+        .catch((error) => {
+            console.log('계좌 잔액 조회 실패', error)
+        })
+    
+       
+    }
 
     return (
         <>
@@ -236,16 +271,31 @@ const ReceiptInput = () => {
             <div className='flex justify-center mt-2'>
                 <button type="button" className="button-common-small blue-btn" onClick={handleSubmit}>기록 남기기</button>
             </div>
-            {/* 추후 기능 */}
-            <div className='flex fixed bottom-0 justify-center'>
+
+            <div
+                className={`fixed inset-0 ${
+                isOpened ? 'bg-gray-500 bg-opacity-30' : 'hidden'
+                }`}
+                onClick={() => setIsOpened(false)}
+            ></div>
+
+            <div className='z-10 fixed bottom-0 w-[100%] max-w-[500px] min-w-[490px] flex justfiy-center -ms-[85px]'>
                 {isOpened ? (
-                    <Modal /> 
+                    // 잔액 부족 시 모달 창 띄우기
+                    <div className='w-[100%]'>
+                        <div className="relative h-[250px] bg-white rounded-2xl drop-shadow-lg p-8 flex flex-col justify-start ps-[20vw]">
+                        <p className="modal-big-text pb-2">{'프론트 대장 김솔'}님,</p>
+                        <div className="modal-big-text pb-2">출금계좌의 잔액을</div>
+                        <div className="modal-big-text">확인해주세요.</div>
+                        <p className="modal-small-text mt-[3vh]">현재 잔액은 {balance}원이에요.</p>
+                    </div>
+            </div>
                 ) : (
                     null
                 )}
                 
             </div>
-        </div>
+            </div>
         
         </>
     )
