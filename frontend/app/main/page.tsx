@@ -46,7 +46,7 @@ const Main = () => {
                 
                 const data = response.data.data
                 console.log('챌린지 상태', response.data.data.characterStatus)
-                // setStage(data.characterStatus + 1)
+                setStage(data.characterStatus + 1)
                 setProductName(data.productName)
                 setProductPrice(data.productPrice)
                 setProductImg(data.productImg)
