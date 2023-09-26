@@ -69,7 +69,7 @@ class CreateFeedServiceTest extends SnsServiceIntegrationTestSupport {
                 .akgimiPlace("아낀 장소")
                 .notPurchasedItem("아낀 물품")
                 .build();
-        given(commandFeedImagePort.save(mockFile, user.getId())).willReturn("hello");
+        given(commandFeedImagePort.save(mockFile, user.getId())).willReturn("mocked image");
 
         //when
         Long feedId = createFeedService.createFeed(request, user.getId());

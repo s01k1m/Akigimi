@@ -6,6 +6,7 @@ import com.kangkimleekojangcho.akgimi.sns.application.port.QueryFeedDbPort;
 import com.kangkimleekojangcho.akgimi.sns.application.request.GetBunchOfFeedWrittenByFollowerRequestServiceRequest;
 import com.kangkimleekojangcho.akgimi.sns.application.response.GetBunchOfFeedWrittenByFollowerServiceResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Log4j2
 @Service
 public class GetBunchOfFeedWrittenByFollowerRequestService {
 
