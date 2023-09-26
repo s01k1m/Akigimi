@@ -1,0 +1,194 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql
+    container_name: mysql-ssafy
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - mysql-conf:/etc/mysql/conf.d"
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DB}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PW}
+      - "TZ=Asia/Seoul"
+    ports:
+      - ${MYSQL_PORT}:3306
+    restart: always
+    command:
+      # 위 명령어를 사용하지 않으면, 일부 설정이 latin으로 설정됩니다.
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    networks:
+      - inner
+
+  mysql-salt:
+    image: mysql
+    container_name: mysql-salt-ssafy
+    volumes:
+      - mysql-salt-data:/var/lib/mysql
+      - mysql-salt-conf:/etc/mysql/conf.d"
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DB}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PW}
+      - "TZ=Asia/Seoul"
+    ports:
+      - ${MYSQL_SALT_PORT}:3306
+    restart: always
+    command:
+      # 위 명령어를 사용하지 않으면, 일부 설정이 latin으로 설정됩니다.
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    networks:
+      - inner
+
+  redis:
+    image: redis
+    container_name: redis-ssafy
+    volumes:
+      - redis-data:/var/lib/redis
+      - redis-conf:/usr/local/conf/redis.conf
+    labels:
+      - "name=redis"
+      - "mode=standalone"
+    ports:
+      - ${REDIS_PORT}:6379
+    restart: always
+    command: redis-server /usr/local/conf/redis.conf
+    networks:
+      - inner
+    environment:
+      - TZ=Asia/Seoul
+  opensearch-node:
+    restart: always
+    build:
+      context: ./opensearch
+    container_name: opensearch-node
+    environment:
+      cluster.name: opensearch-cluster
+      node.name: opensearch-node
+      discovery.seed_hosts: opensearch-node
+      # cluster.initial_master_nodes: opensearch-node
+      bootstrap.memory_lock: "true" # along with the memlock settings below, disables swapping
+      OPENSEARCH_JAVA_OPTS: "-Xms1g -Xmx1g"
+      DISABLE_INSTALL_DEMO_CONFIG: "true"
+      DISABLE_SECURITY_PLUGIN: "true"
+      discovery.type: single-node
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536 # maximum number of open files for the OpenSearch user, set to at least 65536 on modern systems
+        hard: 65536
+    volumes:
+      - opensearch-data:/usr/share/opensearch/data
+      # - ./opensearch/opensearch-node1/config/opensearch.yml:/usr/share/opensearch/config/opensearch.yml:ro,Z
+    ports:
+      - 9200:9200
+      - 9600:9600 # required for Performance Analyzer
+    networks:
+      - inner
+  opensearch-dashboards:
+    restart: always
+    build:
+      context: ./opensearch-dashboards
+    container_name: opensearch-dashboards
+    ports:
+      - 5601:5601
+    expose:
+      - "5601"
+    environment:
+      DISABLE_SECURITY_DASHBOARDS_PLUGIN: "true"
+      DISABLE_INSTALL_DEMO_CONFIG: "true"
+      OPENSEARCH_HOSTS: '["http://opensearch-node:9200"]'
+    # volumes:
+    #   - ./opensearch-dashboards/config/opensearch_dashboards.yml:/usr/share/opensearch-dashboards/config/opensearch_dashboards.yml:ro,Z
+    networks:
+      - inner
+    depends_on:
+      - opensearch-node
+  logstash:
+    build:
+      context: logstash/
+    volumes:
+      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro,Z
+      - ./logstash/pipeline:/usr/share/logstash/pipeline:ro,Z
+    ports:
+      - "5044:5044"
+      # - "5000:5000"
+    environment:
+      LS_JAVA_OPTS: -Xmx1g -Xms1g
+      LOGSTASH_INTERNAL_PASSWORD: ${LOGSTASH_INTERNAL_PASSWORD:-}
+    networks:
+      - inner
+    depends_on:
+      - opensearch-node
+  filebeat:
+    build:
+      context: filebeat/
+      args:
+        FILEBEAT_VERSION: ${FILEBEAT_VERSION}
+    # windows DACL
+    entrypoint: "filebeat -e -strict.perms=false"
+    volumes:
+      - ./filebeat/config/filebeat.yml:/usr/share/filebeat/filebeat.yml:rw,Z
+      - filebeat:/usr/share/filebeat
+      - application:/usr/share/application:rw,Z
+      - nginx:/usr/share/nginx:rw,Z
+    environment:
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-}
+      LOGSTASH_INTERNAL_PASSWORD: ${LOGSTASH_INTERNAL_PASSWORD:-}
+      KIBANA_SYSTEM_PASSWORD: ${KIBANA_SYSTEM_PASSWORD:-}
+    networks: 
+      - inner
+    depends_on:
+      - logstash
+  application:
+    build:
+      context: ../akgimi/
+    volumes:
+      - application:/usr/share/application:rw,Z
+    expose:
+      - "8080"
+    networks:
+      - inner
+    depends_on:
+      - filebeat
+    environment:
+      TZ: Asia/Seoul
+  nginx:
+    build:
+      context: nginx/
+    volumes:
+      - nginx:/usr/share/nginx:rw,Z
+      - ./nginx/static:/usr/share/nginx/html
+      - ./nginx/conf:/etc/nginx/
+    ports:
+      - "80:80"
+    networks:
+      - inner
+    depends_on:
+      - application
+    environment:
+      TZ: Asia/Seoul
+networks:
+  inner:
+     external: true
+
+volumes:
+  mysql-data:
+    external: true
+  mysql-conf:
+    external: true
+  mysql-salt-data:
+    external: true
+  mysql-salt-conf:
+    external: true
+  redis-data:
+    external: true
+  redis-conf:
+    external: true
+  opensearch-data:
+  application:
+  filebeat:
+  nginx:

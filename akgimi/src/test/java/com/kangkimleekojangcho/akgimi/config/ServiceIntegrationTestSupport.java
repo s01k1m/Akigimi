@@ -22,9 +22,6 @@ public abstract class ServiceIntegrationTestSupport {
     protected CommandFeedImagePort commandFeedImagePort;
 
     @MockBean
-    protected CommandUserProfileImagePort commandUserProfileImagePort;
-
-    @MockBean
     protected S3Config s3Config;
 
     @MockBean
