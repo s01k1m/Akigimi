@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation'
 import axios from 'axios'
 import Modal from './Modal'
 
+
 interface FormData {
     notPurchasedItem: string;
     saving: number;
@@ -64,23 +65,25 @@ const ReceiptInput = () => {
     const [imgSrc, setImgSrc] = useState<string>("")
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
-        
         if (!file) return
 
         setFormData((prevFormData: any) => ({
             ...prevFormData,
             photo: file
         }))
+
         
+
         const fileReader = new FileReader()
         fileReader.readAsDataURL(file)
         fileReader.onload = (e) => {
             if (typeof e.target?.result === 'string') {
                 setImgSrc(e.target?.result)
-            }
+            } 
+            
         }
     }
-    
+
     // 공개 토글
     const handleCheckboxClick: MouseEventHandler<HTMLInputElement> = (event) => {
         const checkedValue: boolean = event.currentTarget.checked
@@ -125,11 +128,14 @@ const ReceiptInput = () => {
                 router.push('/feed')
             })
             .catch((error) => {
-                if (error.response.data.code === '012') {
+                let code: string = error.response.data.code
+                if (code === '012') {
                     alert('현재 참여중인 챌린지가 없어요 챌린지를 등록해주세요')
-                } else if (error.response.data.code === '014') {
+                } else if (code === '014') {
                     console.log('계좌에 돈이 부족합니다')
                     setIsOpened(true)
+                } else if (code === '001'){
+                    alert('빠짐없이 입력해주세요')
                 }
                 console.log('절약 기록 작성 실패', error)
                 // 잔액이 부족한 경우 모달창 띄우기
@@ -143,7 +149,7 @@ const ReceiptInput = () => {
     return (
         <>
         <div>
-            
+           
             <div className='flex flex-col items-center bg-[#EEE] w-[70vw] max-w-[330px] min-w-[300px]'>
                 <div className='logo mb-3 mt-6'>AKGIMI</div>
                 <form id='myForm' className='flex flex-col items-center'>
@@ -178,16 +184,19 @@ const ReceiptInput = () => {
                         <div className='absolute'>
                             <AiOutlineFileAdd size={40} color="gray" onClick={handleClick} />
                         </div>
-                        <div className='absolute'>
                             {imgSrc ? (
+                            <div className='absolute -mt-[5px]' style={{ width: '200px', height: '95px', overflow: 'hidden' }}>
                                 <Image 
-                                src={imgSrc}
-                                alt=""
-                                width={100}
-                                height={100}
-                            />
+                                    src={imgSrc}
+                                    alt="preview"
+                                    objectFit="cover"
+                                    layout='fill'
+                                />
+                                <div className='absolute'>
+                                <div onClick={handleClick} className='bg-white/50 rounded-md text-zinc-500 p-[2px]'>다른 사진</div>
+                                </div>
+                                </div>
                             ) : null} 
-                        </div>
                         
                     </div>
                     {/* 사진 첨부 form hidden  ref 전달*/}
