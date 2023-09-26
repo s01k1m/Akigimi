@@ -52,7 +52,9 @@ public class FeedQuerydslRepository {
                                         .and(feed.isPublic.eq(true))
                         )
                 )
-                .where(ltFeedId(lastFeedId))
+                .where(ltFeedId(lastFeedId),
+                        feed.user.id.eq(requestUserId).or(
+                        follow.follower.id.eq(requestUserId)))
                 .orderBy(feed.feedId.desc())
                 .limit(numberOfFeed).fetch();
         return result;
