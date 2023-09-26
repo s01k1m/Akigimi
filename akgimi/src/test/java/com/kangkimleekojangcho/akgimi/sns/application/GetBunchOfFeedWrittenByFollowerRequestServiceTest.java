@@ -57,6 +57,8 @@ class GetBunchOfFeedWrittenByFollowerRequestServiceTest extends SnsServiceIntegr
                 .oidcProvider(OidcProvider.KAKAO)
                 .simplePassword("1234")
                 .build());
+
+        prepareForSelectReceipt(follower);
         Follow follow = Follow.builder()
                 .follower(follower)
                 .followee(followee)
@@ -88,7 +90,7 @@ class GetBunchOfFeedWrittenByFollowerRequestServiceTest extends SnsServiceIntegr
                                 .simplePassword("1234")
                                 .userState(UserState.ACTIVE)
                                 .oauthId("abcde")
-                                .build(), 100, 10
+                                .build(), 100, 30
                 ),
                 Arguments.of(
                         User.builder()
