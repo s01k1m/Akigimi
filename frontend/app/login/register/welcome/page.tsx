@@ -74,7 +74,7 @@ export default function Signup() {
               height={200} // 실제 이미지의 세로 크기로 설정하세요
             ></Image>
             <div className="header text-[22px] pt-2 pb-[14px] font-bold">
-              {nickname}님<br />
+              {window.sessionStorage.getItem("nickname")}님<br />
               아끼머가 되신 걸 환영해요
             </div>
           </div>

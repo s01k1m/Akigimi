@@ -44,6 +44,7 @@ export default function Signup() {
       .then((response) => {
         console.log(response);
         router.push("/login/register/withdraw");
+        window.sessionStorage.setItem("nickname", nickname);
       });
   };
   // duplicateCheck() : 닉네임 중복 검사 함수

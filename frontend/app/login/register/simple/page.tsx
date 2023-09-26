@@ -1,5 +1,7 @@
 "use client";
+
 import { useEffect, useState } from "react";
+import { redirect, useRouter } from "next/navigation";
 import { Keypad, KeypadKeys } from "@/components/login/Keypad";
 import Circle from "@/components/login/SimpleLoginCircle";
 import axios from "axios";
@@ -8,15 +10,14 @@ export default function Login() {
   const [keypadArray, setKeypadArray] = useState<string[]>([]);
   const [tryLogin, setTryLogin] = useState<Boolean>(false);
   // 키가 눌렸을 때 데이터 저장 처리
+  const router = useRouter();
   const handleKeypadKeyPress = (keyPadKey: KeypadKeys): void => {
     let tempEntries: string[] = [];
     let newKeypadEntries: string[] = keypadArray;
     setKeypadArray(keypadArray);
     newKeypadEntries.push(keyPadKey.toString());
     setKeypadEntries(newKeypadEntries.join(""));
-    // Array to String Without Commas in JavaScript
-    // console.log("모드리치", newKeypadEntries.join(""));
-    // console.log(newKeypadEntries);
+
     if (newKeypadEntries.join("").length === 6) {
       let token = window.localStorage.getItem("access_token");
       // 백 데이터 저장 요청
@@ -36,6 +37,8 @@ export default function Login() {
             console.log(response);
             console.log("간편로그인 비밀번호가 저장되었습니다.");
             setTryLogin(false);
+            // 회원가입의 모든 과정이 완료되었습니다.
+            router.push("/login/register/welcome");
           })
           .catch(() => {
             setTryLogin(false);
