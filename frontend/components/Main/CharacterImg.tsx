@@ -5,6 +5,9 @@ interface CharacterImgProps {
 }
 
 const CharacterImg: React.FC<CharacterImgProps> = ({ stage }) => {
+    if (stage === 1) {
+        stage = 0
+    }
     return (
         <div className="m-auto pe-14">
             <Image
