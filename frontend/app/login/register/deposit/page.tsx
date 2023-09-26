@@ -87,8 +87,6 @@ export default function CreateDepositAccount() {
 
   // TODO: 폼 컴포넌트화등 리팩토링에 대한 고민
 
-
-
   const test = () => {
     if (password1 != password2) {
       setDidMatch(false);
@@ -125,7 +123,7 @@ export default function CreateDepositAccount() {
       })
       .then((response) => {
         console.log(response);
-        setCreatedDeposit(true)
+        setCreatedDeposit(true);
         setAccountNum(response.data.data.accountNumber);
       });
   };
@@ -162,38 +160,37 @@ export default function CreateDepositAccount() {
       })
       .then((response) => {
         console.log(response.data.message);
-        router.push("/login/register/welcome");
+        router.push("/login/register/simple");
       });
   };
 
-  const account = ( ) =>{
-    return(
-
+  const account = () => {
+    return (
       <AccountWrapper className="flex justify-center">
-      <AccountNum
-        className="p-2 m-4"
-        // htmlFor="withdrawalAccount"
-        onClick={() => {
-          // TODO: 계좌번호 클릭하면 복사되는 로직 만들고 싶음. 사용자한테 편할 것 같은 기능이라서
-          console.log("클릭");
-        }}
-      >
-        {accountNumArr.length > 0 ? (
-          <div>
-            {accountNumArr.map((account, index) => (
-              <span key={index}>
-                {account}
-                {index === accountNumArr.length - 1 ? "" : " - "}
-              </span>
-            ))}
-          </div>
-        ) : (
-          <div></div>
-        )}
-      </AccountNum>
-    </AccountWrapper>
-    )
-  }
+        <AccountNum
+          className="p-2 m-4"
+          // htmlFor="withdrawalAccount"
+          onClick={() => {
+            // TODO: 계좌번호 클릭하면 복사되는 로직 만들고 싶음. 사용자한테 편할 것 같은 기능이라서
+            console.log("클릭");
+          }}
+        >
+          {accountNumArr.length > 0 ? (
+            <div>
+              {accountNumArr.map((account, index) => (
+                <span key={index}>
+                  {account}
+                  {index === accountNumArr.length - 1 ? "" : " - "}
+                </span>
+              ))}
+            </div>
+          ) : (
+            <div></div>
+          )}
+        </AccountNum>
+      </AccountWrapper>
+    );
+  };
   return (
     <div className="h-full w-full">
       {isLoading ? (
@@ -208,9 +205,12 @@ export default function CreateDepositAccount() {
           </div>
 
           <div className="bg-gray1 p-8 rounded shadow-lg shadow-gray-400 mb-14">
-          <div className={`${createdDeposit ? "" : "blur-sm animate-pulse"} w-[96px] h-[37px] p-auto flex justify-center items-center rounded-full bg-tossblue text-white font-bold shadow shadow-black`}>
-
-             싸피은행
+            <div
+              className={`${
+                createdDeposit ? "" : "blur-sm animate-pulse"
+              } w-[96px] h-[37px] p-auto flex justify-center items-center rounded-full bg-tossblue text-white font-bold shadow shadow-black`}
+            >
+              싸피은행
             </div>
             <AccountWrapper className="flex justify-center">
               <AccountNum
@@ -221,7 +221,8 @@ export default function CreateDepositAccount() {
                   console.log("클릭");
                 }}
               >
-                {accountNum != "0000000000000000" && accountNumArr.length > 0 ? (
+                {accountNum != "0000000000000000" &&
+                accountNumArr.length > 0 ? (
                   <div>
                     {accountNumArr.map((account, index) => (
                       <span key={index}>
