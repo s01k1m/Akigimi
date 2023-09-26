@@ -105,8 +105,7 @@ const ReceiptInput = () => {
             token = window.localStorage.getItem("access_token");
             }
 
-        console.log('토큰 받아지는 지 확인', token)
-
+            
         if (formData.photo === ""){
             alert('사진을 추가해주세요')
             return
