@@ -10,6 +10,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.springframework.lang.Nullable;
 
 import java.time.LocalDate;
 
@@ -55,5 +56,21 @@ public class Challenge extends BaseTimeEntity {
 
     public int calculateDays(LocalDate today){
         return this.challengeStartDate.until(today).getDays()+1;
+    }
+
+    public void update(
+            @Nullable Boolean achievementState,
+            @Nullable LocalDate achievementDate,
+            @Nullable Boolean isInProgress
+    ){
+        if(achievementState != null){
+            this.achievementState = achievementState;
+        }
+        if(achievementDate != null){
+            this.achievementDate = achievementDate;
+        }
+        if(isInProgress != null){
+            this.isInProgress = isInProgress;
+        }
     }
 }

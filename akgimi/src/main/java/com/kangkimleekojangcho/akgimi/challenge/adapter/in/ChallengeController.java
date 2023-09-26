@@ -1,14 +1,8 @@
 package com.kangkimleekojangcho.akgimi.challenge.adapter.in;
 
 import com.kangkimleekojangcho.akgimi.challenge.adapter.in.request.CreateChallengeRequest;
-import com.kangkimleekojangcho.akgimi.challenge.application.CreateChallengeService;
-import com.kangkimleekojangcho.akgimi.challenge.application.GetAllChallengesService;
-import com.kangkimleekojangcho.akgimi.challenge.application.GetChallengeInProgressService;
-import com.kangkimleekojangcho.akgimi.challenge.application.GetParticipantNumberService;
-import com.kangkimleekojangcho.akgimi.challenge.application.response.CreateChallengeServiceResponse;
-import com.kangkimleekojangcho.akgimi.challenge.application.response.GetAllChallengesServiceResponse;
-import com.kangkimleekojangcho.akgimi.challenge.application.response.GetChallengeInProgressServiceResponse;
-import com.kangkimleekojangcho.akgimi.challenge.application.response.GetParticipantNumberServiceResponse;
+import com.kangkimleekojangcho.akgimi.challenge.application.*;
+import com.kangkimleekojangcho.akgimi.challenge.application.response.*;
 import com.kangkimleekojangcho.akgimi.common.domain.application.SubtractUserIdFromAccessTokenService;
 import com.kangkimleekojangcho.akgimi.global.response.ResponseFactory;
 import com.kangkimleekojangcho.akgimi.global.response.SuccessResponse;
@@ -30,6 +24,7 @@ public class ChallengeController {
     private final GetChallengeInProgressService getChallengeInProgressService;
     private final GetAllChallengesService getAllChallengesService;
     private final GetParticipantNumberService getParticipantNumberService;
+    private final UpdateChallengeStatusService updateChallengeStatusService;
 
     @PostMapping
     public ResponseEntity<SuccessResponse<CreateChallengeServiceResponse>> createChallenge(
@@ -65,4 +60,14 @@ public class ChallengeController {
         GetParticipantNumberServiceResponse response = getParticipantNumberService.get(productId);
         return ResponseFactory.success(response);
     }
+
+    @PutMapping
+    public ResponseEntity<SuccessResponse<UpdateChallengeStatusServiceResponse>> updateChallengeStatus(
+            HttpServletRequest servletRequest,
+            @RequestParam(name="succeed") boolean isSucceed){
+        Long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
+        UpdateChallengeStatusServiceResponse response = updateChallengeStatusService.update(userId, isSucceed);
+        return ResponseFactory.success(response);
+    }
+
 }
