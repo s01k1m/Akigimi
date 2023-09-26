@@ -59,6 +59,18 @@ class GetBunchOfFeedWrittenByFollowerRequestServiceTest extends SnsServiceIntegr
                 .build());
 
         prepareForSelectReceipt(follower);
+
+        User stranger = commandUserDbPort.save(User.builder()
+                .userState(UserState.ACTIVE) //TODO: active에 따라서도 나눠야 함.
+                .kakaoProfileNickname(new KakaoNickname("ddd"))
+                .nickname("stranger")
+                .profileImageUrl("http:aa.com")
+                .oauthId("oauthStranger")
+                .oidcProvider(OidcProvider.KAKAO)
+                .simplePassword("1234")
+                .build());
+        prepareForSelectReceipt(stranger);
+
         Follow follow = Follow.builder()
                 .follower(follower)
                 .followee(followee)
@@ -66,10 +78,15 @@ class GetBunchOfFeedWrittenByFollowerRequestServiceTest extends SnsServiceIntegr
 
         commandFollowDbPort.save(follow);
 
+
+
         //when
         GetBunchOfFeedWrittenByFollowerServiceResponse getBunchOfReceiptServiceResponse
                 = getBunchOfFeedWrittenByFollowerRequestService.getBunchOfFeed(
                 follower.getId(), getBunchOfFeedServiceRequest);
+
+
+
 
         //then
         assertThat(getBunchOfReceiptServiceResponse.bunchOfBriefFeedInfo()).isNotNull();
