@@ -4,6 +4,7 @@ import com.kangkimleekojangcho.akgimi.bank.application.port.CommandAccountDbPort
 import com.kangkimleekojangcho.akgimi.bank.domain.Account;
 import com.kangkimleekojangcho.akgimi.bank.domain.AccountType;
 import com.kangkimleekojangcho.akgimi.bank.domain.Bank;
+import com.kangkimleekojangcho.akgimi.challenge.adapter.out.ChallengeJpaRepository;
 import com.kangkimleekojangcho.akgimi.challenge.application.port.CommandChallengeDbPort;
 import com.kangkimleekojangcho.akgimi.challenge.domain.Challenge;
 import com.kangkimleekojangcho.akgimi.config.ServiceIntegrationTestSupport;
@@ -16,9 +17,11 @@ import com.kangkimleekojangcho.akgimi.user.domain.User;
 import com.kangkimleekojangcho.akgimi.user.domain.UserState;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
+@Transactional
 class CreateChallengeServiceTest extends ServiceIntegrationTestSupport {
     private User user;
     private Product product;
@@ -70,7 +73,6 @@ class CreateChallengeServiceTest extends ServiceIntegrationTestSupport {
 
     @AfterEach
     public void afterEach() {
-
     }
 
     @DisplayName("[happy] 새로운 챌린지를 생성할 수 있어요.")
