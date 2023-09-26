@@ -2,7 +2,10 @@ filebeat.inputs:
 - type: filestream
   enabled: true
   paths:
-    - /usr/share/application/log/error/*.log
+    - /usr/share/application/logs/error/*.log
+    - /usr/share/application/logs/fatal/*.log
+    - /usr/share/application/logs/info/*.log
+    - /usr/share/application/logs/warn/*.log
   parsers:
     - ndjson:
         keys_under_root: true
