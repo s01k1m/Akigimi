@@ -7,6 +7,7 @@ import com.kangkimleekojangcho.akgimi.sns.application.response.QBriefReceiptInfo
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.Objects;
 import static com.kangkimleekojangcho.akgimi.sns.domain.QFeed.feed;
 import static com.kangkimleekojangcho.akgimi.user.domain.QFollow.follow;
 
+@Log4j2
 @Repository
 @RequiredArgsConstructor
 public class FeedQuerydslRepository {
@@ -41,15 +43,20 @@ public class FeedQuerydslRepository {
                                 feed.imageUrl.as("photo")
                         )
                 )
-                .from(feed, follow)
-                .where(ltFeedId(lastFeedId), //최신순으로부터 가져온다.
-                        feed.user.id.eq(requestUserId)
-                                .or(feed.isPublic.eq(true)
+                .from(feed)
+                .leftJoin(follow)
+                .on(
+                        feed.user.id.eq(requestUserId).or(
+                                follow.follower.id.eq(requestUserId)
                                         .and(follow.followee.eq(feed.user))
-                                )
-                ).orderBy(feed.feedId.desc())
+                                        .and(feed.isPublic.eq(true))
+                        )
+                )
+                .where(ltFeedId(lastFeedId),
+                        feed.user.id.eq(requestUserId).or(
+                        follow.follower.id.eq(requestUserId)))
+                .orderBy(feed.feedId.desc())
                 .limit(numberOfFeed).fetch();
-
         return result;
     }
 
