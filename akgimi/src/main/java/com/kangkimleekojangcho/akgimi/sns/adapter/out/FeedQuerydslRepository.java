@@ -33,8 +33,8 @@ public class FeedQuerydslRepository {
                         new QBriefFeedInfo(
                                 feed.feedId.as("feedId"),
                                 feed.user.id.as("userId"),
+                                feed.user.profileImageUrl.as("userProfile"),
                                 feed.user.nickname.as("nickname"),
-//                                feed.user.profile.as("userProfile"), TODO: profile 나중에 만들것
                                 feed.price.as("price"),
 //                                feed.like.as("likes"), TODO: like 수 계산해서 가져와야 함.
                                 feed.notPurchasedItem.as("notPurchasedItem"),
