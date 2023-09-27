@@ -23,8 +23,8 @@ public class DevelopSignUpService {
                 .build();
         user = commandUserDbPort.save(user);
         user.setKakaoProfileNickname(String.valueOf(user.getId()));
-        String accessToken = jwtTokenIssuer.createAccessToken(user.getId(), user.getUserState());
-        String refreshToken = jwtTokenIssuer.createRefreshToken(user.getId(), user.getUserState());
+        String accessToken = jwtTokenIssuer.createAccessTokenForUnauthorizedUser(user);
+        String refreshToken = jwtTokenIssuer.createRefreshToken(user);
         return DevelopSignUpServiceResponse.of(user, accessToken, refreshToken);
     }
 }

@@ -1,6 +1,5 @@
 package com.kangkimleekojangcho.akgimi.user.adapter.in;
 
-import com.kangkimleekojangcho.akgimi.bank.application.GenerateWithdrawalAccountService;
 import com.kangkimleekojangcho.akgimi.common.domain.application.SubtractUserIdFromAccessTokenService;
 import com.kangkimleekojangcho.akgimi.global.exception.BadRequestException;
 import com.kangkimleekojangcho.akgimi.global.exception.BadRequestExceptionCode;
@@ -8,7 +7,6 @@ import com.kangkimleekojangcho.akgimi.global.response.ResponseFactory;
 import com.kangkimleekojangcho.akgimi.global.response.SuccessResponse;
 import com.kangkimleekojangcho.akgimi.user.adapter.in.request.FollowRequest;
 import com.kangkimleekojangcho.akgimi.user.adapter.in.request.LoginRequest;
-import com.kangkimleekojangcho.akgimi.user.adapter.in.request.SignUpRequest;
 import com.kangkimleekojangcho.akgimi.user.adapter.in.response.GetUserInfoServiceResponse;
 import com.kangkimleekojangcho.akgimi.user.application.*;
 import com.kangkimleekojangcho.akgimi.user.application.response.*;
@@ -28,16 +26,12 @@ import java.util.List;
 @SecurityRequirement(name = "bearerAuth")
 public class UserController {
     private final LoginService loginService;
-    private final SignUpService signUpService;
-    private final AddDataForPendingUserService addDataForPendingUserService;
-    private final GetIdTokenService getIdTokenService;
     private final CheckDuplicateNicknameService checkDuplicateNicknameService;
-    private final InputNicknameService inputNicknameService;
+    private final InputNicknameService setNicknameService;
     private final RecommendNicknamesService recommendNicknamesService;
-    private final GenerateWithdrawalAccountService generateWithdrawalAccountService;
     private final SubtractUserIdFromAccessTokenService subtractUserIdFromAccessTokenService;
     private final SetSimplePasswordService setSimplePasswordService;
-    private final CheckSimplePasswordService checkSimplePasswordService;
+    private final CheckSimplePasswordService authorizeBySimplePasswordService;
     private final GetUserInfoService getUserInfoService;
     private final ReissueService reissueService;
     private final KakaoProperties kakaoProperties;
@@ -61,24 +55,24 @@ public class UserController {
         return ResponseFactory.success(response);
     }
 
-
-    @PostMapping("/kakao/signup")
-    public ResponseEntity<SuccessResponse<SignUpServiceResponse>> signup(@RequestBody @Valid SignUpRequest request) {
-        SignUpServiceResponse response = signUpService.signUp(request.getIdToken());
-        return ResponseFactory.success(response);
-    }
-
     @GetMapping("/user/nickname/duplicate")
     public ResponseEntity<SuccessResponse<Boolean>> checkDuplicateNickname(@RequestParam("nickname") String nickname) {
+        validateNickname(nickname);
         boolean response = checkDuplicateNicknameService.check(nickname);
         return ResponseFactory.success(response);
     }
 
+    private static void validateNickname(String nickname) {
+        if(nickname ==null || nickname.length()==0) {
+            throw new BadRequestException(BadRequestExceptionCode.INVALID_INPUT, "닉네임 값을 꼭 입력해주세요.");
+        }
+    }
+
     @PostMapping("/user/nickname")
-    public ResponseEntity<SuccessResponse<Boolean>> inputNickname(@RequestParam("nickname") String nickname, HttpServletRequest servletRequest) {
+    public ResponseEntity<SuccessResponse<Boolean>> setNickname(@RequestParam("nickname") String nickname, HttpServletRequest servletRequest) {
+        validateNickname(nickname);
         Long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
-        if (nickname == null) throw new BadRequestException(BadRequestExceptionCode.INVALID_INPUT);
-        inputNicknameService.input(userId, nickname);
+        setNicknameService.input(userId, nickname);
         return ResponseFactory.success(true);
     }
 
@@ -91,21 +85,23 @@ public class UserController {
 
     @PostMapping("/user/password/simple")
     public void setSimplePassword(@RequestParam String simplePassword, HttpServletRequest servletRequest) {
-        if (simplePassword == null) {
-            throw new BadRequestException(BadRequestExceptionCode.INVALID_INPUT, "간편 비밀번호를 입력해주세요.");
-        }
+        validateSimplePassword(simplePassword);
         Long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
         setSimplePasswordService.set(userId, simplePassword);
     }
 
-    @PostMapping("/user/password/simple/check")
-    public ResponseEntity<SuccessResponse<Boolean>> checkSimplePassword(@RequestParam String simplePassword,
-                                                                        HttpServletRequest servletRequest) {
-        if (simplePassword == null) {
+    private static void validateSimplePassword(String simplePassword) {
+        if (simplePassword == null || simplePassword.length()==0) {
             throw new BadRequestException(BadRequestExceptionCode.INVALID_INPUT, "간편 비밀번호를 입력해주세요.");
         }
+    }
+
+    @PostMapping("/user/password/simple/check")
+    public ResponseEntity<SuccessResponse<AuthorizeBySimplePasswordResponse>> authorizeBySimplePassword(@RequestParam String simplePassword,
+                                                                                                        HttpServletRequest servletRequest) {
+        validateSimplePassword(simplePassword);
         Long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
-        boolean response = checkSimplePasswordService.check(userId, simplePassword);
+        AuthorizeBySimplePasswordResponse response = authorizeBySimplePasswordService.authorize(userId, simplePassword);
         return ResponseFactory.success(response);
     }
 
