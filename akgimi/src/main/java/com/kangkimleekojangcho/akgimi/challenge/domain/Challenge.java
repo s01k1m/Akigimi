@@ -27,7 +27,7 @@ public class Challenge extends BaseTimeEntity {
     @JoinColumn(name="user_id")
     private User user;
 
-    @OneToOne
+    @ManyToOne
     private Product product;
 
     private Long accumulatedAmount;
