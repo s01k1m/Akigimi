@@ -23,6 +23,8 @@ interface FormData {
 const ReceiptInput = () => {
     // 잔액 부족한 경우 모달 창 관리
     const [isOpened, setIsOpened] = useState<boolean>(false)
+    let nickname: string = window.sessionStorage.getItem("nickname");
+
     // formData 데이터 한 번에 관리
     const [formData, setFormData] = useState({
         notPurchasedItem: '',
@@ -149,20 +151,13 @@ const ReceiptInput = () => {
 
     // 계좌 조회 API
     const checkBalance = async () => {
-        
-        let token: string = "";
-
-        useEffect(() => {
-            if (typeof window !== "undefined") {
-            token = window.localStorage.getItem("access_token");
-            }
-        }, []);
-        console.log('토큰은', token)
-
+   
+        let token: string = window.localStorage.getItem("access_token");
+            
         await axios
         .get('/api/account/amount', {
             params: {
-                accountType: 'DEPOSIT'
+                accountType: 'WITHDRAW'
             },
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -179,6 +174,12 @@ const ReceiptInput = () => {
     
        
     }
+
+    useEffect(() => {
+        checkBalance()
+    }, [balance])
+
+    
 
     return (
         <>
@@ -284,7 +285,7 @@ const ReceiptInput = () => {
                     // 잔액 부족 시 모달 창 띄우기
                     <div className='w-[100%]'>
                         <div className="relative h-[250px] bg-white rounded-2xl drop-shadow-lg p-8 flex flex-col justify-start ps-[20vw]">
-                        <p className="modal-big-text pb-2">{'프론트 대장 김솔'}님,</p>
+                        <p className="modal-big-text pb-2">{nickname}님,</p>
                         <div className="modal-big-text pb-2">출금계좌의 잔액을</div>
                         <div className="modal-big-text">확인해주세요.</div>
                         <p className="modal-small-text mt-[3vh]">현재 잔액은 {balance}원이에요.</p>
