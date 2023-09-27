@@ -3,6 +3,7 @@ package com.kangkimleekojangcho.akgimi.user.application;
 import com.kangkimleekojangcho.akgimi.global.exception.ServerErrorException;
 import com.kangkimleekojangcho.akgimi.global.exception.ServerErrorExceptionCode;
 import com.kangkimleekojangcho.akgimi.global.exception.UnauthorizedException;
+import com.kangkimleekojangcho.akgimi.global.exception.UnauthorizedExceptionCode;
 import com.kangkimleekojangcho.akgimi.user.application.port.QueryPublicKeyPort;
 import com.kangkimleekojangcho.akgimi.user.config.KakaoProperties;
 import com.kangkimleekojangcho.akgimi.user.domain.KakaoIdToken;
@@ -68,7 +69,7 @@ public class DecodeIdTokenService {
             throw new UnauthorizedException(TOKEN_EXPIRED);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new ServerErrorException(ServerErrorExceptionCode.NETWORK_ERROR);
+            throw new UnauthorizedException(INVALID_TOKEN);
         }
     }
 
