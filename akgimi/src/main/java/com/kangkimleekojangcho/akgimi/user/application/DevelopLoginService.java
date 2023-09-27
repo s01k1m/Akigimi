@@ -30,7 +30,7 @@ public class DevelopLoginService {
                     .userState(UserState.PENDING)
                     .profileImageUrl(DEFAULT_PROFILE_IMAGE_URL)
                     .build();
-            commandUserDbPort.save(user);
+            user = commandUserDbPort.save(user);
             user.setKakaoProfileNickname(String.valueOf(user.getId()));
         } else{
             user = userOpt.get();
