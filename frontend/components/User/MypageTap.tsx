@@ -45,7 +45,7 @@ const MypageTap = () => {
               id="value-2"
               type="radio"
               onClick={() => {
-                router.push("/mypage/mygoods");
+                router.push("/mypage/myitems");
               }}
               checked={selectedValue === "goods"}
             />

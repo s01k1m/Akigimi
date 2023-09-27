@@ -1,5 +1,5 @@
 import Image from "next/image";
-import KakaoLoginButton from "@/components/login/KakaoLoginButton";
+import KakaoLoginButton from "@/components/Login/KakaoLoginButton";
 
 export default function Login() {
   return (
