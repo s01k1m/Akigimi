@@ -15,6 +15,7 @@ public enum UnauthorizedExceptionCode {
     NOT_ACCESS_TOKEN("007", "액세스 토큰이 아닙니다."),
     NOT_ENOUGH_INFO("008", "회원 추가 정보가 입력되지 않았습니다."),
     INVALID_SIMPLE_PASSWORD("009", "간편 비밀번호가 일치하지 않습니다."),
+    SIMPLE_PASSWORD_IS_NOT_CHECKED("010", "간편 비밀번호가 아직 체크되지 않았습니다."),
     ;
     private final String code;
     private final String descriptionMessage;

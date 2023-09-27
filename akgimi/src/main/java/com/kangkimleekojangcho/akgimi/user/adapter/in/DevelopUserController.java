@@ -27,10 +27,4 @@ public class DevelopUserController {
         DevelopLoginServiceResponse response = developLoginService.login(userId);
         return ResponseFactory.success(response);
     }
-
-    @PostMapping("/develop/signup")
-    public ResponseEntity<SuccessResponse<DevelopSignUpServiceResponse>> developSignUp(){
-        DevelopSignUpServiceResponse response = developSignUpService.signUp();
-        return ResponseFactory.success(response);
-    }
 }
