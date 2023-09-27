@@ -11,12 +11,10 @@ public class ActivateUserServiceResponse {
     private final String accessToken;
     private final String refreshToken;
     private final Long userId;
-    private final List<String> userFields;
 
-    public ActivateUserServiceResponse(String accessToken, String refreshToken, Long userId, List<UserField> userFields) {
+    public ActivateUserServiceResponse(String accessToken, String refreshToken, Long userId) {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
         this.userId = userId;
-        this.userFields = userFields.stream().map(UserField::name).toList();
     }
 }
