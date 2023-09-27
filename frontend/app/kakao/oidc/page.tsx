@@ -21,7 +21,7 @@ export default function Login() {
   let redirect_uri = "http://localhost:3000/kakao/oidc";
   const app_key = process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID;
   const router = useRouter();
-  let token_request_url: string = `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=5d06715a9e4afbca55173788a79e3674&redirect_uri=${redirect_uri}&code=${authorize_code}`;
+  let token_request_url: string = "";
 
   const forLogin = async () => {
     token = window.localStorage.getItem("access_token");
@@ -31,6 +31,7 @@ export default function Login() {
     //로컬호스트와 배포 주소에 따라서 requset_url을 동적으로 변환
     let urlOrigin = url.origin;
     redirect_uri = `${urlOrigin}/kakao/oidc`;
+    token_request_url = `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=5d06715a9e4afbca55173788a79e3674&redirect_uri=${redirect_uri}&code=${authorize_code}`;
   };
 
   // 1. 카카오 로그인 성공한 유저를 리다이렉트된 주소에서 코드를 파싱한다
