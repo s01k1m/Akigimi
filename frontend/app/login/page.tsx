@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Keypad, KeypadKeys } from "@/components/login/Keypad";
-import Circle from "@/components/login/SimpleLoginCircle";
+import { Keypad, KeypadKeys } from "@/components/Login/Keypad";
+import Circle from "@/components/Login/SimpleLoginCircle";
 import axios from "axios";
 import { redirect, useRouter } from "next/navigation";
 
