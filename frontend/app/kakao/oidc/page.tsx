@@ -7,8 +7,6 @@ import Image from "next/image";
 import dynamic from "next/dynamic";
 
 export default function Login() {
-  const [isReady1, setIsReady1] = useState<boolean>(false);
-  const [isReady2, setIsReady2] = useState<boolean>(false);
   // let id_token: string | null = "";
   let urlStr: string = "";
   // let url: URL = undefined;
@@ -20,7 +18,7 @@ export default function Login() {
   // token =  window.localStorage.getItem("access_token");
 
   let token: string = "";
-  const redirect_uri = "http://localhost:3000/kakao/oidc";
+  let redirect_uri = "http://localhost:3000/kakao/oidc";
   const app_key = process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID;
   const router = useRouter();
   let token_request_url: string = `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=5d06715a9e4afbca55173788a79e3674&redirect_uri=${redirect_uri}&code=${authorize_code}`;
@@ -30,7 +28,9 @@ export default function Login() {
     urlStr = window.location.href;
     url = new URL(urlStr); // <---- and this line
     setAuthorize_code(url.searchParams.get("code"));
-    console.log("/", urlStr, "루카", url);
+    //로컬호스트와 배포 주소에 따라서 requset_url을 동적으로 변환
+    let urlOrigin = url.origin;
+    redirect_uri = `${urlOrigin}/kakao/oidc`;
   };
 
   // 1. 카카오 로그인 성공한 유저를 리다이렉트된 주소에서 코드를 파싱한다
@@ -41,7 +41,6 @@ export default function Login() {
     await axios
       .get(token_request_url)
       .then((response) => {
-        console.log(response);
         id_token = response.data.id_token;
         window.localStorage.setItem("id_token", response.data.id_token);
       })
@@ -73,10 +72,9 @@ export default function Login() {
         window.localStorage.setItem("refresh_token", refresh_token);
         console.log("우리 회원 맞아요");
         // TODO: 회원이므로 6자리 로그인으로 페이지 전환해야됨
-        console.log(response.data.data.userState);
+        window.sessionStorage.setItem("userId", response.data.userId); // 세션스토리지에 유저아이디 저장
         if (response.data.data.userState === "PENDING") {
           router.replace("/login/register/withdraw");
-          console.log(typeof response.data.data.userState);
         } else {
           router.replace("/main"); // 이거 중간평가용 임시임 나중에 6자리 로그인으로 변경해야함
         }
@@ -122,22 +120,17 @@ export default function Login() {
 
   useEffect(() => {
     console.log("순서1");
-    setIsReady1(true);
     if (window) {
       forLogin().then(() => {
         console.log("forLogin 변수들 저장함");
-        setIsReady2(true);
       });
     }
   }, []);
 
   useEffect(() => {
-    console.log("순서3");
+    console.log("순서2");
     if (typeof window !== "undefined") {
       getLoginURL();
-      console.log("모드리치", token_request_url);
-      console.log("루카", authorize_code);
-      console.log("GOAT");
     }
   }, [authorize_code]);
 
