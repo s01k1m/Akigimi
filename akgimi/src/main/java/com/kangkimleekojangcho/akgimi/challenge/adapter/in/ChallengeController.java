@@ -1,6 +1,7 @@
 package com.kangkimleekojangcho.akgimi.challenge.adapter.in;
 
 import com.kangkimleekojangcho.akgimi.challenge.adapter.in.request.CreateChallengeRequest;
+import com.kangkimleekojangcho.akgimi.challenge.adapter.in.request.RetryChallengeRequest;
 import com.kangkimleekojangcho.akgimi.challenge.application.*;
 import com.kangkimleekojangcho.akgimi.challenge.application.response.*;
 import com.kangkimleekojangcho.akgimi.common.domain.application.SubtractUserIdFromAccessTokenService;
@@ -25,6 +26,7 @@ public class ChallengeController {
     private final GetAllChallengesService getAllChallengesService;
     private final GetParticipantNumberService getParticipantNumberService;
     private final UpdateChallengeStatusService updateChallengeStatusService;
+    private final RetryChallengeService retryChallengeService;
 
     @PostMapping
     public ResponseEntity<SuccessResponse<CreateChallengeServiceResponse>> createChallenge(
@@ -67,6 +69,17 @@ public class ChallengeController {
             @RequestParam(name="succeed") boolean isSucceed){
         Long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
         UpdateChallengeStatusServiceResponse response = updateChallengeStatusService.update(userId, isSucceed);
+        return ResponseFactory.success(response);
+    }
+
+    @PostMapping("/retry")
+    public ResponseEntity<SuccessResponse<RetryChallengeServiceResponse>> retryChallenge(
+            HttpServletRequest servletRequest,
+            @Valid @RequestBody RetryChallengeRequest request)
+    {
+        Long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
+
+        RetryChallengeServiceResponse response = retryChallengeService.create(userId, request.toServiceRequest());
         return ResponseFactory.success(response);
     }
 
