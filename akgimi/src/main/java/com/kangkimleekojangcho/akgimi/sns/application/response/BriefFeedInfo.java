@@ -3,8 +3,9 @@ package com.kangkimleekojangcho.akgimi.sns.application.response;
 import com.querydsl.core.annotations.QueryProjection;
 
 public record BriefFeedInfo(
+        Long feedId,
         Long userId,
-//        String userProfile,
+        String userProfile,
         String nickname,
         Long price,
 //        Integer likes,
