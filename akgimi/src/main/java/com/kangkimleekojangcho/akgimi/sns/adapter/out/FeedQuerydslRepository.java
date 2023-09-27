@@ -31,6 +31,7 @@ public class FeedQuerydslRepository {
 
         List<BriefFeedInfo> result = jpaQueryFactory.select(
                         new QBriefFeedInfo(
+                                feed.feedId.as("feedId"),
                                 feed.user.id.as("userId"),
                                 feed.user.nickname.as("nickname"),
 //                                feed.user.profile.as("userProfile"), TODO: profile 나중에 만들것
@@ -66,6 +67,7 @@ public class FeedQuerydslRepository {
     ) {
         List<BriefReceiptInfo> result = jpaQueryFactory.select(
                         new QBriefReceiptInfo(
+                                feed.feedId.as("receiptId"),
                                 feed.price.as("price"),
                                 feed.notPurchasedItem.as("notPurchasedItem"),
                                 feed.place.as("akgimiPlace"),
