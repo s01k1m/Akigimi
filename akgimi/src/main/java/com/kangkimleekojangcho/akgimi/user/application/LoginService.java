@@ -8,6 +8,7 @@ import com.kangkimleekojangcho.akgimi.user.application.response.LoginServiceResp
 import com.kangkimleekojangcho.akgimi.user.domain.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +18,7 @@ public class LoginService {
     private final DecodeIdTokenService decodeIdTokenService;
     private final JwtTokenIssuer jwtTokenIssuer;
 
+    @Transactional
     public LoginServiceResponse login(String rawIdToken) {
         KakaoIdToken idToken = decodeIdTokenService.decode(rawIdToken);
         String oauthId = idToken.getSub();
