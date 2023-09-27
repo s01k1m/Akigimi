@@ -20,12 +20,31 @@ public class SetSimplePasswordService {
     private final GenerateSaltPort generateSaltPort;
 
     public void set(Long userId, String simplePassword) {
-        User user = queryUserDbPort.findById(userId).orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NOT_USER));
-        String rawSalt = generateSaltPort.generate();
+        User user = getUser(userId);
+        deleteOldSalt(userId);
+        String rawSalt = generateRawSalt();
+        Salt salt = generateSalt(user, rawSalt);
         String hashed = hashPort.hash(simplePassword, rawSalt);
-        Salt salt = new Salt(user, rawSalt, SaltType.SIMPLE);
-        commandSaltPort.deleteByUserIdAndType(userId, SaltType.SIMPLE);
         user.setSimplePassword(hashed);
         commandSaltPort.save(salt);
+    }
+
+    private static Salt generateSalt(User user, String rawSalt) {
+        Salt salt = new Salt(user, rawSalt, SaltType.SIMPLE);
+        return salt;
+    }
+
+    private String generateRawSalt() {
+        String rawSalt = generateSaltPort.generate();
+        return rawSalt;
+    }
+
+    private void deleteOldSalt(Long userId) {
+        commandSaltPort.deleteByUserIdAndType(userId, SaltType.SIMPLE);
+    }
+
+    private User getUser(Long userId) {
+        User user = queryUserDbPort.findById(userId).orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NOT_USER));
+        return user;
     }
 }

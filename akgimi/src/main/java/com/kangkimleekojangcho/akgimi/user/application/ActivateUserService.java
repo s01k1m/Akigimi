@@ -26,10 +26,10 @@ public class ActivateUserService {
         List<UserField> userFields = user.whatIsNotFilled();
         if(userFields.isEmpty()){
             user.setUserState(UserState.ACTIVE);
-            String accessToken = jwtTokenIssuer.createAccessToken(userId, user.getUserState());
-            String refreshToken = jwtTokenIssuer.createRefreshToken(userId, user.getUserState());
-            return new ActivateUserServiceResponse(accessToken, refreshToken, userId, new ArrayList<>());
+            String accessToken = jwtTokenIssuer.createAccessTokenForUnauthorizedUser(user);
+            String refreshToken = jwtTokenIssuer.createRefreshToken(user);
+            return new ActivateUserServiceResponse(accessToken, refreshToken, userId);
         }
-        return new ActivateUserServiceResponse(null, null, userId, userFields);
+        throw new BadRequestException(BadRequestExceptionCode.CANNOT_ACTIVATE);
     }
 }
