@@ -14,7 +14,7 @@
             ERROR=red, INFO=green, DEBUG=blue} [%C] %style{[%t]}{yellow}- %m%n
         </Property>
         <!--        <Property name="fileLayout">%d [%t] %-5level %c(%M:%L) - %m%n</Property>-->
-        <Property name="fileLayout">[%t] %-5level %d %c(%M:%L) - %m%n</Property>
+        <Property name="fileLayout">[%level][%t][%d{yyyy/MM/dd HH:mm:ss,SSS}] %c(%M:%L) - %m%n</Property>
     </Properties>
 
     <!-- Log Appender 설정 -->

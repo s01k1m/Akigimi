@@ -58,10 +58,9 @@ services:
       - inner
     environment:
       - TZ=Asia/Seoul
-
 networks:
   inner:
-     external: true
+    external: true
 
 volumes:
   mysql-data:
@@ -76,4 +75,3 @@ volumes:
     external: true
   redis-conf:
     external: true
-

@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 
 @ActiveProfiles("test")
 @SpringBootTest
@@ -20,9 +21,6 @@ public abstract class ServiceIntegrationTestSupport {
 
     @MockBean
     protected CommandFeedImagePort commandFeedImagePort;
-
-    @MockBean
-    protected CommandUserProfileImagePort commandUserProfileImagePort;
 
     @MockBean
     protected S3Config s3Config;
