@@ -17,7 +17,7 @@ import '@/styles/MainPageButton.css'
 const Main = () => {
     const router = useRouter()
     const [isLoading, setIsLoading] = useState<boolean>(true)
-    const [stage, setStage] = useState<number>(0)
+    const [stage, setStage] = useState<number>(1)
     const [percentage, setPercentage] = useState<number>(0)
     const [productName, setProductName] = useState<string>("")
     const [productPrice, setProductPrice] = useState<number>(0)
@@ -46,7 +46,7 @@ const Main = () => {
                 
                 const data = response.data.data
                 console.log('챌린지 상태', response.data.data.characterStatus)
-                setStage(data.characterStatus + 1)
+                // setStage(data.characterStatus + 1)
                 setProductName(data.productName)
                 setProductPrice(data.productPrice.toLocaleString())
                 setProductImg(data.productImg)
@@ -140,7 +140,7 @@ const Main = () => {
                 <GoToRetryBtn />
                 </div>
             }
-            <div className="flex" style={{ marginTop: stage >= 5 ? "0px" : (stage === 0 ? "170px" : "23px")}}>
+            <div className="flex" style={{ marginTop: stage >= 6 ? "-25px" : (stage === 0 ? "170px" : "23px")}}>
                 <IconBtn />
                 <CharacterImg stage={stage}  />
             </div>
