@@ -1,6 +1,6 @@
 package com.kangkimleekojangcho.akgimi.challenge.application;
 
-import com.kangkimleekojangcho.akgimi.challenge.adapter.in.request.CreatePostscriptServiceRequest;
+import com.kangkimleekojangcho.akgimi.challenge.application.request.CreatePostscriptServiceRequest;
 import com.kangkimleekojangcho.akgimi.challenge.application.port.CommandPostscriptDbPort;
 import com.kangkimleekojangcho.akgimi.challenge.application.port.QueryChallengeDbPort;
 import com.kangkimleekojangcho.akgimi.challenge.application.port.QueryPostscriptDbPort;

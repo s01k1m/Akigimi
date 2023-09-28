@@ -3,7 +3,7 @@ package com.kangkimleekojangcho.akgimi.challenge.application;
 import com.kangkimleekojangcho.akgimi.bank.domain.Account;
 import com.kangkimleekojangcho.akgimi.bank.domain.AccountType;
 import com.kangkimleekojangcho.akgimi.bank.domain.Bank;
-import com.kangkimleekojangcho.akgimi.challenge.adapter.in.request.CreatePostscriptServiceRequest;
+import com.kangkimleekojangcho.akgimi.challenge.application.request.CreatePostscriptServiceRequest;
 import com.kangkimleekojangcho.akgimi.challenge.domain.Challenge;
 import com.kangkimleekojangcho.akgimi.challenge.domain.Postscript;
 import com.kangkimleekojangcho.akgimi.global.exception.BadRequestException;

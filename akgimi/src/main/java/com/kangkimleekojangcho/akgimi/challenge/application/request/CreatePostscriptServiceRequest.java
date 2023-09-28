@@ -1,4 +1,4 @@
-package com.kangkimleekojangcho.akgimi.challenge.adapter.in.request;
+package com.kangkimleekojangcho.akgimi.challenge.application.request;
 
 import lombok.Builder;
 import org.springframework.web.multipart.MultipartFile;
