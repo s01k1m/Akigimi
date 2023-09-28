@@ -2,6 +2,7 @@ package com.kangkimleekojangcho.akgimi.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kangkimleekojangcho.akgimi.challenge.adapter.in.PostscriptController;
+import com.kangkimleekojangcho.akgimi.challenge.application.CreatePostscriptService;
 import com.kangkimleekojangcho.akgimi.common.application.MattermostSender;
 import com.kangkimleekojangcho.akgimi.common.domain.application.SubtractUserIdFromAccessTokenService;
 import com.kangkimleekojangcho.akgimi.global.config.WebSecurityConfig;
@@ -43,6 +44,8 @@ public abstract class ControllerTestSupport {
     protected CreateFeedService createFeedService;
     @MockBean
     protected GetBunchOfFeedWrittenByFollowerRequestService getBunchOfFeedWrittenByFollowerRequestService;
+    @MockBean
+    protected CreatePostscriptService createPostscriptService;
 
     @Autowired
     protected MockMvc mockMvc;
