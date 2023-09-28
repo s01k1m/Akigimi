@@ -12,4 +12,6 @@ public interface QueryChallengeDbPort {
     Integer countByProductIdAndIsInProgress(Long productId, boolean isInProgress);
 
     Optional<Challenge> findSuccessChallengeByIdAndUser_Id(Long userId, Long challengeId);
+
+    Optional<Challenge> findById(Long save);
 }
