@@ -3,6 +3,7 @@ package com.kangkimleekojangcho.akgimi.challenge.application;
 import com.kangkimleekojangcho.akgimi.bank.application.port.CommandAccountDbPort;
 import com.kangkimleekojangcho.akgimi.challenge.application.port.CommandChallengeDbPort;
 import com.kangkimleekojangcho.akgimi.challenge.application.port.CommandPostscriptDbPort;
+import com.kangkimleekojangcho.akgimi.challenge.application.port.QueryChallengeDbPort;
 import com.kangkimleekojangcho.akgimi.challenge.application.port.QueryPostscriptDbPort;
 import com.kangkimleekojangcho.akgimi.config.ServiceIntegrationTestSupport;
 import com.kangkimleekojangcho.akgimi.product.application.port.CommandProductDbPort;
@@ -22,6 +23,9 @@ public abstract class ChallengeIntegrationTestSupport extends ServiceIntegration
 
     @Autowired
     protected CommandChallengeDbPort commandChallengeDbPort;
+
+    @Autowired
+    protected QueryChallengeDbPort queryChallengeDbPort;
 
     @Autowired
     protected CommandAccountDbPort commandAccountDbPort;
