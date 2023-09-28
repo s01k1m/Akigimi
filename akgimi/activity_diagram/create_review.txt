@@ -1,0 +1,15 @@
+@startuml
+:create review;
+if (user's challenge id exist?) then (no)
+else (yes)
+if(achievement status == true) then(no)
+else (yes)
+if(challange doesn't have review) then(yes)
+  #green:done;
+  kill
+else ()
+end if;
+end if;
+end if;
+  #red:error;
+@enduml

@@ -4,10 +4,8 @@ import com.kangkimleekojangcho.akgimi.bank.application.port.CommandAccountDbPort
 import com.kangkimleekojangcho.akgimi.bank.domain.Account;
 import com.kangkimleekojangcho.akgimi.bank.domain.AccountType;
 import com.kangkimleekojangcho.akgimi.bank.domain.Bank;
-import com.kangkimleekojangcho.akgimi.challenge.adapter.out.ChallengeJpaRepository;
 import com.kangkimleekojangcho.akgimi.challenge.application.port.CommandChallengeDbPort;
 import com.kangkimleekojangcho.akgimi.challenge.domain.Challenge;
-import com.kangkimleekojangcho.akgimi.config.ServiceIntegrationTestSupport;
 import com.kangkimleekojangcho.akgimi.product.application.port.CommandProductDbPort;
 import com.kangkimleekojangcho.akgimi.product.domain.Product;
 import com.kangkimleekojangcho.akgimi.user.application.port.CommandUserDbPort;
@@ -15,14 +13,19 @@ import com.kangkimleekojangcho.akgimi.user.domain.KakaoNickname;
 import com.kangkimleekojangcho.akgimi.user.domain.OidcProvider;
 import com.kangkimleekojangcho.akgimi.user.domain.User;
 import com.kangkimleekojangcho.akgimi.user.domain.UserState;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @Transactional
-class CreateChallengeServiceTest extends ServiceIntegrationTestSupport {
+class CreateChallengeServiceTest extends ChallengeIntegrationTestSupport {
     private User user;
     private Product product;
     private Account depositAccount;
@@ -94,7 +97,7 @@ class CreateChallengeServiceTest extends ServiceIntegrationTestSupport {
         Challenge save = commandChallengeDbPort.save(challenge);
 
         //then
-        Assertions.assertEquals(1, save.getProduct().getId());
-        Assertions.assertEquals(30, save.getChallengePeriod());
+        assertThat(save.getProduct().getId()).isEqualTo(save.getProduct().getId());
+        assertThat(30).isEqualTo(save.getChallengePeriod());
     }
 }
