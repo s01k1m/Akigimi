@@ -29,7 +29,7 @@ public class CreatePostscriptService {
             Long userId
     ) {
         Challenge challenge = challengeQueryDbPort.findSuccessChallengeByIdAndUser_Id(
-                    userId, createPostscriptServiceRequest.challengeId()
+                    createPostscriptServiceRequest.challengeId(), userId
                 ).orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NO_RESOURCE));
 
         if (postscriptDbPort.findPostscriptByChallenge(challenge).isPresent()) {

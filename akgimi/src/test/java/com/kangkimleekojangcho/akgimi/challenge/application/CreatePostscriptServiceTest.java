@@ -43,6 +43,7 @@ class CreatePostscriptServiceTest extends ChallengeIntegrationTestSupport {
                 .oidcProvider(OidcProvider.KAKAO)
                 .simplePassword("h12314")
                 .build());
+        System.out.println("user : " + user.getId());
 
         Challenge challenge = prepareForCreatePostscript(user);
         MockMultipartFile file = new MockMultipartFile("image",
@@ -70,12 +71,15 @@ class CreatePostscriptServiceTest extends ChallengeIntegrationTestSupport {
         //given
         User user = commandUserDbPort.save(User.builder()
                 .userState(UserState.ACTIVE)
-                .nickname("nickname")
-                .oauthId("hellokakao")
-                .kakaoProfileNickname(new KakaoNickname("kakaonick"))
+                .nickname("nickname2")
+                .oauthId("hellokakao2")
+                .kakaoProfileNickname(new KakaoNickname("kakaonick2"))
                 .oidcProvider(OidcProvider.KAKAO)
                 .simplePassword("h12314")
                 .build());
+
+
+        System.out.println("user : " + user.getId());
         Challenge challenge = prepareForCreatePostscript(user);
         MockMultipartFile file = new MockMultipartFile("image",
                 "test.png",
@@ -83,8 +87,8 @@ class CreatePostscriptServiceTest extends ChallengeIntegrationTestSupport {
                 new FileInputStream("src/test/resources/test/test.png"));
         User stranger = commandUserDbPort.save(User.builder()
                 .userState(UserState.ACTIVE)
-                .nickname("nicknamestr")
-                .oauthId("hellokakao2")
+                .nickname("nick")
+                .oauthId("hellokak")
                 .kakaoProfileNickname(new KakaoNickname("kak"))
                 .oidcProvider(OidcProvider.KAKAO)
                 .simplePassword("h12314")
@@ -105,12 +109,15 @@ class CreatePostscriptServiceTest extends ChallengeIntegrationTestSupport {
         //given
         User user = commandUserDbPort.save(User.builder()
                 .userState(UserState.ACTIVE)
-                .nickname("nickname1")
-                .oauthId("hellokakao2")
-                .kakaoProfileNickname(new KakaoNickname("kakaonick"))
+                .nickname("nick")
+                .oauthId("hello")
+                .kakaoProfileNickname(new KakaoNickname("kakao"))
                 .oidcProvider(OidcProvider.KAKAO)
-                .simplePassword("h12314")
+                .simplePassword("h12")
                 .build());
+
+
+        System.out.println("user : " + user.getId());
 
         Challenge challenge = prepareForCreatePostscript(user);
         MockMultipartFile file = new MockMultipartFile("image",
