@@ -1,6 +1,8 @@
 package com.kangkimleekojangcho.akgimi.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kangkimleekojangcho.akgimi.challenge.adapter.in.PostscriptController;
+import com.kangkimleekojangcho.akgimi.challenge.application.CreatePostscriptService;
 import com.kangkimleekojangcho.akgimi.common.application.MattermostSender;
 import com.kangkimleekojangcho.akgimi.common.domain.application.SubtractUserIdFromAccessTokenService;
 import com.kangkimleekojangcho.akgimi.global.config.WebSecurityConfig;
@@ -20,7 +22,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(controllers = {
         FeedController.class,
-        ReceiptController.class
+        ReceiptController.class,
+        PostscriptController.class
 }, excludeFilters = { //!Added!
         @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {
                 SecurityConfig.class,
@@ -41,6 +44,8 @@ public abstract class ControllerTestSupport {
     protected CreateFeedService createFeedService;
     @MockBean
     protected GetBunchOfFeedWrittenByFollowerRequestService getBunchOfFeedWrittenByFollowerRequestService;
+    @MockBean
+    protected CreatePostscriptService createPostscriptService;
 
     @Autowired
     protected MockMvc mockMvc;
