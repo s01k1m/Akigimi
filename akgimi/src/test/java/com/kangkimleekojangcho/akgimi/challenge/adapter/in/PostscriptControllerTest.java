@@ -35,7 +35,7 @@ class PostscriptControllerTest extends ControllerTestSupport {
 
         //when
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("postscriptId", "1");
+        params.add("challengeId", "1");
         params.add("content", "content");
 
 
@@ -65,7 +65,6 @@ class PostscriptControllerTest extends ControllerTestSupport {
         ResultActions actions = mockMvc.perform(multipart(POSTSCRIPT_BASE_URL).file(file).queryParams(params));
 
         // then
-
         actions.andDo(print())
                 .andExpect(status().isBadRequest());
     }
@@ -76,6 +75,4 @@ class PostscriptControllerTest extends ControllerTestSupport {
                 Arguments.of(1L, null)
         );
     }
-
-
 }
