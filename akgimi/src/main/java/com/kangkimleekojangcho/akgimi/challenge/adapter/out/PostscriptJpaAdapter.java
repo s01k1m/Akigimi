@@ -34,12 +34,6 @@ public class PostscriptJpaAdapter implements
     public GetBunchOfPostscriptServiceResponse findBunchOfPostscriptForProduct(
             GetBunchOfPostscriptServiceRequest request
     ) {
-        if (request.numberOfPostscript() == 0) {
-            return GetBunchOfPostscriptServiceResponse.builder()
-                    .bunchOfPostscriptInfo(new ArrayList<>())
-                    .build();
-        }
-
         return GetBunchOfPostscriptServiceResponse.builder()
                 .bunchOfPostscriptInfo(
                         postscriptQuerydslRepository.findBunchOfPostscriptForProduct(
