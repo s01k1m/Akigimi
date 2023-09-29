@@ -22,7 +22,6 @@ public class GetBunchOfPostscriptService {
                     .bunchOfPostscriptInfo(new ArrayList<>())
                     .build();
         }
-
         return queryPostscriptDbPort.findBunchOfPostscriptForProduct(request);
     }
 }

@@ -4,8 +4,6 @@ package com.kangkimleekojangcho.akgimi.challenge.adapter.out;
 import com.kangkimleekojangcho.akgimi.challenge.application.request.GetBunchOfPostscriptServiceRequest;
 import com.kangkimleekojangcho.akgimi.challenge.application.response.PostscriptInfo;
 import com.kangkimleekojangcho.akgimi.challenge.application.response.QPostscriptInfo;
-import com.kangkimleekojangcho.akgimi.challenge.domain.QChallenge;
-import com.kangkimleekojangcho.akgimi.product.domain.QProduct;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -15,8 +13,7 @@ import java.util.List;
 
 import static com.kangkimleekojangcho.akgimi.challenge.domain.QChallenge.challenge;
 import static com.kangkimleekojangcho.akgimi.challenge.domain.QPostscript.postscript;
-import static com.kangkimleekojangcho.akgimi.product.domain.QProduct.*;
-import static com.kangkimleekojangcho.akgimi.sns.domain.QFeed.feed;
+import static com.kangkimleekojangcho.akgimi.product.domain.QProduct.product;
 
 @Repository
 @RequiredArgsConstructor
@@ -44,20 +41,26 @@ public class PostscriptQuerydslRepository {
                                         .subtract(postscript.challenge.challengeStartDate.dayOfYear())
                         )
                 ).from(
-                        product
-                ).join(challenge)
-                .on(challenge.product.eq(product))
-                .join(postscript)
-                .on(postscript.challenge.eq(challenge))
+                       challenge
+                ).innerJoin(product)
+                .on(
+                        challenge.achievementState.eq(true),
+                        product.id.eq(request.productId()),
+                        challenge.product.eq(product)
+                )
+                .innerJoin(postscript)
+                .on(challenge.eq(postscript.challenge))
                 .where(
                         ltScriptId(request.lastPostscriptId())
-                ).fetch();
+                )
+                .limit(request.numberOfPostscript())
+                .fetch();
     }
 
-    private BooleanExpression ltScriptId(Long feedId) {
-        if (feedId == null) {
+    private BooleanExpression ltScriptId(Long postscriptId) {
+        if (postscriptId == null) {
             return null; // BooleanExpression 자리에 null이 반환되면 조건문에서 자동으로 제거된다
         }
-        return feed.feedId.lt(feedId);
+        return postscript.postscriptId.lt(postscriptId);
     }
 }
