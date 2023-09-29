@@ -29,7 +29,7 @@ public class FeedQuerydslRepository {
             Integer numberOfFeed
     ) {
 
-        List<BriefFeedInfo> result = jpaQueryFactory.select(
+        return jpaQueryFactory.select(
                         new QBriefFeedInfo(
                                 feed.feedId.as("feedId"),
                                 feed.user.id.as("userId"),
@@ -58,7 +58,6 @@ public class FeedQuerydslRepository {
                         follow.follower.id.eq(requestUserId)))
                 .orderBy(feed.feedId.desc())
                 .limit(numberOfFeed).fetch();
-        return result;
     }
 
     public List<BriefReceiptInfo> findReceiptByUser_IdAndLastReceiptIdAndNumberOfReceipt(

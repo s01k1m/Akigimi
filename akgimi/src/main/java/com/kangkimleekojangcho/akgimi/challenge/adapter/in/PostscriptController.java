@@ -5,6 +5,7 @@ import com.kangkimleekojangcho.akgimi.challenge.adapter.in.request.GetBunchOfPos
 import com.kangkimleekojangcho.akgimi.challenge.application.CreatePostscriptService;
 import com.kangkimleekojangcho.akgimi.challenge.application.GetBunchOfPostscriptService;
 import com.kangkimleekojangcho.akgimi.challenge.application.response.CreatePostscriptServiceResponse;
+import com.kangkimleekojangcho.akgimi.challenge.application.response.GetBunchOfPostscriptServiceResponse;
 import com.kangkimleekojangcho.akgimi.common.domain.application.SubtractUserIdFromAccessTokenService;
 import com.kangkimleekojangcho.akgimi.global.response.ResponseFactory;
 import com.kangkimleekojangcho.akgimi.global.response.SuccessResponse;
@@ -40,13 +41,11 @@ public class PostscriptController {
     }
 
     @GetMapping
-    ResponseEntity<SuccessResponse<Void>> getBunchOfFeed(
-            @Valid GetBunchOfPostscriptRequest getBunchOfPostscriptRequest,
-            HttpServletRequest servletRequest
+    ResponseEntity<SuccessResponse<GetBunchOfPostscriptServiceResponse>> getBunchOfFeed(
+            @Valid GetBunchOfPostscriptRequest getBunchOfPostscriptRequest
     ) {
-        Long userId = userIdFromAccessTokenService.subtract(servletRequest);
         return ResponseFactory.success(
-                getBunchOfPostscriptService.execute(getBunchOfPostscriptRequest.toServiceRequest(), userId)
+                getBunchOfPostscriptService.execute(getBunchOfPostscriptRequest.toServiceRequest())
         );
     }
 }
