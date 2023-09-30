@@ -37,7 +37,7 @@ public class PostscriptQuerydslRepository {
                                 postscript.challenge.challengeEndDate.year()
                                         .subtract(postscript.challenge.challengeStartDate.year())
                                         .multiply(365)
-                                        .add(postscript.challenge.challengeEndDate.dayOfYear())
+                                        .add(postscript.challenge.achievementDate.dayOfYear())
                                         .subtract(postscript.challenge.challengeStartDate.dayOfYear())
                         )
                 ).from(
