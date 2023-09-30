@@ -3,7 +3,7 @@ package com.kangkimleekojangcho.akgimi.challenge.application;
 import com.kangkimleekojangcho.akgimi.bank.domain.Account;
 import com.kangkimleekojangcho.akgimi.bank.domain.AccountType;
 import com.kangkimleekojangcho.akgimi.bank.domain.Bank;
-import com.kangkimleekojangcho.akgimi.challenge.adapter.in.request.CreatePostscriptServiceRequest;
+import com.kangkimleekojangcho.akgimi.challenge.application.request.CreatePostscriptServiceRequest;
 import com.kangkimleekojangcho.akgimi.challenge.domain.Challenge;
 import com.kangkimleekojangcho.akgimi.challenge.domain.Postscript;
 import com.kangkimleekojangcho.akgimi.global.exception.BadRequestException;
@@ -43,7 +43,6 @@ class CreatePostscriptServiceTest extends ChallengeIntegrationTestSupport {
                 .oidcProvider(OidcProvider.KAKAO)
                 .simplePassword("h12314")
                 .build());
-        System.out.println("user : " + user.getId());
 
         Challenge challenge = prepareForCreatePostscript(user);
         MockMultipartFile file = new MockMultipartFile("image",
@@ -115,9 +114,6 @@ class CreatePostscriptServiceTest extends ChallengeIntegrationTestSupport {
                 .oidcProvider(OidcProvider.KAKAO)
                 .simplePassword("h12")
                 .build());
-
-
-        System.out.println("user : " + user.getId());
 
         Challenge challenge = prepareForCreatePostscript(user);
         MockMultipartFile file = new MockMultipartFile("image",
