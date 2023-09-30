@@ -23,6 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @Transactional
 class GetBunchOfPostscriptServiceTest extends ChallengeIntegrationTestSupport {
 
@@ -75,9 +77,9 @@ class GetBunchOfPostscriptServiceTest extends ChallengeIntegrationTestSupport {
                 = getBunchOfPostscriptService.execute(request);
 
         //then
-        Assertions.assertThat(result.bunchOfPostscriptInfo().size()).isEqualTo(answer);
+        assertThat(result.bunchOfPostscriptInfo().size()).isEqualTo(answer);
+        assertThat(result.bunchOfPostscriptInfo().get(0).period().intValue()).isEqualTo(30);
     }
-
 
 
     private void prepareBunchOfPostscript(Product product) {
@@ -101,6 +103,9 @@ class GetBunchOfPostscriptServiceTest extends ChallengeIntegrationTestSupport {
                     .user(user)
                     .createdAt(LocalDateTime.now())
                     .updatedAt(LocalDateTime.now())
+                    .challengeStartDate(LocalDate.now().minusDays(30))
+                    .achievementDate(LocalDate.now())
+                    .challengeEndDate(LocalDate.now().plusDays(10))
                     .build());
             Account depositAccount = commandAccountDbPort.save(Account.builder()
                     .user(user)
