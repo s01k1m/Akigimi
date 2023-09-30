@@ -10,4 +10,6 @@ public interface QueryUserDbPort {
     Optional<User> findByOauthId(String oauthId);
 
     boolean existsByNickname(String nickname);
+
+    User findReferenceById(Long userId);
 }

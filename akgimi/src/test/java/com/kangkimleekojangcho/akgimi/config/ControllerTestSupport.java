@@ -12,6 +12,7 @@ import com.kangkimleekojangcho.akgimi.sns.adapter.in.ReceiptController;
 import com.kangkimleekojangcho.akgimi.sns.application.CreateFeedService;
 import com.kangkimleekojangcho.akgimi.sns.application.GetBunchOfFeedWrittenByFollowerRequestService;
 import com.kangkimleekojangcho.akgimi.sns.application.GetBunchOfReceiptService;
+import com.kangkimleekojangcho.akgimi.sns.application.MarkLikeToFeedService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -47,9 +48,10 @@ public abstract class ControllerTestSupport {
     protected GetBunchOfFeedWrittenByFollowerRequestService getBunchOfFeedWrittenByFollowerRequestService;
     @MockBean
     protected CreatePostscriptService createPostscriptService;
-
     @MockBean
     protected GetBunchOfPostscriptService getBunchOfPostscriptService;
+    @MockBean
+    protected MarkLikeToFeedService markLikeToFeedService;
 
     @Autowired
     protected MockMvc mockMvc;

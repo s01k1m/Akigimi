@@ -2,11 +2,14 @@ package com.kangkimleekojangcho.akgimi.sns.adapter.in;
 
 import com.kangkimleekojangcho.akgimi.config.ControllerTestSupport;
 import com.kangkimleekojangcho.akgimi.sns.adapter.in.request.CreateFeedRequest;
+import com.kangkimleekojangcho.akgimi.sns.adapter.in.request.MarkLikeToFeedRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.util.LinkedMultiValueMap;
@@ -15,8 +18,7 @@ import org.springframework.util.MultiValueMap;
 import java.io.FileInputStream;
 import java.util.stream.Stream;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -120,7 +122,7 @@ class FeedControllerTest extends ControllerTestSupport {
     @DisplayName("[bad] 피드 요청 시 유저가 잘못된 입력값을 가지고 요청하면 에러를 반환한다.")
     @MethodSource("generateWrongFeedRequestData")
     @ParameterizedTest
-    void givenValidInput_whenUserRequestBunchOfFeed_thenThrowsError(Long lastFeedId, Integer numberOfFeed) throws Exception {
+    void givenInvalidInput_whenUserRequestBunchOfFeed_thenThrowsError(Long lastFeedId, Integer numberOfFeed) throws Exception {
         //given
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("lastFeedId", lastFeedId == null ? null : lastFeedId.toString());
@@ -140,5 +142,42 @@ class FeedControllerTest extends ControllerTestSupport {
                 Arguments.of(1L, null),
                 Arguments.of(null, 10)
         );
+    }
+
+    @DisplayName("[happy] like 요청 시 유저가 올바른 입력값을 보내면 피드에 좋아요를 수행한다.")
+    @Test
+    void givenValidInput_whenUserRequestMarkLikeToFeed_thenExecuteLike() throws Exception {
+        //given
+        MarkLikeToFeedRequest markLikeToFeedRequest = MarkLikeToFeedRequest
+                .builder()
+                .feedId(1L)
+                .build();
+
+        //when
+        ResultActions actions = mockMvc.perform(post(FEED_BASE_URL+"/likes").content(
+                objectMapper.writeValueAsString(markLikeToFeedRequest))
+                .contentType(MediaType.APPLICATION_JSON));
+
+        // then
+        actions.andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @DisplayName("[bad] 좋아요 요청 시 유저가 잘못된 feedId 값을 주는 경우 에러를 반환한다")
+    @ValueSource(longs = {-1})
+    @ParameterizedTest
+    void givenInvalidInput_whenUserRequestMarkLikeToFeed_thenThrowsError(Long feedId) throws Exception {
+        //given
+        MarkLikeToFeedRequest markLikeToFeedRequest = MarkLikeToFeedRequest
+                .builder()
+                .feedId(feedId)
+                .build();
+        //when
+        ResultActions actions = mockMvc.perform(post(FEED_BASE_URL+"/likes").content(
+                objectMapper.writeValueAsString(markLikeToFeedRequest))
+                .contentType(MediaType.APPLICATION_JSON));
+        // then
+        actions.andDo(print())
+                .andExpect(status().isBadRequest());
     }
 }

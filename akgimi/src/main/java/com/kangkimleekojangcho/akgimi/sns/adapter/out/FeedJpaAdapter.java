@@ -40,4 +40,9 @@ public class FeedJpaAdapter implements CommandFeedDbPort, QueryFeedDbPort {
     public List<BriefReceiptInfo> findReceiptByUser_IdAndLastReceiptIdAndNumberOfReceipt(Long userId,  Long receiptOwnerId, Long lastReceiptId, Integer numberOfReceipt) {
         return feedQuerydslRepository.findReceiptByUser_IdAndLastReceiptIdAndNumberOfReceipt(userId, receiptOwnerId, lastReceiptId, numberOfReceipt);
     }
+
+    @Override
+    public Feed findReferenceById(Long feedId) {
+        return feedJpaRepository.getReferenceById(feedId);
+    }
 }

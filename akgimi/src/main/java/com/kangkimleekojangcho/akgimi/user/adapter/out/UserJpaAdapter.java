@@ -22,6 +22,11 @@ class UserJpaAdapter implements QueryUserDbPort, CommandUserDbPort {
         return userJpaRepository.existsByNickname(nickname);
     }
 
+    @Override
+    public User findReferenceById(Long userId) {
+        return userJpaRepository.getReferenceById(userId);
+    }
+
     public User save(User user) {
         return userJpaRepository.save(user);
     }
