@@ -1,6 +1,7 @@
 package com.kangkimleekojangcho.akgimi.challenge.adapter.in.request;
 
 
+import com.kangkimleekojangcho.akgimi.challenge.application.request.CreatePostscriptServiceRequest;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
