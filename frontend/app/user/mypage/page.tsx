@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import Image from "next/image";
-import MypageTap from "@/components/User/UserTap";
+import MypageTap from "@/components/User/MypageTap";
 import FollowerButton from "@/components/User/FollowerButton";
 import FollowingButton from "@/components/User/FollowingButton";
 import MypageAccouts from "@/components/User/MypageAccount";

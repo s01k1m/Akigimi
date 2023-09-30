@@ -14,11 +14,12 @@ export default function Login() {
   let id_token: string | null = "";
   // let urlStr: string = window.location.href;
   let url: URL | undefined = undefined; // <---- and this line
-  const [authorize_code, setAuthorize_code] = useState<string>("");
+  // const [authorize_code, setAuthorize_code] = useState<string>("");
+  let authorize_code: string = "";
   // token =  window.localStorage.getItem("access_token");
 
   let token: string = "";
-  let redirect_uri = "http://localhost:3000/kakao/oidc";
+  let redirect_uri: string = "";
   const app_key = process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID;
   const router = useRouter();
   let token_request_url: string = "";
@@ -27,11 +28,11 @@ export default function Login() {
     token = window.localStorage.getItem("access_token");
     urlStr = window.location.href;
     url = new URL(urlStr); // <---- and this line
-    setAuthorize_code(url.searchParams.get("code"));
+    authorize_code = url.searchParams.get("code");
+
     //로컬호스트와 배포 주소에 따라서 requset_url을 동적으로 변환
     let urlOrigin = url.origin;
     redirect_uri = `${urlOrigin}/kakao/oidc`;
-    token_request_url = `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=5d06715a9e4afbca55173788a79e3674&redirect_uri=${redirect_uri}&code=${authorize_code}`;
   };
 
   // 1. 카카오 로그인 성공한 유저를 리다이렉트된 주소에서 코드를 파싱한다
@@ -43,7 +44,7 @@ export default function Login() {
       .get(token_request_url)
       .then((response) => {
         id_token = response.data.id_token;
-        window.localStorage.setItem("id_token", response.data.id_token);
+        window.localStorage.setItem("id_token", response.data.id_token); // pending active인지 체킹해야하는 access token 임
       })
       .then(() => {
         // 3. it_token으로 우리 유저인지 DB 확인하러 갑니다
@@ -122,18 +123,15 @@ export default function Login() {
   useEffect(() => {
     console.log("순서1");
     if (window) {
-      forLogin().then(() => {
-        console.log("forLogin 변수들 저장함");
-      });
+      forLogin()
+        .then(() => {
+          token_request_url = `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=5d06715a9e4afbca55173788a79e3674&redirect_uri=${redirect_uri}&code=${authorize_code}`;
+        })
+        .then(() => {
+          getLoginURL();
+        });
     }
   }, []);
-
-  useEffect(() => {
-    console.log("순서2");
-    if (typeof window !== "undefined") {
-      getLoginURL();
-    }
-  }, [authorize_code]);
 
   return (
     <div className="h-full w-full flex flex-col justify-center">
