@@ -180,4 +180,32 @@ class FeedControllerTest extends ControllerTestSupport {
         actions.andDo(print())
                 .andExpect(status().isBadRequest());
     }
+
+    @DisplayName("[happy] like 취소 요청 시 유저가 올바른 입력값을 보내면 피드에 좋아요 취소를 수행한다.")
+    @Test
+    void givenValidFeed_whenCancelLike_thenCancel() throws Exception {
+        //given
+
+        //when
+        ResultActions actions = mockMvc.perform(delete(FEED_BASE_URL+"/likes")
+                .param("feedId", "1"));
+
+        // then
+        actions.andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @DisplayName("[bad] 좋아요 취소 요청 시 유저가 잘못된 feedId 값을 주는 경우 에러를 반환한다")
+    @ValueSource(longs = {-1})
+    @ParameterizedTest
+    void givenInvalidInput_whenCancelFeed_thenThrowsError(Long feedId) throws Exception {
+        //given
+        //when
+        ResultActions actions = mockMvc.perform(delete(FEED_BASE_URL+"/likes")
+                .param("feedId", feedId.toString()));
+
+        // then
+        actions.andDo(print())
+                .andExpect(status().isBadRequest());
+    }
 }
