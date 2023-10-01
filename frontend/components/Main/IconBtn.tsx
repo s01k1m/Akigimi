@@ -1,41 +1,44 @@
 'use client'
 import Image from "next/image"
+import { HiPencilAlt } from 'react-icons/hi'
+import { BiReceipt } from 'react-icons/bi'
+import { FaRankingStar } from 'react-icons/fa6'
 import { useRouter } from "next/navigation"
 
 const IconBtn = () => {
     const router = useRouter()
     return (
         <>
-        <div className="flex flex-col w-16" style={{width: `20%`}}>
+        <div className="flex flex-col w-16 -mt-[55px]" style={{width: `20%`}}>
             <span className="flex flex-col items-center"
                 onClick={() => router.push('/myreceipt')}
             >
-                <Image
-                    src="/images/PurchaseOrder.png"
-                    alt="receipt"
-                    width={50}
-                    height={50}
+                <BiReceipt
+                    size={50}
                     className="mb-2"
-                    onClick={() => {
-                        router.push('/myreipt')
-                    }}
+                    color={`#202632`}
                 />
-                <span className="mb-5">영수증</span>
+                <span>영수증</span>
             </span>
             <span className="flex flex-col items-center"
                 onClick={() => router.push('/ranking')}
             >
-                <Image
-                    src="/images/SilverMedal.png"
-                    alt="ranking"
-                    width={50}
-                    height={50}
+                <FaRankingStar
+                    size={50}
                     className="mb-2"
-                    onClick={() => {
-                        router.push('/ranking')
-                    }}
+                    color={`#202632`}
                 />
                 <span>랭킹</span>
+            </span>
+            <span className="flex flex-col items-center"
+                onClick={() => router.push('/review/feed')}
+            >
+                <HiPencilAlt 
+                    size={50}
+                    className="mb-2"
+                    color={`#202632`}
+                />
+                <span>후기</span>
             </span>
         </div>
         </>
