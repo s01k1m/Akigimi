@@ -17,20 +17,25 @@ const RankingTap = () => {
         setSelectedValue(e.target.value)
     }
 
+    // tap 선택 확인
+    useEffect(() => {
+        console.log(selectedValue)
+    }, [selectedValue])
+
     return (
         <div className="mt-[3vh]">
             <div className='flex justify-center mb-[5vh]'>
                 <div className="radio-input">
                 <label>
-                    <input value="오늘" name="value-radio" id="value-1" type="radio" onChange={handleChange} checked={selectedValue === '오늘'} defaultChecked />
+                    <input value="오늘" name="value-radio" id="value-1" type="radio" onChange={handleChange} defaultChecked={selectedValue === '오늘'} />
                 <span>오늘의</span>
                 </label>
                 <label>
-                    <input value="이주" name="value-radio" id="value-2" type="radio" onChange={handleChange} checked={selectedValue === '이주'} />
+                    <input value="이주" name="value-radio" id="value-2" type="radio" onChange={handleChange} defaultChecked={selectedValue === '이주'} />
                 <span>이주의</span>
                 </label>
                 <label>
-                    <input value="이달" name="value-radio" id="value-3" type="radio" onChange={handleChange} checked={selectedValue === '이달'} />
+                    <input value="이달" name="value-radio" id="value-3" type="radio" onChange={handleChange} defaultChecked={selectedValue === '이달'} />
                 <span>이달의</span>
                 </label>
                 <div className="selection"></div>
