@@ -1,8 +1,11 @@
 package com.kangkimleekojangcho.akgimi.user.adapter.out;
 
+import com.kangkimleekojangcho.akgimi.global.exception.BadRequestException;
+import com.kangkimleekojangcho.akgimi.global.exception.BadRequestExceptionCode;
 import com.kangkimleekojangcho.akgimi.user.application.port.CommandUserDbPort;
 import com.kangkimleekojangcho.akgimi.user.application.port.QueryUserDbPort;
 import com.kangkimleekojangcho.akgimi.user.domain.User;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +27,11 @@ class UserJpaAdapter implements QueryUserDbPort, CommandUserDbPort {
 
     @Override
     public User findReferenceById(Long userId) {
-        return userJpaRepository.getReferenceById(userId);
+        try {
+            return userJpaRepository.getReferenceById(userId);
+        } catch (EntityNotFoundException ex) {
+            throw new BadRequestException(BadRequestExceptionCode.NOT_USER);
+        }
     }
 
     public User save(User user) {

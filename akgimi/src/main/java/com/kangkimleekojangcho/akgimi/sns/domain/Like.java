@@ -2,6 +2,7 @@ package com.kangkimleekojangcho.akgimi.sns.domain;
 
 import com.kangkimleekojangcho.akgimi.user.domain.User;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Getter
@@ -17,10 +18,12 @@ public class Like {
     private Long likeId;
 
     @JoinColumn(name="feed_id")
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     private Feed feed;
 
     @JoinColumn(name="user_id")
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 }

@@ -10,7 +10,6 @@ import com.kangkimleekojangcho.akgimi.sns.domain.Like;
 import com.kangkimleekojangcho.akgimi.user.application.port.QueryUserDbPort;
 import com.kangkimleekojangcho.akgimi.user.domain.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,19 +24,22 @@ public class MarkLikeToFeedService {
 
 
     public MarkLikeToFeedServiceResponse execute(Long userId, Long feedId) {
-        //TODO : exception handling 뺄 방법 생각해보기
-        try {
-            Feed feed = queryFeedDbPort.findReferenceById(feedId);
-            User user = queryUserDbPort.findReferenceById(userId);
-            commandLikeDbPort.save(
-                    Like.builder()
-                            .feed(feed)
-                            .user(user)
-                            .build()
-            );
-        } catch (DataAccessException ex) {
-            throw new BadRequestException(BadRequestExceptionCode.INVALID_INPUT);
+        Feed feed = queryFeedDbPort.findReferenceById(feedId);
+        User user = queryUserDbPort.findReferenceById(userId);
+
+        //최적화 필요 -> queryDSL로 변경
+        if(feed.getIsDeleted()) {
+            throw new BadRequestException(BadRequestExceptionCode.NOT_FEED);
         }
+        if(!feed.getIsPublic() && !feed.getUser().equals(user)) {
+            throw new BadRequestException(BadRequestExceptionCode.NOT_FEED);
+        }
+
+        commandLikeDbPort.save(
+                Like.builder()
+                        .feed(feed)
+                        .user(user)
+                        .build());
 
         return MarkLikeToFeedServiceResponse
                 .builder()
