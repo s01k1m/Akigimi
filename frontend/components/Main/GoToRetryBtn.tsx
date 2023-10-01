@@ -1,13 +1,15 @@
-import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 
 const GoToRetryBtn = () => {
-    const [isOpened, setIsOpened] = useState<boolean>(false);
-
+    const router = useRouter();
     return (
         <div>
+            
             <button 
                 className="button-common go-to-retry"
-                onClick={() => setIsOpened(true)}
+                onClick={() => {
+                    router.push('/main/retry')
+                }}
             >다시 도전하기</button>
         </div>
     )
