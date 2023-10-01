@@ -16,7 +16,7 @@ import '@/styles/MainPageButton.css'
 const Main = () => {
     const router = useRouter()
     const [isLoading, setIsLoading] = useState<boolean>(true)
-    const [stage, setStage] = useState<number>(7)
+    const [stage, setStage] = useState<number>(0)
     const [percentage, setPercentage] = useState<number>(0)
     const [productName, setProductName] = useState<string>("")
     const [productPrice, setProductPrice] = useState<number>(0)
@@ -119,7 +119,7 @@ const Main = () => {
                     <button 
                         className="go-to-btn"
                         onClick={() => {
-                            router.push('/item')
+                            router.push('/item/search')
                             }}
                         >
                         미닝템 정하러 가기
