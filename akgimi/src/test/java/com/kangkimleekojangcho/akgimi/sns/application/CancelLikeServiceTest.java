@@ -7,6 +7,7 @@ import com.kangkimleekojangcho.akgimi.challenge.domain.Challenge;
 import com.kangkimleekojangcho.akgimi.global.exception.BadRequestException;
 import com.kangkimleekojangcho.akgimi.global.exception.BadRequestExceptionCode;
 import com.kangkimleekojangcho.akgimi.product.domain.Product;
+import com.kangkimleekojangcho.akgimi.sns.application.port.CommandLikeDbPort;
 import com.kangkimleekojangcho.akgimi.sns.application.port.QueryLikeDbPort;
 import com.kangkimleekojangcho.akgimi.sns.domain.Feed;
 import com.kangkimleekojangcho.akgimi.sns.domain.Like;
@@ -20,28 +21,29 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @Transactional
-class MarkLikeToFeedServiceTest extends SnsServiceIntegrationTestSupport {
+class CancelLikeServiceTest extends SnsServiceIntegrationTestSupport {
 
     @Autowired
-    private MarkLikeToFeedService markLikeToFeedService;
-
+    private CancelLikeService cancelLikeService;
     @Autowired
     private QueryLikeDbPort queryLikeDbPort;
+    @Autowired
+    private CommandLikeDbPort commandLikeDbPort;
 
-    @DisplayName("[happy] 유저가 본인 게시글에 좋아요 요청 시 정상적으로 좋아요를 완료한다.")
-    @ValueSource(booleans = {true,false})
+
+    @DisplayName("[happy] 유저가 자신의 게시글에 좋아요 취소 요청 시 정상적으로 좋아요를 완료한다.")
+    @ValueSource(booleans = {true, false})
     @ParameterizedTest
-    public void givenValidFeedAndUser_whenUserRequestLike_thenExecute(boolean isPublic) throws Exception {
+    public void givenValidFeedAndUser_whenCancelLike_thenExecute(boolean isPublic) throws Exception {
         //given
         User ownerOfFeed = commandUserDbPort.save(User.builder()
                 .kakaoProfileNickname(new KakaoNickname("카카오프로필"))
@@ -49,15 +51,19 @@ class MarkLikeToFeedServiceTest extends SnsServiceIntegrationTestSupport {
                 .nickname("돌아다니는 카카오")
                 .oauthId("abcde")
                 .build());
-        Feed feedToLike = prepareForLikeFeed(ownerOfFeed, isPublic);
+        Feed feedToLike = prepareForCancelLikeFeed(ownerOfFeed, isPublic);
+        commandLikeDbPort.save(Like.builder()
+                .user(ownerOfFeed)
+                .feed(feedToLike)
+                .build());
 
         //when
-        markLikeToFeedService.execute(ownerOfFeed.getId(), feedToLike.getFeedId());
+        cancelLikeService.execute(ownerOfFeed.getId(), feedToLike.getFeedId());
+
+
         //then
         Optional<Like> result = queryLikeDbPort.findByUserIdAndFeedId(ownerOfFeed.getId(), feedToLike.getFeedId());
-        assertThat(result).isPresent();
-        assertThat(result.get().getFeed()).isEqualTo(feedToLike);
-        assertThat(result.get().getUser()).isEqualTo(ownerOfFeed);
+        assertThat(result).isEmpty();
     }
 
     @DisplayName("[happy] 유저가 자신의 글이 아닌 타인의 공개된 게시글에 좋아요 취소 요청 시 요청을 올바르게 수행한다..")
@@ -70,52 +76,61 @@ class MarkLikeToFeedServiceTest extends SnsServiceIntegrationTestSupport {
                 .nickname("돌아다니는 카카오")
                 .oauthId("abcde")
                 .build());
-        Feed feedToLike = prepareForLikeFeed(ownerOfFeed, true);
+        Feed feedToLike = prepareForCancelLikeFeed(ownerOfFeed, true);
 
-        User userWantToLike = commandUserDbPort.save(User.builder()
+        User userWantToCancelLike = commandUserDbPort.save(User.builder()
                 .kakaoProfileNickname(new KakaoNickname("카카오프로필"))
                 .userState(UserState.ACTIVE)
                 .nickname("Like하고 싶어요")
                 .oauthId("abcde")
                 .build());
 
+        commandLikeDbPort.save(Like.builder()
+                .user(userWantToCancelLike)
+                .feed(feedToLike)
+                .build());
+
         //when
-        markLikeToFeedService.execute(userWantToLike.getId(), feedToLike.getFeedId());
+        cancelLikeService.execute(userWantToCancelLike.getId(), feedToLike.getFeedId());
 
         //then
-        Optional<Like> result = queryLikeDbPort.findByUserIdAndFeedId(userWantToLike.getId(), feedToLike.getFeedId());
-        assertThat(result).isPresent();
-        assertThat(result.get().getFeed()).isEqualTo(feedToLike);
-        assertThat(result.get().getUser()).isEqualTo(userWantToLike);
+        Optional<Like> result = queryLikeDbPort.findByUserIdAndFeedId(userWantToCancelLike.getId(), feedToLike.getFeedId());
+        assertThat(result).isEmpty();
     }
 
-    @DisplayName("[bad] 유저가 자신의 글이 아닌 비공개된 게시글, 삭제된 게시글에 좋아요 요청 시 에러를 던진다.")
+    @DisplayName("[bad] 유저가 자신의 글이 아닌 비공개된 게시글, 삭제된 게시글에 좋아요 취소 요청 시 에러를 던진다.")
     @CsvSource(value = {"true:false", "false:false"}, delimiter = ':')
     @ParameterizedTest
-    public void givenInvalidFeed_whenUserRequestLike_thenExecute(boolean isDeleted, boolean isPublic) throws Exception {
+    public void givenInvalidFeed_whenUserCancelLike_thenExecute(boolean isDeleted, boolean isPublic) throws Exception {
         //given
-        User user = commandUserDbPort.save(User.builder()
+        User ownerOfFeed = commandUserDbPort.save(User.builder()
                 .kakaoProfileNickname(new KakaoNickname("카카오프로필"))
                 .userState(UserState.ACTIVE)
                 .nickname("돌아다니는 카카오")
                 .oauthId("abcde")
                 .build());
-        Feed feedToLike = prepareInvalidFeedForLike(user,isDeleted,isPublic);
+        Feed feedToLike = prepareInvalidFeedForCancelLike(ownerOfFeed, isDeleted, isPublic);
 
-        User userWantToLike = commandUserDbPort.save(User.builder()
+        User userWantToCancelLike = commandUserDbPort.save(User.builder()
                 .kakaoProfileNickname(new KakaoNickname("카카오프로필"))
                 .userState(UserState.ACTIVE)
                 .nickname("Like하고 싶어요")
                 .oauthId("abcde")
                 .build());
+
+        commandLikeDbPort.save(Like.builder()
+                .user(userWantToCancelLike)
+                .feed(feedToLike)
+                .build());
+
         //when then
         Assertions.assertThatThrownBy(() ->
-                markLikeToFeedService.execute(userWantToLike.getId(), feedToLike.getFeedId()))
+                        cancelLikeService.execute(userWantToCancelLike.getId(), feedToLike.getFeedId()))
                 .isInstanceOf(BadRequestException.class)
                 .hasMessage(BadRequestExceptionCode.NOT_FEED.getDescriptionMessage());
     }
 
-    private Feed prepareInvalidFeedForLike(User user, boolean isDeleted, boolean isPublic) {
+    private Feed prepareInvalidFeedForCancelLike(User user, boolean isDeleted, boolean isPublic) {
         Product product = Product.builder()
                 .price(500000)
                 .detail("테스트 프로덕트입니다.")
@@ -179,7 +194,7 @@ class MarkLikeToFeedServiceTest extends SnsServiceIntegrationTestSupport {
         );
     }
 
-    private Feed prepareForLikeFeed(User user, boolean isPublic) {
+    private Feed prepareForCancelLikeFeed(User user, boolean isPublic) {
         Product product = Product.builder()
                 .price(500000)
                 .detail("테스트 프로덕트입니다.")
@@ -242,5 +257,4 @@ class MarkLikeToFeedServiceTest extends SnsServiceIntegrationTestSupport {
                         .build()
         );
     }
-
 }

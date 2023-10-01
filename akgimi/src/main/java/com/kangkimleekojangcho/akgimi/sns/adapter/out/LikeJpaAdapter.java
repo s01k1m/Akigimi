@@ -30,4 +30,9 @@ public class LikeJpaAdapter implements CommandLikeDbPort, QueryLikeDbPort {
     public Optional<Like> findByUserIdAndFeedId(Long userId, Long feedId) {
         return likeJpaRepository.findByUser_idAndFeed_feedId(userId, feedId);
     }
+
+    @Override
+    public void deleteByUserIdAndFeedId(Long id, Long feedId) {
+        likeJpaRepository.deleteByUser_idAndFeed_feedId(id, feedId);
+    }
 }
