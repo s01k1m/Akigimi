@@ -2,13 +2,15 @@ package com.kangkimleekojangcho.akgimi.sns.domain;
 
 import com.kangkimleekojangcho.akgimi.user.domain.User;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 
 @Getter
 @Entity(name="likes")
+@Builder
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "feed_id", "user_id" }) })
 public class Like {
 
     @Id
@@ -16,10 +18,12 @@ public class Like {
     private Long likeId;
 
     @JoinColumn(name="feed_id")
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     private Feed feed;
 
     @JoinColumn(name="user_id")
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 }
