@@ -1,7 +1,6 @@
 'use client'
 import MoneyGageBar from "@/components/Main/MoneyGageBar"
 import DayGageBar from "@/components/Main/DayGageBar"
-import GoToSelectItem from "@/components/Main/GoToSelectItem"
 import IconBtn from "@/components/Main/IconBtn"
 import CharacterImg from "@/components/Main/CharacterImg"
 import ChallengeInfo from "@/components/Main/ChallengeInfo"
@@ -25,6 +24,8 @@ const Main = () => {
     const [challengePeriod, setChallengePeriod] = useState<number>(0)
     const [days, setDays] = useState<number>(0)
     const [balance, setBalance] = useState<number>(0)
+    
+    // 토큰
     let token: string = "";
     
     useEffect(() => {
@@ -137,7 +138,8 @@ const Main = () => {
             }
             {stage === 7 &&
                 <div className="flex justify-center -mt-1.5">
-                <GoToRetryBtn />
+                    {/* 다시 도전하기 버튼 */}
+                    <GoToRetryBtn />
                 </div>
             }
             <div className="flex" style={{ marginTop: stage >= 6 ? "-25px" : (stage === 0 ? "170px" : "23px")}}>
