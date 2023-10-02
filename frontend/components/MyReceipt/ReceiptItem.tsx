@@ -1,4 +1,6 @@
+'use client'
 import Image from "next/image"
+import { useState, useEffect } from "react"
 
 interface itemProps {
     akimPlace: string
@@ -8,16 +10,33 @@ interface itemProps {
 }
 
 const ReceiptItem: React.FC<itemProps> = ({ akimPlace, saving, date, imgUrl }) => {
+  
+    // date
+    const dateString = date; // 예시: 'YYYY-MM-DDTHH:MM:SS' 형식의 문자열
+    const time = new Date(dateString);
+
+    const year = time.getFullYear(); // 연도를 추출
+    const month = time.getMonth() + 1; // 월을 추출 (0부터 시작하므로 +1 해줌)
+    const day = time.getDate(); // 날짜를 추출
+
+    const formattedDate = `${year}. ${month}. ${day}`;
 
     return (
         <div>
             {date? (
                 null
             ) : null}
+            <div className="text-[20px] font-bold mb-1">{formattedDate}</div>
             <div className="flex flex-col mb-[2vh] bg-white w-[50vw] rounded-xl h-[100px] max-w-[280px] min-w-[200px]">
                 <div className="flex flex-end align-bottom ms-[5%] mt-[1vh]">
-                
-                        <Image src={imgUrl} alt="영수증 사진" width={80} height={80} className="me-[2vw]" />
+                        <div style={{ width: '80px', height: '85px', overflow: 'hidden' }} className="me-2 flex">
+                            <Image src={imgUrl} alt="영수증 사진" 
+                                className="me-[2vw]"
+                                objectFit="cover"
+                                width={80}
+                                height={200}
+                                />
+                        </div>
                         <div className="flex flex-col align-bottom justify-end">
                             <div className="receipt-place">{akimPlace}</div>
                             <div>
