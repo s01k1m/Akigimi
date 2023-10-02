@@ -1,13 +1,14 @@
 'use client'
 import { BiSearchAlt } from 'react-icons/bi';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { useState } from 'react';
 import Slider from '@mui/material/Slider';
 import Box from '@mui/material/Box';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Image from 'next/image';
 import ItemSearchList from './ItemSearchList';
 
+// 카테고리 컴포넌트화
 const CategoryItem = ({ src, alt, title, subTitle }) => {
   return (
     <div className='flex flex-col items-center'
@@ -63,10 +64,6 @@ const theme = createTheme({
     },
   });
 
-function valuetext(value: number) {
-    return `${value}°C`;
-  }
-
 
 const ItemSearch = () => {
     const router = useRouter();
@@ -77,6 +74,18 @@ const ItemSearch = () => {
         setValue(newValue as number[]);
     };
 
+    // input 검색창
+    const [inputValue, setInputValue] = useState<string>();
+    // 엔터 치면 검색어 전달하기
+    const onKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        const target = e.target as HTMLInputElement;
+        if (e.key === 'Enter') {
+            setInputValue(target.value)
+            console.log(target.value)
+        }
+    };
+
+
   return (
     <div>
       <div className="flex justify-center mt-3">
@@ -84,6 +93,8 @@ const ItemSearch = () => {
           <BiSearchAlt size={30} className="absolute ms-2" />
           <input
             type="text"
+            value={inputValue}
+            onKeyPress={onKeyPress}
             placeholder="미닝템을 검색하세요"
             className='bg-[#EEE] w-[70vw] min-w-[280px] max-w-[400px] h-[50px] rounded ps-[40px]'
           />
@@ -105,7 +116,6 @@ const ItemSearch = () => {
                         value={value}
                         onChange={handleChange}
                         valueLabelDisplay="auto"
-                        getAriaValueText={valuetext}
                     />
                 </Box>
             </ThemeProvider>
@@ -117,7 +127,7 @@ const ItemSearch = () => {
       </div>
       {/* item component */}
       <div>
-        <ItemSearchList />
+        <ItemSearchList value={inputValue} />
       </div>
     </div>
   );
