@@ -7,6 +7,7 @@ import Box from '@mui/material/Box';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Image from 'next/image';
 import ItemSearchList from './ItemSearchList';
+import Footer from '@/app/Footer';
 
 // 카테고리 컴포넌트화
 const CategoryItem = ({ src, alt, title, subTitle, onClick }) => {
@@ -136,6 +137,7 @@ const ItemSearch = () => {
       <div>
         <ItemSearchList value={inputValue} category={selectedCategory} range={rangeValue} />
       </div>
+      <Footer />
     </div>
   );
 };
