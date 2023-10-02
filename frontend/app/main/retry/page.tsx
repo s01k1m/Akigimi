@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation"
 
 const Retry = () => {
     const router = useRouter();
+
     // 목표 기간 재입력
     const [inputValue, setInputValue] = useState<number>();
 
@@ -52,7 +53,6 @@ const Retry = () => {
             .get('/api/challenges/in-progress', {
                 headers: {
                     Authorization: `Bearer ${token}`,
-                    "Content-Type": "multipart/form-data",
                   },
             })
             .then((response) => {

@@ -44,7 +44,7 @@ const Main = () => {
             })
             .then((response) => {
                 console.log('챌린지 조회 성공', response.data)
-                
+        
                 const data = response.data.data
                 console.log('챌린지 상태', response.data.data.characterStatus)
                 setStage(data.characterStatus + 1)
@@ -66,37 +66,6 @@ const Main = () => {
                 setIsLoading(false)
             })
     } 
-
-    // 하드 데이터 용 api
-    // const inProgress = async () => {
-    //     const requestBody = {
-    //         itemId: 1,
-    //         challengePeriod: 50
-    //     };
-    //     console.log('버튼 눌렀을 때 토큰 잘 불러오는지 확인', token)
-    //     await axios
-    //         .post('/api/challenges', requestBody, {
-    //             headers: {
-    //                 'Authorization': `Bearer ${token}`,
-    //                 'Content-Type': 'application/json'
-    //             }
-    //         })
-    //         .then((response) => {
-    //             console.log('챌린지 생성 성공', response.data)
-    //         })
-    //         .catch((error) => {
-    //             if (error.response.data.code === '011') {
-    //                 console.log('자원이 존재하지 않는 경우')
-    //             } else if (error.response.data.code === '017') {
-    //                 console.log('이미 챌린지 진행 중인 경우')
-    //                 challengeData()
-    //                 alert('이미 챌린지를 진행중입니다')
-    //             } else if (error.response.data.code === '012') {
-    //                 alert('챌린지에 참여하세요')
-    //             }
-    //             console.log('챌린지 생성 에러', error)
-    //         })
-    // } 
 
 
     useEffect(() => {
