@@ -66,6 +66,9 @@ export default function addItem() {
     
     // 챌린지 시작 api 호출
     const startChallenge = async () => {
+        if (typeof window !== "undefined") {
+            token = window.localStorage.getItem("access_token");
+            }
         const requestBody = {
             productName: productName,
             productPrice: productPrice,
@@ -73,10 +76,10 @@ export default function addItem() {
             photo: file
         }
         await axios
-            .post('/api/challenges', requestBody, {
+            .post('/api/challenges/add', requestBody, {
                 headers: {
                     Authorization: `Bearer ${token}`,
-                    "Content-Type": "multipart/form-data",
+                    "Content-Type": "application/json",
                   },
             })
             .then((response) => {
