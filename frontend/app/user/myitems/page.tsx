@@ -35,7 +35,8 @@ const MyItems = async () => {
   return (
     <>
       <div>나의 챌린지 기록</div>
-      {<ItemCard></ItemCard>}
+      {/* build를 위한 주석입니다 */}
+      {/* {<ItemCard></ItemCard>} */}
     </>
   );
 };
