@@ -1,4 +1,5 @@
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 
 interface ItemSearchPropsType {
     itemId: number
@@ -8,6 +9,7 @@ interface ItemSearchPropsType {
 }
 
 const ItemSearchItem: React.FC<ItemSearchPropsType> = ({ itemId, itemName, itemPrice, itemImg }) => {
+    const router = useRouter();
     return (
         <div>
             <div className="w-[40vw] h-[25vh] max-w-[200px] min-[170px] rounded-lg bg-[#F5F5F5] flex flex-col items-center">
@@ -22,7 +24,12 @@ const ItemSearchItem: React.FC<ItemSearchPropsType> = ({ itemId, itemName, itemP
                     <div className="w-full mt-3">{itemName}</div>
                     <div className="w-full flex mt-1">
                         <div>{itemPrice}</div>
-                        <button className="bg-tossblue rounded-xl text-white px-3 ms-2">챌린지 시작</button>
+                        <button 
+                            className="bg-tossblue rounded-xl text-white px-3 ms-2"
+                            onClick={() => {
+                                router.push(`/item/start/${itemId}`)
+                            }}
+                        >챌린지 시작</button>
                 </div>
                 </div>
             </div>
