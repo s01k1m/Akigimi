@@ -11,15 +11,16 @@ export default function Login() {
   const [tryLogin, setTryLogin] = useState<Boolean>(false);
   const router = useRouter();
   let token: string = "";
-  // useEffect(() => {
-  //   token = window.localStorage.getItem("access_token");
-  // }, []);
+  useEffect(() => {
+    token = window.localStorage.getItem("access_token");
+  }, []);
   // 의문!! 여기서 토큰 찍히는데 함수 실행하면 토큰 못잡는다
 
   // getUserInfo() : 로그인 성공하면 유저정보를 get 할 함수
   const getUserInfo = async () => {
     console.log("유저정보 가져오기", token);
     token = window.localStorage.getItem("access_token");
+    console.log('유저 정보 가져오기 토큰', token)
     await axios
       .get("/api/user/info", {
         headers: {
@@ -72,8 +73,11 @@ export default function Login() {
             } else {
               alert("비밀번호 틀렸습니다. 다시 입력하세요");
             }
+            // TODO: SESSION 유저 정보 저장 필요 (토큰 접근을 위해 코드 수정했습니다)
+            console.log('유저 정보 가져오기 성공',response.data.data)
+            window.localStorage.setItem("access_token", response.data.data.accessToken);
+            window.sessionStorage.setItem("userId", response.data.data.userId);
             setTryLogin(false);
-            // TODO: SESSION 유저 정보 저장 필요
           })
           .catch(() => {
             setTryLogin(false);
