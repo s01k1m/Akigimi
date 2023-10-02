@@ -9,10 +9,11 @@ import Image from 'next/image';
 import ItemSearchList from './ItemSearchList';
 
 // 카테고리 컴포넌트화
-const CategoryItem = ({ src, alt, title, subTitle }) => {
+const CategoryItem = ({ src, alt, title, subTitle, onClick }) => {
   return (
-    <div className='flex flex-col items-center'
-        onClick={() => {console.log(title)}}
+    <div 
+        className='flex flex-col items-center'
+        onClick={onClick}
     >
       <Image src={src} alt={alt} width={50} height={50} />
       <p className='mt-2'>{title}</p>
@@ -21,7 +22,7 @@ const CategoryItem = ({ src, alt, title, subTitle }) => {
   );
 };
 
-const Categories = () => {
+const Categories = ({ setSelectedCategory }) => {
   const categories = [
     { src: '/images/frame.png', alt: 'frame', title: '가전' },
     { src: '/images/airplane.png', alt: 'frame', title: '여가', subTitle: '/생활편의' },
@@ -39,6 +40,7 @@ const Categories = () => {
           alt={category.alt}
           title={category.title}
           subTitle={category.subTitle}
+          onClick={() => setSelectedCategory(category.title)}
         />
       ))}
     </div>
@@ -69,22 +71,26 @@ const ItemSearch = () => {
     const router = useRouter();
 
     // 가격 슬라이더
-    const [value, setValue] = React.useState<number[]>([20, 37]);
+    const [rangeValue, setRangeValue] = React.useState<number[]>([20, 37]);
     const handleChange = (event: Event, newValue: number | number[]) => {
-        setValue(newValue as number[]);
+        setRangeValue(newValue as number[]);
     };
 
     // input 검색창
     const [inputValue, setInputValue] = useState<string>();
     // 엔터 치면 검색어 전달하기
     const onKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        const target = e.target as HTMLInputElement;
         if (e.key === 'Enter') {
-            setInputValue(target.value)
-            console.log(target.value)
+            console.log('엔터 쳤음', inputValue)
         }
     };
 
+    const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setInputValue(e.target.value);
+    };
+
+    // 카테고리
+    const [selectedCategory, setSelectedCategory] = useState<string>();
 
   return (
     <div>
@@ -94,6 +100,7 @@ const ItemSearch = () => {
           <input
             type="text"
             value={inputValue}
+            onChange={onChangeInput}
             onKeyPress={onKeyPress}
             placeholder="미닝템을 검색하세요"
             className='bg-[#EEE] w-[70vw] min-w-[280px] max-w-[400px] h-[50px] rounded ps-[40px]'
@@ -105,7 +112,7 @@ const ItemSearch = () => {
         >+</div>
       </div>
       <div className='mt-5'>
-        <Categories />
+        <Categories setSelectedCategory={setSelectedCategory}/>
       </div>
       <div className='flex flex-col items-center mt-8'>
         <div className='w-[85%]'>
@@ -113,7 +120,7 @@ const ItemSearch = () => {
             <ThemeProvider theme={theme}>
                 <Box>
                     <Slider
-                        value={value}
+                        value={rangeValue}
                         onChange={handleChange}
                         valueLabelDisplay="auto"
                     />
@@ -127,7 +134,7 @@ const ItemSearch = () => {
       </div>
       {/* item component */}
       <div>
-        <ItemSearchList value={inputValue} />
+        <ItemSearchList value={inputValue} category={selectedCategory} range={rangeValue} />
       </div>
     </div>
   );
