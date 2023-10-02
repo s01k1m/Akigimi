@@ -23,7 +23,6 @@ interface FormData {
 const ReceiptInput = () => {
     // 잔액 부족한 경우 모달 창 관리
     const [isOpened, setIsOpened] = useState<boolean>(false)
-    let nickname: string = ""
 
     // formData 데이터 한 번에 관리
     const [formData, setFormData] = useState({
@@ -97,19 +96,23 @@ const ReceiptInput = () => {
 
     // token
     let token: string = "";
-
+    const [nickname, setNickName] = useState<string>();
     useEffect(() => {
         if (typeof window !== "undefined") {
             token = window.localStorage.getItem("access_token");
-            nickname = window.sessionStorage.getItem("nickname");
+            setNickName(window.sessionStorage.getItem("nickname"));
         }
-    }, [])
+    }, [token])
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
         
         console.log(formData)
 
+        if (typeof window !== "undefined") {
+            token = window.localStorage.getItem("access_token");
+        }
+     
         if (formData.photo === ""){
             alert('사진을 추가해주세요')
             return
