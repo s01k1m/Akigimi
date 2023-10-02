@@ -16,7 +16,7 @@ import '@/styles/MainPageButton.css'
 const Main = () => {
     const router = useRouter()
     const [isLoading, setIsLoading] = useState<boolean>(true)
-    const [stage, setStage] = useState<number>(0)
+    const [stage, setStage] = useState<number>(7)
     const [percentage, setPercentage] = useState<number>(0)
     const [productName, setProductName] = useState<string>("")
     const [productPrice, setProductPrice] = useState<number>(0)
