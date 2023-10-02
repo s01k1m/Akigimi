@@ -8,10 +8,18 @@ interface RankingPropsType {
 
 const RankingList: React.FC<RankingPropsType> = ({ selectedValue }) => {
     const [rankingList, setRankingList] = useState<[]>([])
+    let token: string = "";
+    useEffect(() => {
+        token = window.localStorage.getItem("access_token");
+    }, []);
     // api 받아 오기 selectedValue로 구분 지어서 부르기
     const getRankingList = async () => {
         await axios
-            .get(`/api/ranking/${selectedValue}`)
+            .get(`/api/ranking/${selectedValue}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                  },
+            })
             .then((response) => {
                 console.log('랭킹 리스트 조회 성공')
                 setRankingList(response.data.data.list)
