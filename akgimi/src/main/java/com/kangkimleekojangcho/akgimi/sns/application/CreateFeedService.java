@@ -63,7 +63,7 @@ public class CreateFeedService {
                         .sendAccount(withdrawAccount)
                         .sendAccountBalance(withdrawAccount.getBalance())
                         .receiveAccount(depositAccount)
-                        .sendAccountBalance(depositAccount.getBalance())
+                        .receiveAccountBalance(depositAccount.getBalance())
                         .amount(createFeedServiceRequest.saving())
                         .transferDateTime(LocalDateTime.now())
                 .build());
