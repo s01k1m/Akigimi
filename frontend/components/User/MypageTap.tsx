@@ -4,7 +4,7 @@ import "@/styles/Mypage.css";
 import { useRouter } from "next/navigation";
 
 const MypageTap = () => {
-  const [selectedValue, setSelectedValue] = useState<string>("feeds");
+  const [selectedValue, setSelectedValue] = useState<string>("account");
   const router = useRouter();
   // selectedValue 값을 친구 로
   useEffect(() => {
@@ -24,11 +24,25 @@ const MypageTap = () => {
     <div>
       <div className="flex justify-center">
         <div className="radio-input">
+        <label>
+            <input
+              value="account"
+              name="value-radio"
+              id="value-1"
+              type="radio"
+              onClick={() => {
+                router.replace("/user/mypage");
+              }}
+              checked={selectedValue === "account"}
+              defaultChecked
+            />
+            <span>계좌</span>
+          </label>
           <label>
             <input
               value="feeds"
               name="value-radio"
-              id="value-1"
+              id="value-2"
               type="radio"
               onClick={() => {
                 router.push("/mypage/myfeeds");
@@ -42,7 +56,7 @@ const MypageTap = () => {
             <input
               value="goods"
               name="value-radio"
-              id="value-2"
+              id="value3"
               type="radio"
               onClick={() => {
                 router.push("/mypage/myitems");
