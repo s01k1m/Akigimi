@@ -1,14 +1,18 @@
-import Mypage from "../page";
-
+'use client'
+import { useEffect } from "react"
 type PageParams = {
-    itemId: number
+    userId: number
   }
   
 export default function page({ params }: { params: PageParams }) {
-    const itemId = params.itemId
+    const userId = params.userId
+    useEffect(() => {
+        console.log(1, userId)
+
+    }, [])
     return (
         <div>
-            
+            {userId}의 마이페이지
         </div>
     )
 }
