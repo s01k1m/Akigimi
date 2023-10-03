@@ -33,7 +33,7 @@ const MyReceipt = () => {
                 }
                 {challengeState === 1 && 
                 <div>
-                    <button onClick={() => setChallengeState(2)} className="common-button-small">다시 도전하러 가기!</button>
+                    <button onClick={() => setChallengeState(2)} className="button-common blue-btn mb-[10vh]">다시 도전하러 가기!</button>
                 </div>
                 }
                 {challengeState === 2 &&
