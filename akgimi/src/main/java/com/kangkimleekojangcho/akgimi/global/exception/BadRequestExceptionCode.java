@@ -31,7 +31,10 @@ public enum BadRequestExceptionCode {
     NO_AVAILABLE_FRIEND_TYPE("022","친구의 타입이 유효하지 않습니다."),
     PASSWORD_NOT_SETTED("023", "패스워드가 설정되지 않았습니다." ),
     CANNOT_ACTIVATE("024", "회원을 활성화할 수 없습니다."),
-    ALREADY_PARTICIPATE_IN_POSTSCRIPT("025", "이미 후기를 작성했습니다");
+    ALREADY_PARTICIPATE_IN_POSTSCRIPT("025", "이미 후기를 작성했습니다"),
+    NOT_FEED("026", "피드가 존재하지 않습니다."),
+    DUPLICATE_LIKE_REQUEST("027", "중복된 좋아요 요청입니다.");
+
     private final String code;
     private final String descriptionMessage;
 }
