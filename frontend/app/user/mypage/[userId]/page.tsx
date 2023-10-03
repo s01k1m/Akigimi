@@ -1,5 +1,7 @@
 'use client'
 import { useEffect } from "react"
+import Footer from "@/app/Footer"
+
 type PageParams = {
     userId: number
   }
@@ -13,6 +15,7 @@ export default function page({ params }: { params: PageParams }) {
     return (
         <div>
             {userId}의 마이페이지
+            <Footer />
         </div>
     )
 }

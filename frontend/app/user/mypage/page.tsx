@@ -10,6 +10,8 @@ import { BiSearchAlt } from "react-icons/bi";
 import axios from "axios";
 import { useEffect } from "react";
 import Footer from "@/app/Footer";
+import { BiSolidPencil } from 'react-icons/bi';
+import { useRouter } from "next/navigation";
 
 interface Friend {
   id: number;
@@ -21,6 +23,7 @@ interface Friend {
 
 type FriendsList = Friend[];
 export default function Mypage() {
+  const router = useRouter();
   const [content, setContent] = useState<string>("account");
   const [withdrawBalance, setWithdrawBalance] = useState<string>("");
   const [depositBalance, setDepositBalance] = useState<string>("");
@@ -111,6 +114,12 @@ export default function Mypage() {
 
   return (
     <div className="w-full flex flex-col justify-center items-center">
+      <BiSolidPencil 
+        size={40} 
+        color={'#757575'} 
+        className="absolute top-10 right-[40px]"
+        onClick={() => router.push('/user/mypage/edit')}
+      />
       <Image
         src={profileImage}
         alt="profile img"
