@@ -78,7 +78,8 @@ export default function Login() {
         if (response.data.data.userState === "PENDING") {
           router.replace("/login/register/withdraw");
         } else {
-          router.replace("/main"); // 이거 중간평가용 임시임 나중에 6자리 로그인으로 변경해야함
+          // 임시
+          router.replace("/login"); // 이거 중간평가용 임시임 나중에 6자리 로그인으로 변경해야함
         }
       })
       .then(() => {
