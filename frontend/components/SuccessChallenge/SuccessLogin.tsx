@@ -10,14 +10,17 @@ const SuccessLogin = ({ onIncorrectPasswordChange }) => {
     const router = useRouter();
 
     // token 가져오기
-    let token: string = "";
+    const [token, setToken] = useState<string>("");
 
     useEffect(() => {
         if (typeof window !== "undefined") {
-        token = window.localStorage.getItem("access_token");
+            const storedToken = window.localStorage.getItem("access_token");
+            if (storedToken) {
+                setToken(storedToken);
+            }
         }
-        console.log('토큰 챌린지 생성하고 자동 계좌 이체를 위한 비밀번호를 입력할 때', token)
     }, []);
+    console.log('토큰 챌린지 생성하고 자동 계좌 이체를 위한 비밀번호를 입력할 때', token)
 
     // 랜덤 배열 생성
     const [randomList, setRandomList] = useState<number[]>([]);
@@ -36,11 +39,12 @@ const SuccessLogin = ({ onIncorrectPasswordChange }) => {
         }
     }, [password]);
 
+    console.log(password)
 
     // 비밀번호 확인 API 호출하기
     const checkPassword = async () => {
         const requestBody = {
-            userPassword: password
+            userPassword: password.join('')
         };
         await axios
             .post('/api/account/withdraw', requestBody, {
@@ -54,6 +58,8 @@ const SuccessLogin = ({ onIncorrectPasswordChange }) => {
                 // 챌린지 성공 api 호출하기 (상태 변화)
                 success();
             })
+
+            
             .catch((error) => {
                 console.log('챌린지 성공 후 비밀번호 틀림', error);
                 setPassword([]);
@@ -81,7 +87,7 @@ const SuccessLogin = ({ onIncorrectPasswordChange }) => {
     // 챌린지 성공 api 호출 함수
     const success = async () => {
         await axios
-            .patch('//challenges/succeed?true', {
+            .patch(`/api/challenges/succeed`, true, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
@@ -89,10 +95,12 @@ const SuccessLogin = ({ onIncorrectPasswordChange }) => {
             })
             .then((response) => {
                 console.log('챌린지 성공 api 호출 성공', response)
-                router.push(`${response.data.data.productUrl}`)
+                router.push('/main')
+                // router.push(`${response.data.data.productUrl}`)
             })
             .catch((error) => {
-                console.log('챌린지 성고 api 호출 실패', error)
+                console.log('챌린지 성공 api 호출 실패', error)
+                console.log('토큰이 잇잖아', token)
             })
     }
 
