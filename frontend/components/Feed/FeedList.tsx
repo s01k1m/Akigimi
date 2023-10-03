@@ -77,11 +77,7 @@ const FeedList: React.FC<selectedProps> = ({ selectedValue }) => {
             }
 )
     }
-    useEffect(() => {
-
-      console.log(lastViewId)
-    }, [])
-    
+   
     useEffect(() => {
       // inView가 true 일 때만 실행한다
       if (inView) {
