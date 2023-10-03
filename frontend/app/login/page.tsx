@@ -20,7 +20,6 @@ export default function Login() {
   const getUserInfo = async () => {
     console.log("유저정보 가져오기", token);
     token = window.localStorage.getItem("access_token");
-    console.log('유저 정보 가져오기 토큰', token)
     await axios
       .get("/api/user/info", {
         headers: {
@@ -36,6 +35,8 @@ export default function Login() {
           "profileImageUrl",
           response.data.data.profileImageUrl
         );
+        window.sessionStorage.setItem("userId", response.data.data.userId);
+
         router.push("/main");
       })
       .catch((err) => {

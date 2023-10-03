@@ -30,7 +30,7 @@ const FeedList: React.FC<selectedProps> = ({ selectedValue }) => {
 
     // 요청 보낼 마지막 lastViewId
     const [lastViewId, setLastViewId] = useState<number>(922337203685477580);
-
+    const [feedCount, setFeedCount] = useState<number>(16)
     // 다음 피드가 불러오질 때까지 로딩
     const [loading, setLoading] = useState<boolean>(false);
    
@@ -47,7 +47,7 @@ const FeedList: React.FC<selectedProps> = ({ selectedValue }) => {
             .get('/api/feeds', {
                 params: {
                   lastFeedId: lastViewId,
-                  numberOfFeed: 10
+                  numberOfFeed: feedCount
                 },
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -65,23 +65,19 @@ const FeedList: React.FC<selectedProps> = ({ selectedValue }) => {
                 
                 // 마지막 요청 판단하여 viewId 값 0으로 값 상태 변경해주기
                 if (data.length < 10 ) {
-                  setLastViewId(0)
+                  setFeedCount(0)
                 }
 
               })
             .catch((error) => {
-                console.log('영수증 조회 실패', error)
+                console.log('피드 조회 실패', error)
             })
             .finally (() => {
               setLoading(false)
             }
 )
     }
-    useEffect(() => {
-
-      console.log(lastViewId)
-    }, [])
-    
+   
     useEffect(() => {
       // inView가 true 일 때만 실행한다
       if (inView) {
@@ -98,7 +94,7 @@ const FeedList: React.FC<selectedProps> = ({ selectedValue }) => {
               <>
                 <FeedItem 
                     key={item.id} 
-                    itemId={item.id}
+                    userId={item.userId}
                     imgUrl={item.userProfile} 
                     name={item.nickname} 
                     place={item.akgimiPlace} 
@@ -106,7 +102,9 @@ const FeedList: React.FC<selectedProps> = ({ selectedValue }) => {
                     price={item.price} 
                     image={item.photo} 
                     isLiked={item.isLikedFeed} 
-                    description={item.content} />
+                    description={item.content}
+                    feedId={item.feedId}
+                     />
               </>
             ))}
             <div ref={ref}></div>
