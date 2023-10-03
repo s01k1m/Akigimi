@@ -13,10 +13,10 @@ import Footer from "@/app/Footer";
 
 interface Friend {
   id: number;
-  imgUrl: string;
-  userName: string;
-  product: string;
-  gage: number;
+  profileImageUrl: string;
+  nickname: string;
+  challengeId: number;
+  accumulatedAmount: number;
 }
 
 type FriendsList = Friend[];
@@ -81,7 +81,7 @@ export default function Mypage() {
       })
       .then((response) => {
         setFriendsList(response.data.data.friends);
-        console.log('지금 팔로우/잉 몇명인지?', response.data.data.friends.length)
+        console.log(response.data.data.friends)
         if (type === 'FOLLOWING') {
           setCountFollowing(response.data.data.friends.length)
         } else {
@@ -189,13 +189,15 @@ export default function Mypage() {
           </div>
           {friendsList?.map((person) => {
             return (
+              <>
               <FriendCard
                 id={person.id}
-                imgUrl={person.imgUrl}
-                userName={person.userName}
-                product={person.product}
-                gage={person.gage}
+                imgUrl={person.profileImageUrl}
+                userName={person.nickname}
+                challengeId={person.challengeId}
+                gage={person.accumulatedAmount}
               ></FriendCard>
+            </>
             );
           })}
         </div>
@@ -205,10 +207,10 @@ export default function Mypage() {
             return (
               <FriendCard
                 id={person.id}
-                imgUrl={person.imgUrl}
-                userName={person.userName}
-                product={person.product}
-                gage={person.gage}
+                imgUrl={person.profileImageUrl}
+                userName={person.nickname}
+                challengeId={person.challengeId}
+                gage={person.accumulatedAmount}
               ></FriendCard>
             );
           })}
