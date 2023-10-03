@@ -86,8 +86,14 @@ const SuccessLogin = ({ onIncorrectPasswordChange }) => {
 
     // 챌린지 성공 api 호출 함수
     const success = async () => {
+        
+        let token: string = "";
+        if (typeof window !== "undefined") {
+            token = window.localStorage.getItem("access_token");
+        }
+
         await axios
-            .patch(`/api/challenges/succeed`, true, {
+            .put(`/api/challenges?succeed=true`, null, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
@@ -100,7 +106,6 @@ const SuccessLogin = ({ onIncorrectPasswordChange }) => {
             })
             .catch((error) => {
                 console.log('챌린지 성공 api 호출 실패', error)
-                console.log('토큰이 잇잖아', token)
             })
     }
 
