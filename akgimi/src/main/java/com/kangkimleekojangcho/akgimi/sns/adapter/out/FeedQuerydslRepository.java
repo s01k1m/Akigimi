@@ -15,6 +15,7 @@ import java.util.Objects;
 
 import static com.kangkimleekojangcho.akgimi.sns.domain.QFeed.feed;
 import static com.kangkimleekojangcho.akgimi.user.domain.QFollow.follow;
+import static com.kangkimleekojangcho.akgimi.user.domain.QUser.user;
 
 @Log4j2
 @Repository
@@ -45,17 +46,20 @@ public class FeedQuerydslRepository {
                         )
                 )
                 .from(feed)
+                .join(feed.user, user)
                 .leftJoin(follow)
                 .on(
-                        feed.user.id.eq(requestUserId).or(
-                                follow.follower.id.eq(requestUserId)
-                                        .and(follow.followee.eq(feed.user))
-                                        .and(feed.isPublic.eq(true))
+                        feed.user.id.eq(requestUserId).or( //여기가 문제
+                                feed.user.eq(follow.followee).and(
+                                        follow.follower.id.eq(requestUserId)
+                                                .and(follow.followee.eq(feed.user))
+                                                .and(feed.isPublic.eq(true))
+                                )
                         )
                 )
                 .where(ltFeedId(lastFeedId),
                         feed.user.id.eq(requestUserId).or(
-                        follow.follower.id.eq(requestUserId)))
+                                follow.follower.id.eq(requestUserId)))
                 .orderBy(feed.feedId.desc())
                 .limit(numberOfFeed).fetch();
     }
