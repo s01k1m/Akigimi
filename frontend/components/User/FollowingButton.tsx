@@ -9,7 +9,7 @@ export default function FollowingButton({ total }: FollowingProps) {
     <div className="text-center text-[17px]">
       <div>
         <div>{total}</div>
-        <div>팔로워</div>
+        <div>팔로잉</div>
       </div>
     </div>
   );
