@@ -34,7 +34,7 @@ const Retry = () => {
             token = window.localStorage.getItem("access_token");
             }
         await axios
-            .post('/api/challenges/succeed?false', requestBody, {
+            .post('/api/challenges/retry', requestBody, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     "Content-Type": `application/json`
@@ -56,7 +56,6 @@ const Retry = () => {
             .get('/api/challenges/in-progress', {
                 headers: {
                     Authorization: `Bearer ${token}`,
-
                   },
             })
             .then((response) => {
@@ -82,7 +81,7 @@ const Retry = () => {
                 <div className="w-[40%] rounded-xl bg-[#D9D9D9] text-[25px] flex justify-center items-center tracking-widest font-semibold mt-[30px]">AKGIMI</div>
                 <div className="w-[70%] h-[7%] ps-[10px] rounded-lg bg-[#FFF] flex items-center text-[#757575] tracking-wide ps-[5px] mt-[4vh]">{productName}</div>
                 <div className="w-[70%] h-[7%] ps-[10px] rounded-lg bg-[#FFF] flex items-center text-[#757575] tracking-wide ps-[5px] mt-[1vh]">{productPrice}</div>
-                <div className="w-[70%] mt-6 text-[#757575]">목표기간을 정해주세요</div>
+                <div className="w-[70%] mt-6 text-[#757575]">목표기간을 다시 정해주세요</div>
                 <div className="flex z-10 justify-center gap-5">
                     <div className="rounded-full w-8 h-8 bg-[#EEE]"></div>
                     <div className="rounded-full w-8 h-8 bg-[#EEE]"></div>
