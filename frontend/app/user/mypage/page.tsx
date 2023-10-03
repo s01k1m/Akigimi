@@ -68,6 +68,8 @@ export default function Mypage() {
   };
 
   // type: FOLLOWING FOLLOWED
+  const [countFollowing, setCountFollowing] = useState<number>();
+  const [countFollowed, setCountFollowed] = useState<number>();
   const getfriendsList = async (type: string) => {
     let token = window.localStorage.getItem("access_token");
 
@@ -79,6 +81,12 @@ export default function Mypage() {
       })
       .then((response) => {
         setFriendsList(response.data.data.friends);
+        console.log('지금 팔로우/잉 몇명인지?', response.data.data.friends.length)
+        if (type === 'FOLLOWING') {
+          setCountFollowing(response.data.data.friends.length)
+        } else {
+          setCountFollowed(response.data.data.friends.length)
+        }
       });
   };
 
@@ -95,6 +103,10 @@ export default function Mypage() {
     ]);
 
     getBalance();
+    // 팔로워 팔로잉 몇명인지 세기 위해 불러옵니다
+    getfriendsList("FOLLOWED"); // 나의 팔로워
+    getfriendsList("FOLLOWING"); // 내가 팔로우한 애들
+    
   }, []); // Empty dependency array means this runs once on component mount
 
   return (
@@ -127,7 +139,7 @@ export default function Mypage() {
             getfriendsList("FOLLOWED");
           }}
         >
-          <FollowerButton total={10} />
+          <FollowerButton total={countFollowed} />
         </div>
         <div
           className="hover:bg-gray1 w-[80px] h-[50px] rounded"
@@ -137,7 +149,7 @@ export default function Mypage() {
             getfriendsList("FOLLOWING");
           }}
         >
-          <FollowingButton total={15} />
+          <FollowingButton total={countFollowing} />
         </div>
       </div>
       <div className="m-4">
