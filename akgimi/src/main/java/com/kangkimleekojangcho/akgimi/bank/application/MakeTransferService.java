@@ -52,7 +52,7 @@ public class MakeTransferService {
                 .sendAccount(withdrawAccount)
                 .sendAccountBalance(withdrawAccount.getBalance())
                 .receiveAccount(depositAccount)
-                .receiveAccountBalance(withdrawAccount.getBalance())
+                .receiveAccountBalance(depositAccount.getBalance())
                 .transferDateTime(LocalDateTime.now())
                 .build();
         commandTransferDbPort.save(transfer);
