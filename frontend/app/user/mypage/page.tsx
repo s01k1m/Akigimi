@@ -28,14 +28,15 @@ export default function Mypage() {
   const [friendsList, setFriendsList] = useState<FriendsList>([]);
   
   // 세션에 저장된 유저 정보 가져오기
-  let nickname: string = "";
-  let profileImage: string = "";
+  const [nickname, setNickName] = useState<string>();
+  const [profileImage, setProfileImage] = useState<string>();
   useEffect(() => {
     if (typeof window !== "undefined") {
-      nickname = window.sessionStorage.getItem("nickname")
-      profileImage = window.sessionStorage.getItem("profileImageUrl")
+      setNickName(window.sessionStorage.getItem("nickname"))
+      setProfileImage(window.sessionStorage.getItem("profileImageUrl"))
     }
   }, [])
+
   // const getUserInfo = () => {
   // }
 
