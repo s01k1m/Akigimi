@@ -8,12 +8,13 @@ import { useRouter } from "next/navigation"
 
 const Retry = () => {
     const router = useRouter();
+
     // 목표 기간 재입력
     const [inputValue, setInputValue] = useState<number>();
 
     // 챌린지 기본 정보
-    const [productName, setProductName] = useState<string>("닌탠도");
-    const [productPrice, setProductPrice] = useState<number>(200000);
+    const [productName, setProductName] = useState<string>("");
+    const [productPrice, setProductPrice] = useState<number>();
 
     // 토큰 가져오기
     let token: string = "";
@@ -29,12 +30,15 @@ const Retry = () => {
         const requestBody = {
             challengePeriod: inputValue
         }
+        if (typeof window !== "undefined") {
+            token = window.localStorage.getItem("access_token");
+            }
         await axios
             .post('/api/challenges/succeed?false', requestBody, {
                 headers: {
                     Authorization: `Bearer ${token}`,
-                    "Content-Type": "multipart/form-data",
-                  },
+                    "Content-Type": `application/json`
+                },
             })
             .then((response) => {
                 console.log('챌린지 다시 시작 성공', response)
@@ -52,7 +56,7 @@ const Retry = () => {
             .get('/api/challenges/in-progress', {
                 headers: {
                     Authorization: `Bearer ${token}`,
-                    "Content-Type": "multipart/form-data",
+
                   },
             })
             .then((response) => {

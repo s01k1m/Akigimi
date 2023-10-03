@@ -1,19 +1,66 @@
 'use client'
 import { AiOutlineHeart } from "react-icons/ai";
 import { AiFillHeart } from "react-icons/ai";
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 interface DescriptionProps {
     isLiked: boolean
     description: string
+    feedId: number
 }
 
-const Description: React.FC<DescriptionProps> = ({ isLiked, description }) => {
+const Description: React.FC<DescriptionProps> = ({ isLiked, description, feedId }) => {
     const [liked, setLiked] = useState(isLiked);
 
-    const handleToggleLike = () => {
-        setLiked((prevLiked) => !prevLiked);
+    // token 가져오기
+    const [token, setToken] = useState<string>("");
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            const storedToken = window.localStorage.getItem("access_token");
+            if (storedToken) {
+                setToken(storedToken);
+            }
+        }
+    }, []);
+
+    const handleToggleLike = async () => {
+        const likeBody = {
+            feedId: feedId
+        }
+        // 좋아요를 안 한 게시글
+        if (!liked) {
+            console.log('좋아요 눌러야지 이제')
+            await axios
+                .post('/api/feeds/likes', likeBody, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    }
+                })
+                .then((response) => {
+                    console.log('좋아요 성공', response)
+                    setLiked(true)
+                })
+        } else {
+            // 좋아요 취소하기
+            await axios
+                .delete(`/api/feeds/likes?feedId=${feedId}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    }
+                })
+                .then((response) => {
+                    console.log('좋아요 취소 성공', response.data)
+                    setLiked(false)
+                })
+                .catch((error) => {
+                    console.log('좋아요 취소 실패', error)
+                })
+
+        }
     };
     return (
         <div className="flex w-[50%] max-w-xs ms-[5vw]">

@@ -31,7 +31,7 @@ const IconBtn = () => {
                 <span>랭킹</span>
             </span>
             <span className="flex flex-col items-center"
-                onClick={() => router.push('/review/feed')}
+                onClick={() => router.push('/feed/review')}
             >
                 <HiPencilAlt 
                     size={50}

@@ -3,6 +3,7 @@ import ReceiptItem from "./ReceiptItem";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useInView } from "react-intersection-observer";
+import { dividerClasses } from "@mui/material";
 
 type ReceiptItem = {
   price: number;
@@ -13,13 +14,14 @@ type ReceiptItem = {
 };
 
 const ReceiptList = () => {
-  const userId = 15;
+  let userId: number = 0;
 
   let token: string = "";
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       token = window.localStorage.getItem("access_token");
+      userId = parseInt(window.sessionStorage.getItem("userId"))
     }
     receiptData();
   }, []);
@@ -34,18 +36,23 @@ const ReceiptList = () => {
   const [ref, inView] = useInView();
 
   // 요청 보낼 마지막 lastViewId
-  const [lastViewId, setLastViewId] = useState<number>(9223372036854775807);
+  const [lastViewId, setLastViewId] = useState<number>(922337203685477580);
+  const [count, setCount] = useState<number>(5)
 
   // 다음 영수증이 불러오질 때까지 로딩
   const [loading, setLoading] = useState<boolean>(false);
 
   // api 데이터 불러오기
   const receiptData = async () => {
+    setLoading(true)
+    if (typeof window !== "undefined") {
+      token = window.localStorage.getItem("access_token");
+      }
     await axios
       .get(`api/receipts/${userId}`, {
         params: {
-          lastReceiptId: 10000,
-          numberOfReceipt: 5,
+          lastReceiptId: lastViewId,
+          numberOfReceipt: count,
         },
         headers: {
           Authorization: `Bearer ${token}`,
@@ -57,15 +64,13 @@ const ReceiptList = () => {
         // 요청 성공 시에 리스트 뒤로 붙여주기
         setReceiptItems([...receiptItems, ...response.data.data.list]);
 
-        // 새로 가져온 값만 리스트에 담아주기
-        toCheckReceiptId.push([response.data.data.list]);
-
-        // 첫 번째 요청 이후에 viewId 값 상태 변경해주기
-        setLastViewId(toCheckReceiptId[toCheckReceiptId.length - 1]);
+        const data: [] = response.data.data.list;
+        const length: number = data.length;
+        setLastViewId(data[data.length-1]['receiptId'])
+        if (data.length < 5) {
+          setCount(0)
+        }
         console.log("마지막 피드의 아이디 값은?", lastViewId);
-      })
-      .then(() => {
-        // 마지막 요청을 판단하는 방법
       })
       .catch((error) => {
         console.log("피드 조회 실패", error);
@@ -74,6 +79,15 @@ const ReceiptList = () => {
         setLoading(false);
       });
   };
+
+  useEffect(() => {
+    // inView가 true 일 때만 실행한다
+    if (inView) {
+      console.log(inView, '무한 스크롤 요청 중이에요')
+      // 실행할 함수
+      receiptData()
+    }
+  }, [inView])
 
   return (
     <div className="flex flex-col items-center mt-6">
@@ -86,6 +100,8 @@ const ReceiptList = () => {
           imgUrl={item.photo}
         />
       ))}
+      <div ref={ref}></div>
+      {loading && <div>Loading...</div>}
     </div>
   );
 };
