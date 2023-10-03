@@ -2,6 +2,7 @@
 import axios from "axios";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface FriendProps {
   id: number;
@@ -18,6 +19,7 @@ const FriendCard: React.FC<FriendProps> = ({
   challengeId,
   gage,
 }) => {
+  const router = useRouter()
 
   let token: string = "";
   // 챌린지 아이디로 현재 도전 중인 물건 정보 가져와야 함
@@ -55,6 +57,7 @@ const FriendCard: React.FC<FriendProps> = ({
         // layout="fill" // 이미지 크기를 유지하도록 설정
         // className="w-full h-auto height-auto"
         className="rounded-full me-[27px]"
+        onClick={() => router.push(`/user/mypage/${id}`)}
       ></Image>
       <div className="ms-[10px]">
         <div className="text-[13px] font-semibold mb-[0.5vh]">{userName}</div>
