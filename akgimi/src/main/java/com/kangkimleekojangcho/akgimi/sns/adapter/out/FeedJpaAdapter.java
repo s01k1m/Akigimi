@@ -1,10 +1,13 @@
 package com.kangkimleekojangcho.akgimi.sns.adapter.out;
 
+import com.kangkimleekojangcho.akgimi.global.exception.BadRequestException;
+import com.kangkimleekojangcho.akgimi.global.exception.BadRequestExceptionCode;
 import com.kangkimleekojangcho.akgimi.sns.application.port.CommandFeedDbPort;
 import com.kangkimleekojangcho.akgimi.sns.application.port.QueryFeedDbPort;
 import com.kangkimleekojangcho.akgimi.sns.application.response.BriefFeedInfo;
 import com.kangkimleekojangcho.akgimi.sns.application.response.BriefReceiptInfo;
 import com.kangkimleekojangcho.akgimi.sns.domain.Feed;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -39,5 +42,14 @@ public class FeedJpaAdapter implements CommandFeedDbPort, QueryFeedDbPort {
     @Override
     public List<BriefReceiptInfo> findReceiptByUser_IdAndLastReceiptIdAndNumberOfReceipt(Long userId,  Long receiptOwnerId, Long lastReceiptId, Integer numberOfReceipt) {
         return feedQuerydslRepository.findReceiptByUser_IdAndLastReceiptIdAndNumberOfReceipt(userId, receiptOwnerId, lastReceiptId, numberOfReceipt);
+    }
+
+    @Override
+    public Feed findReferenceById(Long feedId) {
+        try {
+            return feedJpaRepository.getReferenceById(feedId);
+        } catch(EntityNotFoundException e) {
+           throw new BadRequestException(BadRequestExceptionCode.NOT_FEED);
+        }
     }
 }
