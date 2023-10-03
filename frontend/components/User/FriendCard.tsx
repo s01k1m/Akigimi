@@ -7,7 +7,7 @@ interface FriendProps {
   id: number;
   imgUrl: string;
   userName: string;
-  challengeId: null | string;
+  challengeId: null | number;
   gage: number;
 }
 

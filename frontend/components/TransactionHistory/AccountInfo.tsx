@@ -3,12 +3,18 @@ import Image from "next/image"
 import { useState, useEffect } from "react"
 import axios from "axios"
 
-const AccountInfo = () => {
-    // 로컬 스토리지에서 불러오기 or API 불러오기
+const AccountInfo = ({ type }) => {
     const [bank, setBank] = useState<string>("싸피 은행")
-    const [account, setAccount] = useState<string>("1234-1234-1234-1234")
-    const [balance, setBalance] = useState<number>(150000)
-
+    const [account, setAccount] = useState<string>("")
+    const [balance, setBalance] = useState<number>()
+    const [bankImg, setBankImg] = useState<string>("/images/ssafybank logo.png")
+    console.log('지금 계좌의 타입은', type)
+    useEffect(() => {
+        if (type === 'DEPOSIT'){
+            setBank("멀티 은행")
+            setBankImg("/images/multi logo.png")
+        }
+    }, [])
     let token: string = "";
 
     useEffect(() => {
@@ -22,7 +28,7 @@ const AccountInfo = () => {
         await axios 
             .get(`/api/account/amount`, {
                 params: {
-                    accountType: 'WITHDRAW'
+                    accountType: `${type}`
                 },
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -31,6 +37,7 @@ const AccountInfo = () => {
             .then((response) => {
                 console.log('계좌 잔액 조회 성공', response.data)
                 setBalance(response.data.data.balance)
+                setAccount(response.data.data.accountNumber)
             })
             .catch((error) => {
                 console.log('계좌 잔액 조회 실패', error)
@@ -42,7 +49,7 @@ const AccountInfo = () => {
         <div className="flex ms-[10%] mt-[10vh]">
             <div>
                 <Image
-                    src="/ssafybank logo.png"
+                    src={bankImg}
                     alt="싸피뱅크"
                     width={45}
                     height={45}

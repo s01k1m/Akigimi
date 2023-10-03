@@ -95,10 +95,10 @@ export default function Mypage() {
     setFriendsList([
       {
         id: 0,
-        imgUrl: "/images/profile.jpg",
-        userName: "SK",
-        product: "유니폼",
-        gage: 80,
+        profileImageUrl: "/images/profile.jpg",
+        nickname: "SK",
+        challengeId: 1,
+        accumulatedAmount: 80,
       },
     ]);
 

@@ -5,8 +5,8 @@ import Footer from "@/app/Footer"
 const TransactionHistory = () => {
     return (
         <div>
-            <AccountInfo />
-            <History />
+            <AccountInfo type={"DEPOSIT"} />
+            <History accountType={"DEPOSIT"} />
             <Footer />
         </div>
     )
