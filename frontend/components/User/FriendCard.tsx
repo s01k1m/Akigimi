@@ -44,6 +44,7 @@ const FriendCard: React.FC<FriendProps> = ({
 
   useEffect(() => {
     getProductName();
+    console.log(userName, gage)
   }, [productName])
 
 
@@ -66,8 +67,9 @@ const FriendCard: React.FC<FriendProps> = ({
         <div>
           <div className="w-[40vw] h-[15px] max-w-[210px] min-w-[180px] bg-white rounded-full">
             <div
-              className={`w-[${gage}%] h-[15px] max-w-[210px] bg-[#0049F2] rounded-full`}
-            ></div>
+              className={`w-[10%] h-[15px] max-w-[210px] bg-[#0049F2] rounded-full`}
+            >
+            </div>
           </div>
         </div>
       </div>
