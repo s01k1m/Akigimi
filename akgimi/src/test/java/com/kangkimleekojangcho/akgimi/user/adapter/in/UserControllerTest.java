@@ -36,7 +36,7 @@ class UserControllerTest extends ControllerTestSupport {
         // then
         mockMvc.perform(
                         get("/kakao/loginurl")
-                                .header(HttpHeaders.HOST, "http://localhost:3000")
+                                .header(HttpHeaders.REFERER, "http://localhost:3000")
                 ).andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.loginUrl", Matchers.containsString("http://localhost:3000")))
                 .andExpect(jsonPath("$.data.redirectUrl", Matchers.containsString("http://localhost:3000")));
@@ -49,7 +49,7 @@ class UserControllerTest extends ControllerTestSupport {
         // then
         mockMvc.perform(
                         get("/kakao/loginurl")
-                                .header(HttpHeaders.HOST,"http://akgimi.ddns.net/api")
+                                .header(HttpHeaders.REFERER,"http://akgimi.ddns.net/api")
                 ).andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.loginUrl", Matchers.containsString("http://akgimi.ddns.net")))
                 .andExpect(jsonPath("$.data.redirectUrl", Matchers.containsString("http://akgimi.ddns.net")));
