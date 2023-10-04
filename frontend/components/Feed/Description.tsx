@@ -11,7 +11,7 @@ interface DescriptionProps {
     likedCount: number
 }
 
-const Description: React.FC<DescriptionProps> = ({ isLiked, description, feedId,likedCount }) => {
+const Description: React.FC<DescriptionProps> = ({ isLiked, description, feedId, likedCount }) => {
     const [liked, setLiked] = useState(isLiked);
 
     // token 가져오기
@@ -27,6 +27,8 @@ const Description: React.FC<DescriptionProps> = ({ isLiked, description, feedId,
         console.log(feedId, isLiked, '좋아요 눌렀는지 안 눌렀는지')
     }, []);
 
+    // 프론트에서 일시적으로 좋아요 업데이트 하기
+    const [nowLikedCount, setNowLikedCount] = useState<number>(likedCount);
     const handleToggleLike = async () => {
         const likeBody = {
             feedId: feedId
@@ -44,6 +46,8 @@ const Description: React.FC<DescriptionProps> = ({ isLiked, description, feedId,
                 .then((response) => {
                     console.log('좋아요 성공', response)
                     setLiked(true)
+                    // 좋아요 개수 1 추가
+                    setNowLikedCount(nowLikedCount+1);
                 })
         } else {
             // 좋아요 취소하기
@@ -57,6 +61,8 @@ const Description: React.FC<DescriptionProps> = ({ isLiked, description, feedId,
                 .then((response) => {
                     console.log('좋아요 취소 성공', response.data)
                     setLiked(false)
+                    // 좋아요 개수 1 추가
+                    setNowLikedCount(nowLikedCount-1);
                 })
                 .catch((error) => {
                     console.log('좋아요 취소 실패', error)
@@ -81,7 +87,7 @@ const Description: React.FC<DescriptionProps> = ({ isLiked, description, feedId,
                 )}
                 </div>
                 <div className="text-[12px] text-[#757575]">
-                    <span className="text-tossblue font-semibold">{likedCount}</span>
+                    <span className="text-tossblue font-semibold">{nowLikedCount}</span>
                 명이 좋아합니다</div>
             </div>
 
