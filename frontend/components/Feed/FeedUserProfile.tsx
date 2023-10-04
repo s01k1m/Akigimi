@@ -7,7 +7,7 @@ interface FeedUserProfileProps {
 
 const FeedUserProfile: React.FC<FeedUserProfileProps> = ({ imgUrl, name }) => {
     return (
-        <div className="flex items-end">
+        <div className="flex items-center mt-2">
             <div className="rounded-full">
                 <Image
                     src={imgUrl}
