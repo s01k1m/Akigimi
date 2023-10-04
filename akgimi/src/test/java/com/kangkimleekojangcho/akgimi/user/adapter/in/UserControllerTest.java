@@ -24,8 +24,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class UserControllerTest extends ControllerTestSupport {
 
     @Test
-    @DisplayName("GetKakaoLoginUrl HAPPY CASE")
-    void GetKakaoLoginUrlHappyCase() throws Exception {
+    @DisplayName("localhost:3000에서 카카오 로그인 URL을 요청하는 경우, localhost:3000이 포함된 loginUrl, redirectUrl을 리턴한다.")
+    void getKakaoUrl1() throws Exception {
 
 
 
@@ -36,20 +36,22 @@ class UserControllerTest extends ControllerTestSupport {
         // then
         mockMvc.perform(
                         get("/kakao/loginurl")
-                                .header(HttpHeaders.HOST,"http://localhost:3000")
+                                .header(HttpHeaders.HOST, "http://localhost:3000")
                 ).andExpect(status().isOk())
-                .andExpect(jsonPath("$.data", Matchers.containsString("http://localhost:3000")));
+                .andExpect(jsonPath("$.data.loginUrl", Matchers.containsString("http://localhost:3000")))
+                .andExpect(jsonPath("$.data.redirectUrl", Matchers.containsString("http://localhost:3000")));
     }
 
 
     @Test
-    @DisplayName("GetKakaoLoginUrl BAD CASE")
-    void GetKakaoLoginUrlBadCase() throws Exception {
+    @DisplayName("akgimi.ddns.net에서 카카오 로그인 URL을 요청하는 경우, akgimi.ddns.net이 포함된 loginUrl, redirectUrl을 리턴한다.")
+    void getKakaoUrl2() throws Exception {
         // then
         mockMvc.perform(
                         get("/kakao/loginurl")
                                 .header(HttpHeaders.HOST,"http://akgimi.ddns.net/api")
                 ).andExpect(status().isOk())
-                .andExpect(jsonPath("$.data", Matchers.containsString("http://akgimi.ddns.net")));
+                .andExpect(jsonPath("$.data.loginUrl", Matchers.containsString("http://akgimi.ddns.net")))
+                .andExpect(jsonPath("$.data.redirectUrl", Matchers.containsString("http://akgimi.ddns.net")));
     }
 }
