@@ -31,9 +31,17 @@ export default function Login() {
     authorize_code = url.searchParams.get("code");
 
     //로컬호스트와 배포 주소에 따라서 requset_url을 동적으로 변환
-    let urlOrigin = url.origin;
-    redirect_uri = `${urlOrigin}/kakao/oidc`;
-  };
+    // let urlOrigin = url.origin;
+    // redirect_uri = `${urlOrigin}/kakao/oidc`;
+
+    // 백엔드에서 로직 처리해서 로컬스토리지에 저장된 리다이렉트 url 가져오기
+      redirect_uri = window.localStorage.getItem('redirect_url')
+    };  
+    console.log('리다이렉트 url은?', redirect_uri)
+    // console.log('리다이렉트 url은?', redirect_uri)
+
+  
+
 
   // 1. 카카오 로그인 성공한 유저를 리다이렉트된 주소에서 코드를 파싱한다
   // 2. authorize_code 이걸 token_request_url 카카오 서버로 보낸다. 그러면 카카오로부터 이 유저의 id_token을 받아올 수 있다.
@@ -127,9 +135,11 @@ export default function Login() {
 
   useEffect(() => {
     console.log("순서1");
+    console.log('리다이렉트 url', redirect_uri)
     if (window) {
       forLogin()
         .then(() => {
+          
           token_request_url = `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=5d06715a9e4afbca55173788a79e3674&redirect_uri=${redirect_uri}&code=${authorize_code}`;
         })
         .then(() => {
