@@ -9,9 +9,11 @@ import com.kangkimleekojangcho.akgimi.challenge.application.port.QueryChallengeD
 import com.kangkimleekojangcho.akgimi.challenge.domain.Challenge;
 import com.kangkimleekojangcho.akgimi.global.exception.BadRequestException;
 import com.kangkimleekojangcho.akgimi.global.exception.BadRequestExceptionCode;
+import com.kangkimleekojangcho.akgimi.sns.application.port.CommandCountLikeDbPort;
 import com.kangkimleekojangcho.akgimi.sns.application.port.CommandFeedDbPort;
 import com.kangkimleekojangcho.akgimi.sns.application.port.CommandImagePort;
 import com.kangkimleekojangcho.akgimi.sns.application.request.CreateFeedServiceRequest;
+import com.kangkimleekojangcho.akgimi.sns.domain.CountLike;
 import com.kangkimleekojangcho.akgimi.sns.domain.Feed;
 import com.kangkimleekojangcho.akgimi.user.application.port.QueryUserDbPort;
 import com.kangkimleekojangcho.akgimi.user.domain.User;
@@ -33,40 +35,45 @@ public class CreateFeedService {
     private final QueryChallengeDbPort queryChallengeDbPort;
     private final CommandImagePort commandImagePort;
     private final CommandTransferDbPort commandTransferDbPort;
+    private final CommandCountLikeDbPort commandCountLikeDbPort;
 
     @Transactional
     public Long createFeed(CreateFeedServiceRequest createFeedServiceRequest, Long userId) {
-
-        //1. 유저 확인하기
         User user = queryUserDbPort.findById(userId)
                 .orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NOT_USER));
 
-        //2. 챌린지 기록 가져오기
         Challenge challenge = queryChallengeDbPort.findInProgressChallengeByUserId(userId)
                 .orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NOT_PARTICIPATE_IN_CHALLENGE));
 
-        //3. 통장 계좌 확인.
         Account withdrawAccount = queryAccountDbPort.findAccountByAccountTypeAndUserId(AccountType.WITHDRAW, userId)
                 .orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NO_BANK_ACCOUNT));
+
         withdrawAccount.withdraw(createFeedServiceRequest.saving());
+
         Account depositAccount = queryAccountDbPort.findAccountByAccountTypeAndUserId(AccountType.DEPOSIT, userId)
                 .orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NO_BANK_ACCOUNT));
+
         String url = commandImagePort.save(createFeedServiceRequest.photo(), userId);
-        //feedback 저장
+
         Feed feed = commandFeedDbPort.save(createFeedServiceRequest.toEntity(depositAccount, user, challenge, url));
 
-        //5. 마지막으로 통장 계좌에 저장
+        commandCountLikeDbPort.save(
+                CountLike.builder().count(0L)
+                        .feed(feed)
+                        .build());
+
         depositAccount.deposit(createFeedServiceRequest.saving());
 
-        // 6. 계좌 거래 내역 저장
         commandTransferDbPort.save(Transfer.builder()
-                        .sendAccount(withdrawAccount)
-                        .sendAccountBalance(withdrawAccount.getBalance())
-                        .receiveAccount(depositAccount)
-                        .receiveAccountBalance(depositAccount.getBalance())
-                        .amount(createFeedServiceRequest.saving())
-                        .transferDateTime(LocalDateTime.now())
+                .sendAccount(withdrawAccount)
+                .sendAccountBalance(withdrawAccount.getBalance())
+                .receiveAccount(depositAccount)
+                .receiveAccountBalance(depositAccount.getBalance())
+                .amount(createFeedServiceRequest.saving())
+                .transferDateTime(LocalDateTime.now())
                 .build());
+
+
         return feed.getFeedId();
     }
 }
