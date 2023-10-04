@@ -5,6 +5,7 @@ import com.kangkimleekojangcho.akgimi.challenge.application.port.CommandChalleng
 import com.kangkimleekojangcho.akgimi.config.ServiceIntegrationTestSupport;
 import com.kangkimleekojangcho.akgimi.product.application.port.CommandProductDbPort;
 import com.kangkimleekojangcho.akgimi.sns.application.port.CommandFeedDbPort;
+import com.kangkimleekojangcho.akgimi.sns.application.port.CommandLikeDbPort;
 import com.kangkimleekojangcho.akgimi.sns.application.port.QueryFeedDbPort;
 import com.kangkimleekojangcho.akgimi.user.application.port.CommandFollowDbPort;
 import com.kangkimleekojangcho.akgimi.user.application.port.CommandUserDbPort;
@@ -32,4 +33,7 @@ public abstract class SnsServiceIntegrationTestSupport extends ServiceIntegratio
 
     @Autowired
     protected CommandFollowDbPort commandFollowDbPort;
+
+    @Autowired
+    protected CommandLikeDbPort commandLikeDbPort;
 }
