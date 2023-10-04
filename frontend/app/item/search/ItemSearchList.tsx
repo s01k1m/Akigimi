@@ -46,7 +46,7 @@ const ItemSearchList = ({ value, category, range }) => {
     }, [value, range])
 
     return (
-        <div className="flex flex-wrap gap-5 justify-center mt-5 mb-[100px]">
+        <div className="flex flex-wrap gap-5 justify-center mt-5">
             {Items.length > 0 ?  (
                 Items.map((item) => 
                     <ItemSearchItem
@@ -55,11 +55,13 @@ const ItemSearchList = ({ value, category, range }) => {
                         itemName={item.name}
                         itemPrice={item.price}
                         itemImg={item.image}
+                        
                     />
                 )
             ) : (
                 <div>Loading...</div>
             )}
+            <div className="h-[300px]"></div>
         </div>
     )
 }
