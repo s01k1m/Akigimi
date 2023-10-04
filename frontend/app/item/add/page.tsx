@@ -64,32 +64,37 @@ export default function addItem() {
         }
     }, []);
     
-    // 챌린지 시작 api 호출
+    // 물건 추가 api 호출
     const startChallenge = async () => {
+        console.log('api 호출 했을 때 파일 상태', file)
         if (typeof window !== "undefined") {
             token = window.localStorage.getItem("access_token");
             }
         const requestBody = {
             name: productName,
+            detail: productName,
             price: productPrice,
             challengePeriod: inputValue,
-            photo: file
+            image: file,
+            thumbnail: file,
+            url: "",
+
         }
 
         await axios
             .post('/api/product/new', requestBody, {
                 headers: {
                     Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json",
+                    "Content-Type": "multipart/form-data",
                   },
             })
             .then((response) => {
-                console.log('물건 직접 추가 챌린지 시작 성공', response)
-                // 챌린지 시작 제출 성공 하면 메인 페이지로 보내기
-                router.push('/main')
+                console.log('물건 직접 추가 성공', response)
+                // 물건 추가 성공하면 물건 조회 페이지로 이동시키기
+                router.push('/item/search')
             })
             .catch((error) => {
-                console.log('물건 직접 추가 챌린지 다시 시작 실패', error)
+                console.log('물건 직접 추가 실패', error)
                 alert('모든 정보 다 입력했나 확인하기')
             })
     }
@@ -100,7 +105,7 @@ return (
             <div className="z-10 -mb-[15px]">
                 <ReceiptCircle />
             </div>
-            <div className="w-[70vw] h-[70vh] min-w-[320px] max-w-[4px] rounded-md bg-[#EEE] flex flex-col items-center">
+            <div className="w-[70vw] h-[60vh] min-w-[320px] max-w-[4px] rounded-md bg-[#EEE] flex flex-col items-center">
                 <div className="w-[40%] rounded-xl bg-[#D9D9D9] text-[25px] flex justify-center items-center tracking-widest font-semibold mt-[30px]">AKGIMI</div>
                 <input 
                     type="text"
@@ -115,20 +120,8 @@ return (
                     onChange={onChangePrice}
                     className="w-[70%] h-[7%] ps-[10px] rounded-lg bg-[#FFF] flex items-center text-[#757575] tracking-wide ps-[5px] mt-[1vh]" />
 
-                <div className="w-[70%] mt-5 text-[#757575] z-20">목표기간을 정해주세요</div>
-                <div className="flex z-10 justify-center gap-5 -mt-2">
-                    <div className="rounded-full w-8 h-8 bg-[#EEE]"></div>
-                    <div className="rounded-full w-8 h-8 bg-[#EEE]"></div>
-                    <div className="rounded-full w-8 h-8 bg-[#EEE]"></div>
-                    <div className="rounded-full w-8 h-8 bg-[#EEE]"></div>
-                </div>
-                <div className="w-[70%] h-[15vh] bg-white rounded-lg -mt-[15px] flex items-center">
-                    <button className="ms-3 w-[50px] h-[50px] px-3 focus:bg-[#EEE] rounded-full" onClick={() => setInputValue(10)}>10</button>
-                    <button className="w-[50px] h-[50px] focus:bg-[#EEE] rounded-full" onClick={() => setInputValue(20)}>20</button>
-                    <button className="w-[50px] h-[50px] focus:bg-[#EEE] rounded-full" onClick={() => setInputValue(30)}>30</button>
-                    <button className="w-[50px] h-[50px] focus:bg-[#EEE] rounded-full" onClick={() => setInputValue(40)}>40</button>
-                </div>
-                <div className="bg-white mt-5 w-[70%] rounded-lg h-[18vh]">
+                <div className="w-[70%] mt-5 text-[#757575] z-20">사진을 추가해주세요</div>
+                <div className="bg-white mt-1 w-[70%] rounded-lg h-[18vh]">
                 <div className='relative flex justify-center items-center'>
                         <input 
                             type="" 
@@ -167,7 +160,7 @@ return (
           
             <button className="button-common-small blue-btn absolute bottom-[15vh] max-w-[300px]"
                 onClick={startChallenge}
-            >챌린지 시작</button>
+            >미닝템 추가하기</button>
         <Footer />
         </div>
     </div>

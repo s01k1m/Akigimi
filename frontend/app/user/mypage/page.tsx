@@ -28,6 +28,7 @@ export default function Mypage() {
   const [withdrawBalance, setWithdrawBalance] = useState<string>("");
   const [depositBalance, setDepositBalance] = useState<string>("");
   const [searchWord, setSearchWord] = useState<string>("");
+  const [lastSearchWord, setLastSearchWord] = useState<string>("");
   const [friendsList, setFriendsList] = useState<FriendsList>([]);
   
   // 세션에 저장된 유저 정보 가져오기
@@ -81,7 +82,6 @@ export default function Mypage() {
       })
       .then((response) => {
         setFriendsList(response.data.data.friends);
-        console.log(response.data.data.friends)
         if (type === 'FOLLOWING') {
           setCountFollowing(response.data.data.friends.length)
         } else {
@@ -89,6 +89,40 @@ export default function Mypage() {
         }
       });
   };
+
+  // 친구 검색 api
+  const onkeydown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === 'Enter') {
+        setLastSearchWord(searchWord)
+        await getSearchFriendsList();
+      }
+    }
+  
+  const getSearchFriendsList = async () => {
+    let token: string = "";
+      if (typeof window !== "undefined") {
+        token = window.localStorage.getItem("access_token");
+      }
+      await axios
+        .get('/api/friends/search', {
+          params: {
+            nickname: lastSearchWord
+          },
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          
+        })
+        .then((response) => {
+          console.log('친구 검색 성공', response.data.data.friends)
+          setFriendsList(response.data.data.friends)
+        })
+        .catch((error) => {
+          console.log('친구 검색 실패', error)
+        })
+
+  }
 
   useEffect(() => {
     // Moved the initial setFriendsList here
@@ -182,9 +216,9 @@ export default function Mypage() {
             placeholder="친구검색"
             value={searchWord}
             onChange={(e) => {
-              console.log(e.target.value);
               setSearchWord(e.target.value);
             }}
+            onKeyDown={onkeydown}
             className="mb-3 w-[80%] ps-12 h-12 rounded p-2 bg-gray1"
           ></input>
 
@@ -196,22 +230,27 @@ export default function Mypage() {
           >
             <BiSearchAlt size="30"></BiSearchAlt>
           </div>
-          {friendsList?.map((person) => {
-            return (
-              <>
-              <FriendCard
-                id={person.id}
-                imgUrl={person.profileImageUrl}
-                userName={person.nickname}
-                challengeId={person.challengeId}
-                gage={person.accumulatedAmount}
-              ></FriendCard>
-            </>
-            );
-          })}
+          <div>
+            
+          </div>
+          <div className="mb-[100px] w-full flex flex-col items-center">
+            {friendsList?.map((person) => {
+              return (
+                <>
+                <FriendCard
+                  id={person.id}
+                  imgUrl={person.profileImageUrl}
+                  userName={person.nickname}
+                  challengeId={person.challengeId}
+                  gage={person.accumulatedAmount}
+                ></FriendCard>
+              </>
+              );
+            })}
+          </div>
         </div>
       ) : content === "following" ? (
-        <div className="w-full flex flex-col justify-center items-center">
+        <div className="w-full flex flex-col justify-center items-center mb-[100px]">
           {friendsList?.map((person) => {
             return (
               <FriendCard
