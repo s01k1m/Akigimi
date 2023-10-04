@@ -54,6 +54,11 @@ export default function page({ params }: { params: PageParams }) {
             })
             .catch((error) => {
                 console.log('챌린지 다시 시작 실패', error)
+                if (error.response.data.message === "이미 챌린지 진행중입니다.") {
+                    alert('이미 챌린지를 진행중이에요.')
+                }
+                // 챌린지를 도전 중인 유저가 챌린지를 시작하려고 하면 메인페이지로 보내기
+                router.push('/main')
             })
     }
     
@@ -91,16 +96,16 @@ return (
                 <div className="w-[70%] h-[7%] ps-[10px] rounded-lg bg-[#FFF] flex items-center text-[#757575] tracking-wide ps-[5px] mt-[4vh]">{productName}</div>
                 <div className="w-[70%] h-[7%] ps-[10px] rounded-lg bg-[#FFF] flex items-center text-[#757575] tracking-wide ps-[5px] mt-[1vh]">{productPrice}</div>
                 <div className="h-[120px]"></div>
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" style={{ width: '200px', height: '100px'}}>
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-lg" style={{ width: '220px', height: '100px'}}>
                     <Image
                         src={productImg}
                         alt="아이템 물건"
-                        className="-mt-8"
+                        className="-mt-8 rounded-lg"
                         layout="fill"
                         objectFit="cover"
                     />
                 </div>
-                <div className="w-[70%] mt-1 text-[#757575] z-20">목표기간을 정해주세요</div>
+                <div className="w-[70%] mt-5 text-[#757575] z-20">목표기간을 정해주세요</div>
                 <div className="flex z-10 justify-center gap-5 -mt-2">
                     <div className="rounded-full w-8 h-8 bg-[#EEE]"></div>
                     <div className="rounded-full w-8 h-8 bg-[#EEE]"></div>
