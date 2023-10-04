@@ -14,13 +14,20 @@ const ItemSearchList = ({ value, category, range }) => {
     ]
     const [Items, setItems] = useState<[]>([]);
 
+    let token: string = "";
     const getItemList = async () => {
+        if (typeof window !== "undefined") {
+            token = window.localStorage.getItem("access_token");
+        }
         await axios
-            .get(('/api/items/search'), {
+            .get(('/api/product/search'), {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                  },
                 params: {
-                    value: value,
-                    category: category,
-                    range: range
+                    name: value,
+                    startMoney: range[0],
+                    endMondy: range[1]
                 }
             })
             .then((response) => {
@@ -34,10 +41,10 @@ const ItemSearchList = ({ value, category, range }) => {
     
     useEffect(() => {
         getItemList()
-    }, [])
+    }, [value, range])
 
     return (
-        <div className="flex flex-wrap gap-5 justify-center mt-5">
+        <div className="flex flex-wrap gap-5 justify-center mt-5 mb-[100px]">
             {ItemList.map((item) => 
                 <ItemSearchItem
                     key={item.itemId}
