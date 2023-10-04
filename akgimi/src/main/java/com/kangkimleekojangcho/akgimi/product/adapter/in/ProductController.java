@@ -8,10 +8,13 @@ import com.kangkimleekojangcho.akgimi.global.response.ResponseFactory;
 import com.kangkimleekojangcho.akgimi.global.response.SuccessResponse;
 import com.kangkimleekojangcho.akgimi.product.adapter.in.request.BunchOfSearchProductRequest;
 import com.kangkimleekojangcho.akgimi.product.adapter.in.request.CreateProductRequest;
+import com.kangkimleekojangcho.akgimi.product.adapter.in.request.ProductDetailRequest;
+import com.kangkimleekojangcho.akgimi.product.application.DetailProductService;
 import com.kangkimleekojangcho.akgimi.product.application.SaveProductService;
 import com.kangkimleekojangcho.akgimi.product.application.SearchProductService;
 import com.kangkimleekojangcho.akgimi.product.application.response.BunchOfSearchProductServiceResponse;
 import com.kangkimleekojangcho.akgimi.product.application.response.CreateProductServiceResponse;
+import com.kangkimleekojangcho.akgimi.product.application.response.ProductDetailServiceResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +29,7 @@ public class ProductController {
     private final SubtractUserIdFromAccessTokenService subtractUserIdFromAccessTokenService;
     private final SaveProductService saveProductService;
     private final SearchProductService searchProductService;
+    private final DetailProductService detailProductService;
 
     // 물건 추가
     @PostMapping("/product/new")
@@ -49,6 +53,16 @@ public class ProductController {
     ){
         return ResponseFactory.success(
                 searchProductService.search(bunchOfSearchProductRequest.toServiceRequest())
+        );
+    }
+
+    // 물건 상세정보
+    @GetMapping("/product/detail")
+    public ResponseEntity<SuccessResponse<ProductDetailServiceResponse>> detailProduct(
+        ProductDetailRequest productDetailRequest
+    ){
+        return ResponseFactory.success(
+                detailProductService.detail(productDetailRequest.toServiceRequest())
         );
     }
 
