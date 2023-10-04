@@ -8,6 +8,7 @@ import com.kangkimleekojangcho.akgimi.global.response.SuccessResponse;
 import com.kangkimleekojangcho.akgimi.user.adapter.in.request.FollowRequest;
 import com.kangkimleekojangcho.akgimi.user.adapter.in.request.LoginRequest;
 import com.kangkimleekojangcho.akgimi.user.adapter.in.response.GetUserInfoServiceResponse;
+import com.kangkimleekojangcho.akgimi.user.adapter.in.response.LoginUrlResponse;
 import com.kangkimleekojangcho.akgimi.user.application.*;
 import com.kangkimleekojangcho.akgimi.user.application.response.*;
 import com.kangkimleekojangcho.akgimi.user.config.KakaoProperties;
@@ -42,7 +43,7 @@ public class UserController {
     private final CheckUserCanBeActivatedService checkUserCanBeActivatedService;
 
     @GetMapping("/kakao/loginurl")
-    public ResponseEntity<SuccessResponse<String>> getKakaoLoginUrl(HttpServletRequest servletRequest) {
+    public ResponseEntity<SuccessResponse<LoginUrlResponse>> getKakaoLoginUrl(HttpServletRequest servletRequest) {
         String redirectApi;
         if(isFromLocalhost(servletRequest)){
             redirectApi = "http://localhost:3000/kakao/oidc/";
@@ -51,7 +52,8 @@ public class UserController {
         }
         String loginUrl = String.format("https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=%s&redirect_uri=%s",
                 kakaoProperties.kakaoRestApiKey(), redirectApi);
-        return ResponseFactory.success(loginUrl);
+        return ResponseFactory.success(new LoginUrlResponse(loginUrl,
+                redirectApi));
     }
 
     private boolean isFromLocalhost(HttpServletRequest servletRequest) {
