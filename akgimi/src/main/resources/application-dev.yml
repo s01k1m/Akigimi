@@ -39,6 +39,9 @@ server:
   port: 8080
   servlet:
     context-path: /api
+    multipart:
+      maxFileSize: 10MB
+      maxRequestSize: 100MB
 
 jwt:
   secretKey: ${JWT_SECRETKEY}
