@@ -82,7 +82,6 @@ export default function Mypage() {
       })
       .then((response) => {
         setFriendsList(response.data.data.friends);
-        console.log(response.data.data.friends)
         if (type === 'FOLLOWING') {
           setCountFollowing(response.data.data.friends.length)
         } else {
@@ -217,7 +216,6 @@ export default function Mypage() {
             placeholder="친구검색"
             value={searchWord}
             onChange={(e) => {
-              console.log(e.target.value);
               setSearchWord(e.target.value);
             }}
             onKeyDown={onkeydown}
