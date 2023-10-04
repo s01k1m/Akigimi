@@ -75,8 +75,9 @@ export default function addItem() {
             challengePeriod: inputValue,
             photo: file
         }
+
         await axios
-            .post('/api/product/add', requestBody, {
+            .post('/api/product/new', requestBody, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     "Content-Type": "application/json",
