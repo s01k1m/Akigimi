@@ -8,9 +8,10 @@ interface DescriptionProps {
     isLiked: boolean
     description: string
     feedId: number
+    likedCount: number
 }
 
-const Description: React.FC<DescriptionProps> = ({ isLiked, description, feedId }) => {
+const Description: React.FC<DescriptionProps> = ({ isLiked, description, feedId,likedCount }) => {
     const [liked, setLiked] = useState(isLiked);
 
     // token 가져오기
@@ -64,22 +65,27 @@ const Description: React.FC<DescriptionProps> = ({ isLiked, description, feedId 
         }
     };
     return (
-        <div className="flex w-[80%] max-w-[500px] ms-[5vw]">
-             <div onClick={handleToggleLike} className="me-[1vw] mb-2">
-            {!liked ? (
-                <AiOutlineHeart 
-                     color="#0049F2"
-                     size={'40px'}
-                />
-            ) : (
-                <AiFillHeart
-                    color="#0049F2"
-                    size={'40px'}
-                />
-            )}
+        <div>
+            <div className="flex w-[80%] max-w-[500px] ms-[5vw] items-center">
+                <div onClick={handleToggleLike} className="me-[1vw] mb-2">
+                {!liked ? (
+                    <AiOutlineHeart 
+                        color="#0049F2"
+                        size={'40px'}
+                    />
+                ) : (
+                    <AiFillHeart
+                        color="#0049F2"
+                        size={'40px'}
+                    />
+                )}
+                </div>
+                <div className="text-[12px] text-[#757575]">
+                    <span className="text-tossblue font-semibold">{likedCount}</span>
+                명이 좋아합니다</div>
             </div>
 
-            <div className="max-w-[220px] mb-[2vh] w-[40vw]"> 
+            <div className="max-w-[270px] mb-[2vh] w-[70vw] ms-[5vw]"> 
                 {description}
             </div>
         </div>
