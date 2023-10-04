@@ -8,11 +8,11 @@ public record BriefFeedInfo(
         String userProfile,
         String nickname,
         Long price,
-//        Integer likes,
+        Long countOfLike,
         String notPurchasedItem,
         String akgimiPlace,
         String content,
-//        Boolean isLikedFeed,
+        Boolean isLikedFeed,
         String photo
 ) {
 
