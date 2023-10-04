@@ -11,6 +11,7 @@ export default function Login() {
   const [tryLogin, setTryLogin] = useState<Boolean>(false);
   const router = useRouter();
   let token: string = "";
+  
   useEffect(() => {
     token = window.localStorage.getItem("access_token");
   }, []);
