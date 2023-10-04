@@ -73,10 +73,14 @@ export default function Login() {
         window.localStorage.setItem("access_token", access_token);
         window.localStorage.setItem("refresh_token", refresh_token);
         console.log("우리 회원 맞아요");
+        console.log('우리 회원이 맞는경우의 응답', response)
         // TODO: 회원이므로 6자리 로그인으로 페이지 전환해야됨
         window.sessionStorage.setItem("userId", response.data.userId); // 세션스토리지에 유저아이디 저장
         if (response.data.data.userState === "PENDING") {
-          router.replace("/login/register/withdraw");
+          // pending 인 경우 닉네임 페이지로 이동시키기
+          // TODO: 사용자가 어떤 값이 부족 한지 판단 한 다음 경우에 따라 router를 분류하는 작업이 필요합니다
+          // 회원가입을 진행하는 중간에 종료 될 수 있기 때문.
+          router.replace("/login/register");
         } else {
           // 임시
           router.replace("/login"); // 이거 중간평가용 임시임 나중에 6자리 로그인으로 변경해야함

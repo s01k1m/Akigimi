@@ -15,9 +15,10 @@ interface ItemProps {
     description: string
     userId: number
     feedId: number
+    likedCount: number
 }
 
-const FeedWriteInfo: React.FC<ItemProps> = ({ imgUrl, name, place, item, price, image, isLiked, description, userId, feedId }) => {
+const FeedWriteInfo: React.FC<ItemProps> = ({ imgUrl, name, place, item, price, image, isLiked, description, userId, feedId, likedCount }) => {
     const router = useRouter();
     const profileClick = () => {
         console.log('프로필 클릭함', userId)
@@ -47,7 +48,7 @@ const FeedWriteInfo: React.FC<ItemProps> = ({ imgUrl, name, place, item, price, 
                 <FeedImg image={image} />
             </div>
             <div className="flex justify-start">
-                <Description isLiked={isLiked} description={description} feedId={feedId} />
+                <Description isLiked={isLiked} description={description} feedId={feedId} likedCount={likedCount} />
             </div>
         </div>
     )

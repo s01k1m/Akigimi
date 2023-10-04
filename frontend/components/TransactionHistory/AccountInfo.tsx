@@ -36,7 +36,7 @@ const AccountInfo = ({ type }) => {
             })
             .then((response) => {
                 console.log('계좌 잔액 조회 성공', response.data)
-                setBalance(response.data.data.balance)
+                setBalance(response.data.data.balance.toLocaleString())
                 setAccount(response.data.data.accountNumber)
             })
             .catch((error) => {

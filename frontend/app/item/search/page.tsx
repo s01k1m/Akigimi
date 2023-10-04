@@ -72,17 +72,18 @@ const ItemSearch = () => {
     const router = useRouter();
 
     // 가격 슬라이더
-    const [rangeValue, setRangeValue] = React.useState<number[]>([20, 37]);
+    const [rangeValue, setRangeValue] = React.useState<number[]>([0, 100]);
     const handleChange = (event: Event, newValue: number | number[]) => {
         setRangeValue(newValue as number[]);
     };
 
     // input 검색창
-    const [inputValue, setInputValue] = useState<string>();
+    const [inputValue, setInputValue] = useState<string>("");
+    const [enterValue, setEnterValue] = useState<string>("");
     // 엔터 치면 검색어 전달하기
     const onKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
-            console.log('엔터 쳤음', inputValue)
+            setEnterValue(inputValue)
         }
     };
 
@@ -135,7 +136,7 @@ const ItemSearch = () => {
       </div>
       {/* item component */}
       <div>
-        <ItemSearchList value={inputValue} category={selectedCategory} range={rangeValue} />
+        <ItemSearchList value={enterValue} category={selectedCategory} range={rangeValue} />
       </div>
       <Footer />
     </div>
