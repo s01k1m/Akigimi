@@ -312,15 +312,11 @@ class GetBunchOfFeedWrittenByFollowerRequestServiceTest extends SnsServiceIntegr
                 .followTime(LocalDateTime.now()).build();
         commandFollowDbPort.save(follow);
 
-
         //when
         GetBunchOfFeedWrittenByFollowerServiceResponse getBunchOfReceiptServiceResponse
                 = getBunchOfFeedWrittenByFollowerRequestService.getBunchOfFeed(
                 follower.getId(), getBunchOfFeedServiceRequest);
 
-        for (BriefFeedInfo info : getBunchOfReceiptServiceResponse.bunchOfBriefFeedInfo()) {
-            System.out.println(info.isLikedFeed());
-        }
         //then
         assertThat(getBunchOfReceiptServiceResponse.bunchOfBriefFeedInfo()).isNotNull();
         assertThat(getBunchOfReceiptServiceResponse
@@ -423,6 +419,13 @@ class GetBunchOfFeedWrittenByFollowerRequestServiceTest extends SnsServiceIntegr
                     Like.builder()
                             .feed(feed)
                             .user(likeUser)
+                            .build()
+            );
+
+            commandLikeDbPort.save(
+                    Like.builder()
+                            .feed(feed)
+                            .user(user)
                             .build()
             );
         }
