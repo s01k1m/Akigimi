@@ -22,6 +22,7 @@ const KakaoLoginButton = () => {
       .then((response) => {
         loginUrl = response.data.data;
         setIsLoading(false);
+        // console.log('로그인 성공 했을 때', response.data)
       })
       .catch((error) => {
         console.error("HTTP 요청 중 오류 발생:", error);

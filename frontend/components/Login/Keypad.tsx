@@ -38,7 +38,7 @@ export const Keypad = ({ onKeyPressed }: IKeypadProps) => {
   //   [...Object.keys(KeypadKeys).slice(6, 9)],
   //   [...Object.keys(KeypadKeys).slice(9, 12)],
   // ];
-  console.log("셔플드", shuffled);
+  // console.log("셔플드", shuffled);
   const rows: string[][] = [
     [...shuffled.slice(0, 3)],
     [...shuffled.slice(3, 6)],
