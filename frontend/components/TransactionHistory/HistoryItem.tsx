@@ -30,13 +30,13 @@ const HistoryItem: React.FC<HistoryItemProps> = ({ date, type, amount, balance }
             <div className="flex flex-col justify-end">
                 {type==='출금' ? (
                     <>
-                        <div className={`text-[16px] tracking-widest`}>-{amount}원</div>
-                        <div className="text-[12px] font-light tracking-widest justify-end flex">{balance}원</div>
+                        <div className={`text-[16px] tracking-widest flex justify-end`}>-{amount.toLocaleString()}원</div>
+                        <div className="text-[12px] font-light tracking-widest justify-end flex">{balance.toLocaleString()}원</div>
                     </>
                 ): (
                     <>
-                        <div className={`text-[16px] tracking-widest text-[#0049F2] `}>{amount}원</div>
-                        <div className="text-[12px] font-light tracking-widest justify-end flex">{balance}원</div>
+                        <div className={`text-[16px] tracking-widest text-[#0049F2] flex justify-end`}>{amount.toLocaleString()}원</div>
+                        <div className="text-[12px] font-light tracking-widest justify-end flex">{balance.toLocaleString()}원</div>
                     </>
                     
                     )}

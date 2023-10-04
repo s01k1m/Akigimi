@@ -18,8 +18,9 @@ export default function page({ params }: { params: PageParams }) {
     const [inputValue, setInputValue] = useState<number>();
     
     // 챌린지 기본 정보
-    const [productName, setProductName] = useState<string>("닌탠도");
-    const [productPrice, setProductPrice] = useState<number>(200000);
+    const [productName, setProductName] = useState<string>("");
+    const [productPrice, setProductPrice] = useState<number>();
+    const [productImg, setProductImg] = useState<string>();
     
     // 토큰 가져오기
     let token: string = "";
@@ -56,7 +57,7 @@ export default function page({ params }: { params: PageParams }) {
     // 아이템 아이디로 아이템 기본 정보 가져오는 api 호출
     const getItemInfo = async () => {
         await axios
-            .get(`/api/items/${itemId}`, {
+            .get(`/api/product/detail?id=${itemId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     "Content-Type": "multipart/form-data",
@@ -64,8 +65,9 @@ export default function page({ params }: { params: PageParams }) {
             })
             .then((response) => {
                 console.log('아이템 기본 정보 조회 성공', response.data)
-                setProductName(response.data.data.productName)
-                setProductPrice(response.data.data.productPrice)
+                setProductName(response.data.data.name)
+                setProductPrice(response.data.data.price)
+                setProductImg(response.data.data.image)
             })
             .catch((error) => {
                 console.log('아이템 기본 정보 조회 실패', error)
@@ -81,17 +83,20 @@ return (
             <div className="z-10 -mb-[15px]">
                 <ReceiptCircle />
             </div>
-            <div className="w-[70vw] h-[60vh] min-w-[320px] max-w-[4px] rounded-md bg-[#EEE] flex flex-col items-center">
+            <div className="w-[70vw] h-[63vh] min-w-[320px] max-w-[4px] rounded-md bg-[#EEE] flex flex-col items-center ">
                 <div className="w-[40%] rounded-xl bg-[#D9D9D9] text-[25px] flex justify-center items-center tracking-widest font-semibold mt-[30px]">AKGIMI</div>
                 <div className="w-[70%] h-[7%] ps-[10px] rounded-lg bg-[#FFF] flex items-center text-[#757575] tracking-wide ps-[5px] mt-[4vh]">{productName}</div>
                 <div className="w-[70%] h-[7%] ps-[10px] rounded-lg bg-[#FFF] flex items-center text-[#757575] tracking-wide ps-[5px] mt-[1vh]">{productPrice}</div>
-                <Image
-                    src="/images/gift.png"
-                    alt="닌텐도"
-                    width={100}
-                    height={100}
-                    className="mt-2"
-                />
+                <div className="h-[120px]"></div>
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" style={{ width: '200px', height: '100px'}}>
+                    <Image
+                        src={productImg}
+                        alt="아이템 물건"
+                        className="-mt-8"
+                        layout="fill"
+                        objectFit="cover"
+                    />
+                </div>
                 <div className="w-[70%] mt-1 text-[#757575] z-20">목표기간을 정해주세요</div>
                 <div className="flex z-10 justify-center gap-5 -mt-2">
                     <div className="rounded-full w-8 h-8 bg-[#EEE]"></div>

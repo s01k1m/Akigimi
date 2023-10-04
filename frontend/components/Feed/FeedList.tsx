@@ -13,6 +13,7 @@ type FeedItem = {
     image: string;
     isLikedFeed: boolean;
     description: string;
+    likedCount: number;
   };
 type selectedProps =  {
     selectedValue: string
@@ -104,6 +105,7 @@ const FeedList: React.FC<selectedProps> = ({ selectedValue }) => {
                     isLiked={item.isLikedFeed} 
                     description={item.content}
                     feedId={item.feedId}
+                    likedCount={item.countOfLiked}
                      />
               </>
             ))}
