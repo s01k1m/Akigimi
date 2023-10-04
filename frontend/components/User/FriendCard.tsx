@@ -49,7 +49,7 @@ const FriendCard: React.FC<FriendProps> = ({
 
 
   return (
-    <div className="flex items-center w-[80%] h-[96px] bg-gray1 px-[15px]">
+    <div className="flex items-center w-[80%] h-[96px] bg-gray1 px-[15px] mb-1">
       <div className="w-[60px]"></div>
       <div className="absolute" style={{width: '55px', height: '55px', overflow: 'hidden'}}>
         <Image
