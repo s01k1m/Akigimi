@@ -4,6 +4,7 @@ import com.kangkimleekojangcho.akgimi.sns.application.response.BriefFeedInfo;
 import com.kangkimleekojangcho.akgimi.sns.application.response.BriefReceiptInfo;
 import com.kangkimleekojangcho.akgimi.sns.application.response.QBriefFeedInfo;
 import com.kangkimleekojangcho.akgimi.sns.application.response.QBriefReceiptInfo;
+import com.kangkimleekojangcho.akgimi.sns.domain.QCountLike;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Objects;
 
+import static com.kangkimleekojangcho.akgimi.sns.domain.QCountLike.countLike;
 import static com.kangkimleekojangcho.akgimi.sns.domain.QFeed.feed;
 import static com.kangkimleekojangcho.akgimi.sns.domain.QLike.like;
 import static com.kangkimleekojangcho.akgimi.user.domain.QFollow.follow;
@@ -38,6 +40,7 @@ public class FeedQuerydslRepository {
                                 feed.user.profileImageUrl.as("userProfile"),
                                 feed.user.nickname.as("nickname"),
                                 feed.price.as("price"),
+                                feed.countLike.count.as("countOfLike"),
                                 feed.notPurchasedItem.as("notPurchasedItem"),
                                 feed.place.as("akgimiPlace"),
                                 feed.content.as("content"),
@@ -64,6 +67,7 @@ public class FeedQuerydslRepository {
                         feed.user.id.eq(requestUserId).or(
                                 follow.follower.id.eq(requestUserId)))
                 .orderBy(feed.feedId.desc())
+                .fetchJoin()
                 .limit(numberOfFeed).fetch();
     }
 
