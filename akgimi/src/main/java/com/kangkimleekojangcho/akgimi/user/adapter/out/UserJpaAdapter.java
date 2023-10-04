@@ -9,6 +9,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -32,6 +33,11 @@ class UserJpaAdapter implements QueryUserDbPort, CommandUserDbPort {
         } catch (EntityNotFoundException ex) {
             throw new BadRequestException(BadRequestExceptionCode.NOT_USER);
         }
+    }
+
+    @Override
+    public List<User> findByNickname(String nickname) {
+        return userJpaRepository.findByNickname(nickname);
     }
 
     public User save(User user) {
