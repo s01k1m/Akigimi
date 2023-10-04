@@ -154,4 +154,11 @@ public class UserController {
         ActivateUserServiceResponse response = activateUserService.activate(userId);
         return ResponseFactory.success(response);
     }
+
+    @GetMapping("/friends/search")
+    public ResponseEntity<SuccessResponse<FriendsServiceResponse>> searchFriends(@RequestParam("nickname") String nickname, HttpServletRequest servletRequest){
+        Long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
+        FriendsServiceResponse response = getFriendsInfoService.search(userId,nickname);
+        return ResponseFactory.success(response);
+    }
 }
