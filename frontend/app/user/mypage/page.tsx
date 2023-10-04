@@ -216,7 +216,7 @@ export default function Mypage() {
           </div>
         </div>
       ) : content === "following" ? (
-        <div className="w-full flex flex-col justify-center items-center">
+        <div className="w-full flex flex-col justify-center items-center mb-[100px]">
           {friendsList?.map((person) => {
             return (
               <FriendCard
