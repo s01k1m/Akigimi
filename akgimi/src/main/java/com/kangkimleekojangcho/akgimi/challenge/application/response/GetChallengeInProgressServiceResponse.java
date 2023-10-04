@@ -20,6 +20,7 @@ public class GetChallengeInProgressServiceResponse {
     private String productImgUrl;
     private Integer challengePeriod;
     private Integer days;
+    private Integer tryCount;
 
     public static GetChallengeInProgressServiceResponse from(Challenge challenge, Long balance, Integer percentage, Integer characterStatus, Integer days){
         return GetChallengeInProgressServiceResponse.builder()
@@ -31,6 +32,7 @@ public class GetChallengeInProgressServiceResponse {
                 .productImgUrl(challenge.getProduct().getUrl())
                 .challengePeriod(challenge.getChallengePeriod())
                 .days(days)
+                .tryCount(challenge.getTryCount())
                 .build();
     }
 }
