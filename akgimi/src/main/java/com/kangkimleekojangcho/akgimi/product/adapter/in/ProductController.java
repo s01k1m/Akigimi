@@ -6,12 +6,16 @@ import com.kangkimleekojangcho.akgimi.global.exception.BadRequestException;
 import com.kangkimleekojangcho.akgimi.global.exception.BadRequestExceptionCode;
 import com.kangkimleekojangcho.akgimi.global.response.ResponseFactory;
 import com.kangkimleekojangcho.akgimi.global.response.SuccessResponse;
+import com.kangkimleekojangcho.akgimi.product.adapter.in.request.BunchOfSearchProductRequest;
 import com.kangkimleekojangcho.akgimi.product.adapter.in.request.CreateProductRequest;
 import com.kangkimleekojangcho.akgimi.product.application.SaveProductService;
+import com.kangkimleekojangcho.akgimi.product.application.SearchProductService;
+import com.kangkimleekojangcho.akgimi.product.application.response.BunchOfSearchProductServiceResponse;
 import com.kangkimleekojangcho.akgimi.product.application.response.CreateProductServiceResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProductController {
     private final SubtractUserIdFromAccessTokenService subtractUserIdFromAccessTokenService;
     private final SaveProductService saveProductService;
+    private final SearchProductService searchProductService;
 
     // 물건 추가
     @PostMapping("/product/new")
@@ -36,5 +41,15 @@ public class ProductController {
         return ResponseFactory.success(createProductServiceResponse);
     }
 
+
+    // 물건 검색
+    @GetMapping("/product/search")
+    public ResponseEntity<SuccessResponse<BunchOfSearchProductServiceResponse>> searchProduct(
+            BunchOfSearchProductRequest bunchOfSearchProductRequest
+    ){
+        return ResponseFactory.success(
+                searchProductService.search(bunchOfSearchProductRequest.toServiceRequest())
+        );
+    }
 
 }
