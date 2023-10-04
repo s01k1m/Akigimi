@@ -9,10 +9,8 @@ import com.kangkimleekojangcho.akgimi.challenge.application.port.QueryChallengeD
 import com.kangkimleekojangcho.akgimi.challenge.domain.Challenge;
 import com.kangkimleekojangcho.akgimi.global.exception.BadRequestException;
 import com.kangkimleekojangcho.akgimi.global.exception.BadRequestExceptionCode;
-import com.kangkimleekojangcho.akgimi.global.exception.ServerErrorException;
-import com.kangkimleekojangcho.akgimi.global.exception.ServerErrorExceptionCode;
 import com.kangkimleekojangcho.akgimi.sns.application.port.CommandFeedDbPort;
-import com.kangkimleekojangcho.akgimi.sns.application.port.CommandFeedImagePort;
+import com.kangkimleekojangcho.akgimi.sns.application.port.CommandImagePort;
 import com.kangkimleekojangcho.akgimi.sns.application.request.CreateFeedServiceRequest;
 import com.kangkimleekojangcho.akgimi.sns.domain.Feed;
 import com.kangkimleekojangcho.akgimi.user.application.port.QueryUserDbPort;
@@ -33,7 +31,7 @@ public class CreateFeedService {
     private final QueryAccountDbPort queryAccountDbPort;
     private final CommandFeedDbPort commandFeedDbPort;
     private final QueryChallengeDbPort queryChallengeDbPort;
-    private final CommandFeedImagePort commandFeedImagePort;
+    private final CommandImagePort commandImagePort;
     private final CommandTransferDbPort commandTransferDbPort;
 
     @Transactional
@@ -53,7 +51,7 @@ public class CreateFeedService {
         withdrawAccount.withdraw(createFeedServiceRequest.saving());
         Account depositAccount = queryAccountDbPort.findAccountByAccountTypeAndUserId(AccountType.DEPOSIT, userId)
                 .orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NO_BANK_ACCOUNT));
-        String url = commandFeedImagePort.save(createFeedServiceRequest.photo(), userId);
+        String url = commandImagePort.save(createFeedServiceRequest.photo(), userId);
         //feedback 저장
         Feed feed = commandFeedDbPort.save(createFeedServiceRequest.toEntity(depositAccount, user, challenge, url));
 
@@ -65,7 +63,7 @@ public class CreateFeedService {
                         .sendAccount(withdrawAccount)
                         .sendAccountBalance(withdrawAccount.getBalance())
                         .receiveAccount(depositAccount)
-                        .sendAccountBalance(depositAccount.getBalance())
+                        .receiveAccountBalance(depositAccount.getBalance())
                         .amount(createFeedServiceRequest.saving())
                         .transferDateTime(LocalDateTime.now())
                 .build());

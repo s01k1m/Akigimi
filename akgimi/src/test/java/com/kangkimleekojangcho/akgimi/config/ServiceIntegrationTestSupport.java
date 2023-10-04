@@ -2,7 +2,7 @@ package com.kangkimleekojangcho.akgimi.config;
 
 
 import com.kangkimleekojangcho.akgimi.common.config.S3Config;
-import com.kangkimleekojangcho.akgimi.sns.application.port.CommandFeedImagePort;
+import com.kangkimleekojangcho.akgimi.sns.application.port.CommandImagePort;
 import com.kangkimleekojangcho.akgimi.user.application.port.CommandUserProfileImagePort;
 import com.kangkimleekojangcho.akgimi.user.config.KakaoProperties;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ public abstract class ServiceIntegrationTestSupport {
     protected CommandUserProfileImagePort commandUserProfileImagePort;
 
     @MockBean
-    protected CommandFeedImagePort commandFeedImagePort;
+    protected CommandImagePort commandImagePort;
 
     @MockBean
     protected S3Config s3Config;

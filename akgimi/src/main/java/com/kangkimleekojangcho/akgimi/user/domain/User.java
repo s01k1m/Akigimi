@@ -87,4 +87,8 @@ public class User {
     public void setKakaoProfileNickname(String kakaoProfileNickname) {
         this.kakaoProfileNickname = kakaoProfileNickname;
     }
+
+    public boolean isPasswordSetted() {
+        return this.simplePassword != null && simplePassword.length() != 0;
+    }
 }

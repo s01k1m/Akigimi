@@ -12,9 +12,11 @@ import java.util.Optional;
 
 @Getter
 public class JwtToken {
+    private final String rawToken;
     private final Jws<Claims> claimsJws;
 
-    public JwtToken(Jws<Claims> claimsJws) {
+    public JwtToken(String rawToken, Jws<Claims> claimsJws) {
+        this.rawToken = rawToken;
         this.claimsJws = claimsJws;
     }
 

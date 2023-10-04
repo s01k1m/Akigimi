@@ -14,4 +14,6 @@ public interface QueryFeedDbPort {
     List<BriefFeedInfo> findByUser_IdAndLastFeedIdAndNumberOfFeed(Long userId, Long lastFeedId, Integer numberOfFeed);
 
     List<BriefReceiptInfo> findReceiptByUser_IdAndLastReceiptIdAndNumberOfReceipt(Long userId, Long receiptOwnerId,Long lastReceiptId, Integer numberOfReceipt);
+
+    Feed findReferenceById(Long feedId);
 }

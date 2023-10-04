@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
@@ -69,7 +68,7 @@ class CreateFeedServiceTest extends SnsServiceIntegrationTestSupport {
                 .akgimiPlace("아낀 장소")
                 .notPurchasedItem("아낀 물품")
                 .build();
-        given(commandFeedImagePort.save(mockFile, user.getId())).willReturn("mocked image");
+        given(commandImagePort.save(mockFile, user.getId())).willReturn("mocked image");
 
         //when
         Long feedId = createFeedService.createFeed(request, user.getId());

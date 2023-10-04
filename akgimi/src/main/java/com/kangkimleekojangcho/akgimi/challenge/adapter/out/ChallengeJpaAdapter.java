@@ -34,4 +34,14 @@ public class ChallengeJpaAdapter implements CommandChallengeDbPort, QueryChallen
     public Integer countByProductIdAndIsInProgress(Long productId, boolean isInProgress) {
         return challengeJpaRepository.countByProductIdAndIsInProgress(productId, true);
     }
+
+    @Override
+    public Optional<Challenge> findSuccessChallengeByIdAndUser_Id(Long userId, Long challengeId) {
+        return challengeJpaRepository.findChallengeByIdAndUser_IdAndAchievementState(userId, challengeId, true);
+    }
+
+    @Override
+    public Optional<Challenge> findById(Long id) {
+        return challengeJpaRepository.findById(id);
+    }
 }
