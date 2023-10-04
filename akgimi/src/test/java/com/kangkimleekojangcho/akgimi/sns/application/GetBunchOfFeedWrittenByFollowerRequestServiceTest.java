@@ -9,8 +9,10 @@ import com.kangkimleekojangcho.akgimi.sns.application.request.GetBunchOfFeedWrit
 import com.kangkimleekojangcho.akgimi.sns.application.response.BriefFeedInfo;
 import com.kangkimleekojangcho.akgimi.sns.application.response.GetBunchOfFeedWrittenByFollowerServiceResponse;
 import com.kangkimleekojangcho.akgimi.sns.domain.Feed;
+import com.kangkimleekojangcho.akgimi.sns.domain.Like;
 import com.kangkimleekojangcho.akgimi.user.domain.*;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -256,6 +258,176 @@ class GetBunchOfFeedWrittenByFollowerRequestServiceTest extends SnsServiceIntegr
         );
     }
 
+
+    @DisplayName("[happy]좋아요가 있는 피드의 경우 좋아요 표기를 true값으로 반환한다.")
+    @MethodSource("givenLikeSizeWithAnswer")
+    @ParameterizedTest
+    void givenLikedFeed_whenRequestGetBunchOfFeed_thenReturnFeedWithLike(
+            int size,
+            int answer
+    ) throws Exception {
+        //given
+        GetBunchOfFeedWrittenByFollowerRequestServiceRequest getBunchOfFeedServiceRequest =
+                GetBunchOfFeedWrittenByFollowerRequestServiceRequest.builder()
+                        .lastFeedId(Long.MAX_VALUE)
+                        .numberOfFeed(size)
+                        .build();
+
+        User followee = commandUserDbPort.save(User.builder()
+                .userState(UserState.ACTIVE) //TODO: active에 따라서도 나눠야 함.
+                .kakaoProfileNickname(new KakaoNickname("followee"))
+                .nickname("followee")
+                .profileImageUrl("http:aa.com")
+                .oauthId("oauthFollowee")
+                .oidcProvider(OidcProvider.KAKAO)
+                .simplePassword("1234")
+                .build());
+
+        followee = commandUserDbPort.save(followee);
+
+
+        User follower = commandUserDbPort.save(User.builder()
+                .userState(UserState.ACTIVE) //TODO: active에 따라서도 나눠야 함.
+                .kakaoProfileNickname(new KakaoNickname("ddd"))
+                .nickname("hello")
+                .profileImageUrl("http:aa.com")
+                .oauthId("oauthFollower")
+                .oidcProvider(OidcProvider.KAKAO)
+                .simplePassword("1234")
+                .build());
+        prepareForSelectFeed(follower);
+        prepareForSelectFeedWithLike(followee, follower);
+
+        User stranger = commandUserDbPort.save(User.builder()
+                .userState(UserState.ACTIVE) //TODO: active에 따라서도 나눠야 함.
+                .kakaoProfileNickname(new KakaoNickname("ddd"))
+                .nickname("stranger")
+                .profileImageUrl("http:aa.com")
+                .oauthId("oauthStranger")
+                .oidcProvider(OidcProvider.KAKAO)
+                .simplePassword("1234")
+                .build());
+        prepareForSelectFeed(stranger);
+
+        Follow follow = Follow.builder()
+                .follower(follower)
+                .followee(followee)
+                .followTime(LocalDateTime.now()).build();
+        commandFollowDbPort.save(follow);
+        follow = Follow.builder()
+                .follower(followee)
+                .followee(follower)
+                .followTime(LocalDateTime.now()).build();
+        commandFollowDbPort.save(follow);
+
+
+        //when
+        GetBunchOfFeedWrittenByFollowerServiceResponse getBunchOfReceiptServiceResponse
+                = getBunchOfFeedWrittenByFollowerRequestService.getBunchOfFeed(
+                follower.getId(), getBunchOfFeedServiceRequest);
+
+        for(BriefFeedInfo info : getBunchOfReceiptServiceResponse.bunchOfBriefFeedInfo()) {
+            System.out.println(info.isLikedFeed());
+        }
+        //then
+        assertThat(getBunchOfReceiptServiceResponse.bunchOfBriefFeedInfo()).isNotNull();
+        assertThat(getBunchOfReceiptServiceResponse
+                .bunchOfBriefFeedInfo().stream()
+                .filter(element -> element.isLikedFeed().equals(true)).count()).isEqualTo(answer);
+
+    }
+
+
+    private static Stream<Arguments> givenLikeSizeWithAnswer() {
+        return Stream.of(
+                Arguments.of(
+                        100, 10
+                ),
+                Arguments.of(
+                        0, 0
+                ),
+                Arguments.of(
+                        10, 10
+                )
+        );
+    }
+    private void prepareForSelectFeedWithLike(User user,User likeUser) {
+        Product product = Product.builder()
+                .price(500000)
+                .detail("테스트 프로덕트입니다.")
+                .image("https://testUrl.com")
+                .isDeleted(false)
+                .thumbnail("https://thumbnail.com")
+                .build();
+        commandProductDbPort.save(product);
+
+        Challenge challenge = Challenge.builder()
+                .challengeStartDate(LocalDate.now())
+                .challengeEndDate(LocalDate.now().plusDays(30))
+                .accumulatedAmount(300000L)
+                .achievementDate(null)
+                .achievementState(false)
+                .isInProgress(true)
+                .product(product)
+                .user(user)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
+        commandChallengeDbPort.save(challenge);
+
+        Account depositAccount = Account.builder()
+                .user(user)
+                .accountNumber("1234")
+                .accountType(AccountType.DEPOSIT)
+                .balance(300000L)
+                .bank(Bank.MULTI)
+                .isDeleted(false)
+                .isPasswordRegistered(true)
+                .password("1234")
+                .build();
+        commandAccountDbPort.save(depositAccount);
+
+        Account withdrawalAccount = Account.builder()
+                .user(user)
+                .accountNumber("1234")
+                .accountType(AccountType.WITHDRAW)
+                .balance(300000L)
+                .bank(Bank.MULTI)
+                .isDeleted(false)
+                .isPasswordRegistered(true)
+                .password("1234")
+                .build();
+        commandAccountDbPort.save(withdrawalAccount);
+
+        createPublicFeedWithLike(challenge, user, likeUser);
+        createNotPublicFeed(challenge, user);
+    }
+
+
+    private void createPublicFeedWithLike(Challenge challenge, User user, User likeUser) {
+        for (long i = 0; i < NUMBER_OF_PUBLIC; i++) {
+            Feed feed = commandFeedDbPort.save(
+                    Feed.builder()
+                            .user(user)
+                            .price(100000L)
+                            .content("content")
+                            .place("my place")
+                            .imageUrl("http://imageimage.com")
+                            .accumulatedAmount(1000000L)
+                            .challenge(challenge)
+                            .isDeleted(false)
+                            .isPublic(true)
+                            .notPurchasedItem("안샀어요")
+                            .build());
+
+            commandLikeDbPort.save(
+                    Like.builder()
+                            .feed(feed)
+                            .user(likeUser)
+                            .build()
+            );
+        }
+    }
 
 
     private void prepareForSelectFeed(User user) {

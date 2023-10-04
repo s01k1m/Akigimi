@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.kangkimleekojangcho.akgimi.sns.domain.QFeed.feed;
+import static com.kangkimleekojangcho.akgimi.sns.domain.QLike.like;
 import static com.kangkimleekojangcho.akgimi.user.domain.QFollow.follow;
 import static com.kangkimleekojangcho.akgimi.user.domain.QUser.user;
 
@@ -37,11 +38,10 @@ public class FeedQuerydslRepository {
                                 feed.user.profileImageUrl.as("userProfile"),
                                 feed.user.nickname.as("nickname"),
                                 feed.price.as("price"),
-//                                feed.like.as("likes"), TODO: like 수 계산해서 가져와야 함.
                                 feed.notPurchasedItem.as("notPurchasedItem"),
                                 feed.place.as("akgimiPlace"),
                                 feed.content.as("content"),
-//                                feed..as("isLikedFeed"), TODO: 이것도 확인해서 가져와야 함.
+                                feed.like.size().eq(1),
                                 feed.imageUrl.as("photo")
                         )
                 ).distinct()
@@ -57,6 +57,9 @@ public class FeedQuerydslRepository {
                                 )
                         )
                 )
+                .leftJoin(like)
+                .on(feed.eq(like.feed)
+                        .and(like.user.id.eq(requestUserId)))
                 .where(ltFeedId(lastFeedId),
                         feed.user.id.eq(requestUserId).or(
                                 follow.follower.id.eq(requestUserId)))
@@ -99,4 +102,5 @@ public class FeedQuerydslRepository {
         }
         return feed.feedId.lt(feedId);
     }
+
 }
