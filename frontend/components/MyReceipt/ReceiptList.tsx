@@ -49,7 +49,7 @@ const ReceiptList = () => {
       token = window.localStorage.getItem("access_token");
       }
     await axios
-      .get(`api/receipts/${userId}`, {
+      .get(`/api/receipts/${userId}`, {
         params: {
           lastReceiptId: lastViewId,
           numberOfReceipt: count,
@@ -90,7 +90,7 @@ const ReceiptList = () => {
   }, [inView])
 
   return (
-    <div className="flex flex-col items-center mt-6">
+    <div className="flex flex-col items-center mt-6 mb-[30px]">
       {receiptItems.map((item: any) => (
         <ReceiptItem
           key={item.id}

@@ -5,6 +5,7 @@ import axios from "axios"
 interface ListPropsType {
     period: string
     type: string
+    accountType: string
 }
 
 interface HistoryItem {
@@ -14,10 +15,9 @@ interface HistoryItem {
     balance: number
 }
 
-const HistoryList: React.FC<ListPropsType> = ({ period, type }) => {
+const HistoryList: React.FC<ListPropsType> = ({ period, type, accountType }) => {
     const [historyData, setHistoryData] = useState<HistoryItem[]>([]);
     // period, type 고려해서 api 무한 스크롤 불러오기
-
     let token: string = "";
 
     useEffect(() => {
@@ -31,7 +31,7 @@ const HistoryList: React.FC<ListPropsType> = ({ period, type }) => {
         await axios 
             .get(`/api/account/transaction/history`, {
                 params: {
-                    accountType: 'DEPOSIT'
+                    accountType: `${accountType}`
                 },
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -49,7 +49,7 @@ const HistoryList: React.FC<ListPropsType> = ({ period, type }) => {
 
 
     return (
-        <div>
+        <div className="pb-[100px]">
             {historyData.map((item, index) => (
                 <HistoryItem
                     key={index}

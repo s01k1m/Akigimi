@@ -88,7 +88,7 @@ const FeedList: React.FC<selectedProps> = ({ selectedValue }) => {
     }, [inView])
 
     return (
-        <div className="mx-0">
+        <div className="mx-0 mb-[100px]">
             {feedItems && feedItems.length > 0 &&
             feedItems.map((item: any) => (
               <>

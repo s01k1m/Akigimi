@@ -3,7 +3,11 @@ import HistoryList from "./HistoryList"
 import { useEffect, useState, useRef } from "react"
 import '@/styles/HistoryTap.css'
 
-const History = () => {
+interface TypeProps {
+    accountType: string
+}
+
+const History = ({ accountType }: TypeProps) => {
     // 모달창 관리를 위한 상태 값
     const [isOpened, setIsOpened] = useState<boolean>(false)
     
@@ -79,11 +83,12 @@ const History = () => {
                 <HistoryList
                     period={selectedValue}
                     type={selectedValueSecond}
+                    accountType={accountType}
                 />
             </div>
             {isOpened ? (
                 <div 
-                    className="fixed -bottom-12 left-0 w-full h-[50vh] flex flex-col justify-center backdrop-[#757575] bg-white rounded-[50px] drop-shadow-[0_50px_50px_rgba(0,0,0,0.5)]"
+                    className="z-50 fixed -bottom-12 left-0 w-full h-[50vh] flex flex-col justify-center backdrop-[#757575] bg-white rounded-[50px] drop-shadow-[0_50px_50px_rgba(0,0,0,0.5)]"
                     ref={modalRef}   
                 >
                     {/* 조회 기간 */}
