@@ -7,7 +7,10 @@ import com.kangkimleekojangcho.akgimi.challenge.domain.Challenge;
 import com.kangkimleekojangcho.akgimi.global.exception.BadRequestException;
 import com.kangkimleekojangcho.akgimi.global.exception.BadRequestExceptionCode;
 import com.kangkimleekojangcho.akgimi.product.domain.Product;
+import com.kangkimleekojangcho.akgimi.sns.application.port.CommandCountLikeDbPort;
+import com.kangkimleekojangcho.akgimi.sns.application.port.QueryCountLikeDbPort;
 import com.kangkimleekojangcho.akgimi.sns.application.port.QueryLikeDbPort;
+import com.kangkimleekojangcho.akgimi.sns.domain.CountLike;
 import com.kangkimleekojangcho.akgimi.sns.domain.Feed;
 import com.kangkimleekojangcho.akgimi.sns.domain.Like;
 import com.kangkimleekojangcho.akgimi.user.domain.KakaoNickname;
@@ -32,11 +35,19 @@ import static org.assertj.core.api.Assertions.*;
 @Transactional
 class MarkLikeToFeedServiceTest extends SnsServiceIntegrationTestSupport {
 
+    private static final long DEFAULT_COUNT = 0;
+
     @Autowired
     private MarkLikeToFeedService markLikeToFeedService;
 
     @Autowired
     private QueryLikeDbPort queryLikeDbPort;
+
+    @Autowired
+    private CommandCountLikeDbPort commandCountLikeDbPort;
+
+    @Autowired
+    private QueryCountLikeDbPort queryCountLikeDbPort;
 
     @DisplayName("[happy] 유저가 본인 게시글에 좋아요 요청 시 정상적으로 좋아요를 완료한다.")
     @ValueSource(booleans = {true,false})
@@ -51,13 +62,22 @@ class MarkLikeToFeedServiceTest extends SnsServiceIntegrationTestSupport {
                 .build());
         Feed feedToLike = prepareForLikeFeed(ownerOfFeed, isPublic);
 
+        commandCountLikeDbPort.save(
+                CountLike.builder()
+                        .feed(feedToLike)
+                        .count(DEFAULT_COUNT)
+                        .build()
+        );
         //when
         markLikeToFeedService.execute(ownerOfFeed.getId(), feedToLike.getFeedId());
         //then
         Optional<Like> result = queryLikeDbPort.findByUserIdAndFeedId(ownerOfFeed.getId(), feedToLike.getFeedId());
+        Optional<CountLike> countLike = queryCountLikeDbPort.findByFeed(feedToLike);
         assertThat(result).isPresent();
         assertThat(result.get().getFeed()).isEqualTo(feedToLike);
         assertThat(result.get().getUser()).isEqualTo(ownerOfFeed);
+        assertThat(countLike).isPresent();
+        assertThat(countLike.get().getCount()).isEqualTo(DEFAULT_COUNT+1);
     }
 
     @DisplayName("[happy] 유저가 자신의 글이 아닌 타인의 공개된 게시글에 좋아요 취소 요청 시 요청을 올바르게 수행한다..")
@@ -79,14 +99,24 @@ class MarkLikeToFeedServiceTest extends SnsServiceIntegrationTestSupport {
                 .oauthId("abcde")
                 .build());
 
+        commandCountLikeDbPort.save(
+                CountLike.builder()
+                        .feed(feedToLike)
+                        .count(DEFAULT_COUNT)
+                        .build()
+        );
         //when
         markLikeToFeedService.execute(userWantToLike.getId(), feedToLike.getFeedId());
 
         //then
         Optional<Like> result = queryLikeDbPort.findByUserIdAndFeedId(userWantToLike.getId(), feedToLike.getFeedId());
+        Optional<CountLike> countLike = queryCountLikeDbPort.findByFeed(feedToLike);
+
         assertThat(result).isPresent();
         assertThat(result.get().getFeed()).isEqualTo(feedToLike);
         assertThat(result.get().getUser()).isEqualTo(userWantToLike);
+        assertThat(countLike).isPresent();
+        assertThat(countLike.get().getCount()).isEqualTo(DEFAULT_COUNT+1);
     }
 
     @DisplayName("[bad] 유저가 자신의 글이 아닌 비공개된 게시글, 삭제된 게시글에 좋아요 요청 시 에러를 던진다.")
@@ -101,6 +131,13 @@ class MarkLikeToFeedServiceTest extends SnsServiceIntegrationTestSupport {
                 .oauthId("abcde")
                 .build());
         Feed feedToLike = prepareInvalidFeedForLike(user,isDeleted,isPublic);
+
+        commandCountLikeDbPort.save(
+                CountLike.builder()
+                        .feed(feedToLike)
+                        .count(DEFAULT_COUNT)
+                        .build()
+        );
 
         User userWantToLike = commandUserDbPort.save(User.builder()
                 .kakaoProfileNickname(new KakaoNickname("카카오프로필"))

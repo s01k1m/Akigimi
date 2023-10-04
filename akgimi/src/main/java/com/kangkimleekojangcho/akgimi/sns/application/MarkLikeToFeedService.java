@@ -2,9 +2,9 @@ package com.kangkimleekojangcho.akgimi.sns.application;
 
 import com.kangkimleekojangcho.akgimi.global.exception.BadRequestException;
 import com.kangkimleekojangcho.akgimi.global.exception.BadRequestExceptionCode;
-import com.kangkimleekojangcho.akgimi.sns.application.port.CommandLikeDbPort;
-import com.kangkimleekojangcho.akgimi.sns.application.port.QueryFeedDbPort;
+import com.kangkimleekojangcho.akgimi.sns.application.port.*;
 import com.kangkimleekojangcho.akgimi.sns.application.response.MarkLikeToFeedServiceResponse;
+import com.kangkimleekojangcho.akgimi.sns.domain.CountLike;
 import com.kangkimleekojangcho.akgimi.sns.domain.Feed;
 import com.kangkimleekojangcho.akgimi.sns.domain.Like;
 import com.kangkimleekojangcho.akgimi.user.application.port.QueryUserDbPort;
@@ -21,7 +21,8 @@ public class MarkLikeToFeedService {
     private final QueryFeedDbPort queryFeedDbPort;
     private final QueryUserDbPort queryUserDbPort;
     private final CommandLikeDbPort commandLikeDbPort;
-
+    private final QueryCountLikeDbPort queryCountLikeDbPort;
+    private final QueryLikeDbPort queryLikeDbPort;
 
     public MarkLikeToFeedServiceResponse execute(Long userId, Long feedId) {
         Feed feed = queryFeedDbPort.findReferenceById(feedId);
@@ -40,6 +41,9 @@ public class MarkLikeToFeedService {
                         .feed(feed)
                         .user(user)
                         .build());
+
+        CountLike countLike = queryCountLikeDbPort.getReferenceByFeed(feed);
+        countLike.setCount(queryLikeDbPort.countInFeed(feed));
 
         return MarkLikeToFeedServiceResponse
                 .builder()

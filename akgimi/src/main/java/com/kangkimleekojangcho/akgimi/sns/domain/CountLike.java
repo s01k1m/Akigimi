@@ -14,6 +14,7 @@ public class CountLike {
     private Long id;
 
     @OneToOne
+    @JoinColumn
     private Feed feed;
 
     private Long count;
@@ -22,6 +23,10 @@ public class CountLike {
     private CountLike(Long id, Feed feed, Long count) {
         this.id = id;
         this.feed = feed;
+        this.count = count;
+    }
+
+    public void setCount(Long count) {
         this.count = count;
     }
 }
