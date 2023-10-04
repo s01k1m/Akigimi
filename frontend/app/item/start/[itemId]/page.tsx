@@ -33,6 +33,9 @@ export default function page({ params }: { params: PageParams }) {
     
     // 챌린지 시작 api 호출
     const startChallenge = async () => {
+        if (typeof window !== "undefined") {
+            token = window.localStorage.getItem("access_token");
+            }
         const requestBody = {
             challengePeriod: inputValue,
             itemId: itemId
@@ -41,7 +44,7 @@ export default function page({ params }: { params: PageParams }) {
             .post('/api/challenges', requestBody, {
                 headers: {
                     Authorization: `Bearer ${token}`,
-                    "Content-Type": "multipart/form-data",
+                    "Content-Type": "application/json",
                   },
             })
             .then((response) => {
