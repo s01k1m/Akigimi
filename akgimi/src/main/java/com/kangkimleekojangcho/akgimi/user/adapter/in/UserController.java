@@ -42,10 +42,21 @@ public class UserController {
     private final CheckUserCanBeActivatedService checkUserCanBeActivatedService;
 
     @GetMapping("/kakao/loginurl")
-    public ResponseEntity<SuccessResponse<String>> getKakaoLoginUrl() {
+    public ResponseEntity<SuccessResponse<String>> getKakaoLoginUrl(HttpServletRequest servletRequest) {
+        String redirectApi;
+        if(isFromLocalhost(servletRequest)){
+            redirectApi = "http://localhost:3000/kakao/oidc/";
+        } else{
+            redirectApi = "http://akgimi.ddns.net/kakao/oidc/";
+        }
         String loginUrl = String.format("https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=%s&redirect_uri=%s",
-                kakaoProperties.kakaoRestApiKey(), kakaoProperties.kakaoRedirectUrl());
+                kakaoProperties.kakaoRestApiKey(), redirectApi);
         return ResponseFactory.success(loginUrl);
+    }
+
+    private boolean isFromLocalhost(HttpServletRequest servletRequest) {
+        String host = servletRequest.getHeader("Host");
+        return host!=null && host.contains("localhost");
     }
 
 
