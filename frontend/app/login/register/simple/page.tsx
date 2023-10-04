@@ -40,6 +40,9 @@ export default function Login() {
             // 회원가입의 모든 과정이 완료되었습니다.
             router.push("/login/register/welcome");
           })
+          .then(() => {
+            updateUserState();
+          })
           .catch(() => {
             setTryLogin(false);
           });
@@ -56,6 +59,28 @@ export default function Login() {
       setKeypadArray([]);
     }
   };
+
+  // user의 상태를 ACTIVE로 바꿔주는 함수
+  let token: string = "";
+  const updateUserState = async () => {
+    if (typeof window !== "undefined") {
+      token = window.localStorage.getItem("access_token");
+    }
+    console.log('active 함수 불러올 때 토큰 잘 가져오는지 확인', token)
+    await axios 
+      .post('/api/user/activate', null, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        console.log('유저 상태 ACTIVE로 바꾸는 것 성공', response)
+      })
+      .catch((error) => {
+        console.log('유저 상태 ACTIVE로 바꾸는 것 실패', error)
+        // 값이 비어있는 페이지로 다시 이동시키기
+      })
+  }
 
   return (
     <div className="digit-login relative h-full w-full flex flex-col items-center">

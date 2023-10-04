@@ -28,6 +28,7 @@ export default function Signup() {
   }, []);
 
   // handleClick() : 버튼 컴포넌트에 넘겨줄 함수 prop을 만듦
+  // 닉네임 함수
   const handleClick = async () => {
     token = window.localStorage.getItem("access_token");
 

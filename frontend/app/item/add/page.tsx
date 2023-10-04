@@ -70,13 +70,13 @@ export default function addItem() {
             token = window.localStorage.getItem("access_token");
             }
         const requestBody = {
-            productName: productName,
-            productPrice: productPrice,
+            name: productName,
+            price: productPrice,
             challengePeriod: inputValue,
             photo: file
         }
         await axios
-            .post('/api/challenges/add', requestBody, {
+            .post('/api/product/add', requestBody, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     "Content-Type": "application/json",

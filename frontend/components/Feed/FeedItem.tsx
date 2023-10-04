@@ -14,6 +14,7 @@ interface ItemProps {
     isLiked: boolean 
     description: string
     feedId: number
+    likedCount: number
 }
 
 const FeedItem: React.FC<ItemProps> = ({ 
@@ -26,7 +27,8 @@ const FeedItem: React.FC<ItemProps> = ({
     isLiked, 
     description, 
     userId, 
-    feedId 
+    feedId,
+    likedCount
         }) => {
 
     return (
@@ -47,6 +49,7 @@ const FeedItem: React.FC<ItemProps> = ({
                     description={description}
                     userId={userId}
                     feedId={feedId}
+                    likedCount={likedCount}
                 />
                 </div>
             </div>

@@ -40,9 +40,6 @@ export default function Mypage() {
     }
   }, [])
 
-  // const getUserInfo = () => {
-  // }
-
   const getBalance = async () => {
     let token: string = "";
     if (typeof window !== "undefined") {
@@ -120,20 +117,23 @@ export default function Mypage() {
         className="absolute top-10 right-[40px]"
         onClick={() => router.push('/user/mypage/edit')}
       />
-      <Image
-        src={profileImage}
-        alt="profile img"
-        width={200} // 실제 이미지의 가로 크기로 설정하세요
-        height={200} // 실제 이미지의 세로 크기로 설정하세요
-        // layout="fill" // 이미지 크기를 유지하도록 설정
-        // className="w-full h-auto height-auto"
-        className="rounded-full mt-[43px]"
-        onClick={() => {
-          setContent("account");
-        }}
-      ></Image>
+      {/* 프로필 이미지 예쁘게 자르기 */}
+      <div className="h-[230px]"></div>
+      <div className="absolute top-0 rounded-full mt-[33px]" style={{ width: '200px', height: '200px', overflow: 'hidden' }}>
+        <Image
+          src={profileImage}
+          alt="profile img"
+          layout="fill"
+          objectFit="cover"
+          // className="w-full h-auto height-auto"
+          className="rounded-full"
+          onClick={() => {
+            setContent("account");
+          }}
+        ></Image>
+      </div>
       <div
-        className="m-4"
+        className="m-4 font-semibold"
         onClick={() => {
           setContent("account");
         }}
@@ -165,7 +165,7 @@ export default function Mypage() {
         <MypageTap></MypageTap>
       </div>
       {content === "account" ? (
-        <div className="w-full">
+        <div className="w-full mb-[100px]">
           <div className="w-full px-[44px] text-left font-black text-[20px] mt-[32px] mb-[21px] ">
             계좌
           </div>
