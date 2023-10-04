@@ -18,7 +18,7 @@ export default function MypageAccouts({
         <Account
           src={logoList[0]}
           name={"출금 계좌"}
-          balance={withdrawBalance}
+          balance={withdrawBalance.toLocaleString()}
         />
         <AccountButton src="/user/withdraw"></AccountButton>
       </div>
@@ -26,7 +26,7 @@ export default function MypageAccouts({
         <Account
           src={logoList[1]}
           name={"저축 계좌"}
-          balance={depositBalance}
+          balance={depositBalance.toLocaleString()}
         />
 
         <AccountButton src="/user/deposit"></AccountButton>
