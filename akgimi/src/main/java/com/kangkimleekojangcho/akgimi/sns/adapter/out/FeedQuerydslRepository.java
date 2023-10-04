@@ -44,7 +44,7 @@ public class FeedQuerydslRepository {
 //                                feed..as("isLikedFeed"), TODO: 이것도 확인해서 가져와야 함.
                                 feed.imageUrl.as("photo")
                         )
-                )
+                ).distinct()
                 .from(feed)
                 .join(feed.user, user)
                 .leftJoin(follow)
