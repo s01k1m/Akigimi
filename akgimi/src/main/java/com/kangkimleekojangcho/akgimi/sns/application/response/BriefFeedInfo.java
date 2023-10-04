@@ -8,7 +8,7 @@ public record BriefFeedInfo(
         String userProfile,
         String nickname,
         Long price,
-//        Integer likes,
+//        Integer countOfLike,
         String notPurchasedItem,
         String akgimiPlace,
         String content,
