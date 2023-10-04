@@ -69,7 +69,7 @@ class CancelLikeServiceTest extends SnsServiceIntegrationTestSupport {
         commandCountLikeDbPort.save(
                 CountLike.builder()
                         .feed(feedToLike)
-                        .count(ADDED_COUNT_OF_LIKE)
+                        .likeCount(ADDED_COUNT_OF_LIKE)
                         .build()
         );
 
@@ -81,7 +81,7 @@ class CancelLikeServiceTest extends SnsServiceIntegrationTestSupport {
         Optional<Like> result = queryLikeDbPort.findByUserIdAndFeedId(ownerOfFeed.getId(), feedToLike.getFeedId());
         Optional<CountLike> countLike = queryCountLikeDbPort.findByFeed(feedToLike);
         assertThat(countLike).isPresent();
-        assertThat(countLike.get().getCount()).isEqualTo(ADDED_COUNT_OF_LIKE-1);
+        assertThat(countLike.get().getLikeCount()).isEqualTo(ADDED_COUNT_OF_LIKE-1);
         assertThat(result).isEmpty();
     }
 
@@ -112,7 +112,7 @@ class CancelLikeServiceTest extends SnsServiceIntegrationTestSupport {
         commandCountLikeDbPort.save(
                 CountLike.builder()
                         .feed(feedToLike)
-                        .count(ADDED_COUNT_OF_LIKE)
+                        .likeCount(ADDED_COUNT_OF_LIKE)
                         .build()
         );
 
@@ -123,7 +123,7 @@ class CancelLikeServiceTest extends SnsServiceIntegrationTestSupport {
         Optional<Like> result = queryLikeDbPort.findByUserIdAndFeedId(userWantToCancelLike.getId(), feedToLike.getFeedId());
         Optional<CountLike> countLike = queryCountLikeDbPort.findByFeed(feedToLike);
         assertThat(countLike).isPresent();
-        assertThat(countLike.get().getCount()).isEqualTo(ADDED_COUNT_OF_LIKE-1);
+        assertThat(countLike.get().getLikeCount()).isEqualTo(ADDED_COUNT_OF_LIKE-1);
         assertThat(result).isEmpty();
     }
 

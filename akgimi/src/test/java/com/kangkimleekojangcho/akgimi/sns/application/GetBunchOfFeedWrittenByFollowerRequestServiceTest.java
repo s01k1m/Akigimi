@@ -415,7 +415,7 @@ class GetBunchOfFeedWrittenByFollowerRequestServiceTest extends SnsServiceIntegr
                             .build());
 
             commandCountLikeDbPort.save(CountLike.builder()
-                    .count(DEFAULT_LIKE_COUNT + 1)
+                    .likeCount(DEFAULT_LIKE_COUNT + 1)
                     .feed(feed)
                     .build());
 
@@ -497,7 +497,7 @@ class GetBunchOfFeedWrittenByFollowerRequestServiceTest extends SnsServiceIntegr
                             .notPurchasedItem("안샀어요")
                             .build());
             commandCountLikeDbPort.save(CountLike.builder()
-                    .count(DEFAULT_LIKE_COUNT)
+                    .likeCount(DEFAULT_LIKE_COUNT)
                     .feed(feed)
                     .build());
         }
@@ -519,7 +519,7 @@ class GetBunchOfFeedWrittenByFollowerRequestServiceTest extends SnsServiceIntegr
                             .notPurchasedItem("안샀어요")
                             .build());
             commandCountLikeDbPort.save(CountLike.builder()
-                    .count(DEFAULT_LIKE_COUNT)
+                    .likeCount(DEFAULT_LIKE_COUNT)
                     .feed(feed)
                     .build());
         }

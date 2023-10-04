@@ -58,7 +58,7 @@ public class CreateFeedService {
         Feed feed = commandFeedDbPort.save(createFeedServiceRequest.toEntity(depositAccount, user, challenge, url));
 
         commandCountLikeDbPort.save(
-                CountLike.builder().count(0L)
+                CountLike.builder().likeCount(0L)
                         .feed(feed)
                         .build());
 

@@ -23,7 +23,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
@@ -65,7 +64,7 @@ class MarkLikeToFeedServiceTest extends SnsServiceIntegrationTestSupport {
         commandCountLikeDbPort.save(
                 CountLike.builder()
                         .feed(feedToLike)
-                        .count(DEFAULT_COUNT)
+                        .likeCount(DEFAULT_COUNT)
                         .build()
         );
         //when
@@ -77,7 +76,7 @@ class MarkLikeToFeedServiceTest extends SnsServiceIntegrationTestSupport {
         assertThat(result.get().getFeed()).isEqualTo(feedToLike);
         assertThat(result.get().getUser()).isEqualTo(ownerOfFeed);
         assertThat(countLike).isPresent();
-        assertThat(countLike.get().getCount()).isEqualTo(DEFAULT_COUNT+1);
+        assertThat(countLike.get().getLikeCount()).isEqualTo(DEFAULT_COUNT+1);
     }
 
     @DisplayName("[happy] 유저가 자신의 글이 아닌 타인의 공개된 게시글에 좋아요 취소 요청 시 요청을 올바르게 수행한다..")
@@ -102,7 +101,7 @@ class MarkLikeToFeedServiceTest extends SnsServiceIntegrationTestSupport {
         commandCountLikeDbPort.save(
                 CountLike.builder()
                         .feed(feedToLike)
-                        .count(DEFAULT_COUNT)
+                        .likeCount(DEFAULT_COUNT)
                         .build()
         );
         //when
@@ -116,7 +115,7 @@ class MarkLikeToFeedServiceTest extends SnsServiceIntegrationTestSupport {
         assertThat(result.get().getFeed()).isEqualTo(feedToLike);
         assertThat(result.get().getUser()).isEqualTo(userWantToLike);
         assertThat(countLike).isPresent();
-        assertThat(countLike.get().getCount()).isEqualTo(DEFAULT_COUNT+1);
+        assertThat(countLike.get().getLikeCount()).isEqualTo(DEFAULT_COUNT+1);
     }
 
     @DisplayName("[bad] 유저가 자신의 글이 아닌 비공개된 게시글, 삭제된 게시글에 좋아요 요청 시 에러를 던진다.")
@@ -135,7 +134,7 @@ class MarkLikeToFeedServiceTest extends SnsServiceIntegrationTestSupport {
         commandCountLikeDbPort.save(
                 CountLike.builder()
                         .feed(feedToLike)
-                        .count(DEFAULT_COUNT)
+                        .likeCount(DEFAULT_COUNT)
                         .build()
         );
 

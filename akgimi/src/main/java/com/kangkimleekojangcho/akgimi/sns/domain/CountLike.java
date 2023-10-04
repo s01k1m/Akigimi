@@ -14,19 +14,19 @@ public class CountLike {
     private Long id;
 
     @OneToOne
-    @JoinColumn
+    @JoinColumn(name = "feed_id")
     private Feed feed;
 
-    private Long count;
+    private Long likeCount;
 
     @Builder
-    private CountLike(Long id, Feed feed, Long count) {
+    private CountLike(Long id, Feed feed, Long likeCount) {
         this.id = id;
         this.feed = feed;
-        this.count = count;
+        this.likeCount = likeCount;
     }
 
-    public void setCount(Long count) {
-        this.count = count;
+    public void setLikeCount(Long count) {
+        this.likeCount = count;
     }
 }
