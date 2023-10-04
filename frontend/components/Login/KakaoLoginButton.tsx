@@ -20,7 +20,11 @@ const KakaoLoginButton = () => {
     await axios
       .get("/api/kakao/loginurl")
       .then((response) => {
-        loginUrl = response.data.data;
+        loginUrl = response.data.data.loginUrl;
+        // 로그인 url
+        console.log(response.data.data)
+        // 리다이렉트 url 로컬스토리지에 저장하기
+        window.localStorage.setItem("redirect_url", response.data.data.redirectUrl)
         setIsLoading(false);
         // console.log('로그인 성공 했을 때', response.data)
       })
