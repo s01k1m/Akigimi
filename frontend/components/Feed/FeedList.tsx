@@ -105,7 +105,7 @@ const FeedList: React.FC<selectedProps> = ({ selectedValue }) => {
                     isLiked={item.isLikedFeed} 
                     description={item.content}
                     feedId={item.feedId}
-                    likedCount={item.countOfLiked}
+                    likedCount={item.countOfLike}
                      />
               </>
             ))}
