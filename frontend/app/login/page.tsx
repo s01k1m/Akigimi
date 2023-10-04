@@ -71,7 +71,6 @@ export default function Login() {
           .then((response) => {
             if (response.data.data.isPasswordCorrect === true) {
               console.log("간편로그인을 성공했습니다.. 비밀번호 맞음");
-              getUserInfo();
               // TODO: SESSION 유저 정보 저장 필요 (토큰 접근을 위해 코드 수정했습니다)
               console.log('유저 정보 가져오기 성공',response.data.data)
               window.localStorage.setItem("access_token", response.data.data.accessToken);
@@ -79,6 +78,7 @@ export default function Login() {
             } else {
               alert("비밀번호 틀렸습니다. 다시 입력하세요");
             }
+            getUserInfo();
             setTryLogin(false);
           })
           .catch(() => {
