@@ -51,4 +51,7 @@ public class Feed extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "feed", fetch = FetchType.LAZY)
     private List<Like> like;
+
+    @OneToOne(mappedBy = "feed", fetch = FetchType.LAZY)
+    private CountLike countLike;
 }

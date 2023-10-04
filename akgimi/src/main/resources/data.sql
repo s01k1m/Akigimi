@@ -17,27 +17,42 @@ values (2, '시그니엘숙박권', '/images/nintendo.png', '/images/nintendo.pn
 insert into challenge(id, user_id, product_id, accumulated_amount, achievement_state, challenge_period, is_in_progress, achievement_date, created_at, updated_at)
 values (999, 9999, 2, 20000, true, 30, false, '2023-08-08', current_timestamp, current_timestamp);
 
-insert into feed(is_deleted,is_public,accumulated_amount,created_at,price,
+insert into feed(feed_id, is_deleted,is_public,accumulated_amount,created_at,price,
     updated_at, image_url, not_purchased_item, place,content,user_id,challenge_id)
-values (false, true, 30000, now(), 3000, now(), 'hsdfa.com','item','place','content',9999,999);
+values (1, false, true, 30000, now(), 3000, now(), 'hsdfa.com','item','place','content',9999,999);
 
-insert into feed(is_deleted,is_public,accumulated_amount,created_at,price,
-                 updated_at, image_url, not_purchased_item, place,content,user_id,challenge_id)
-values (false, true, 30000, now(), 3000, now(), 'hsdfa.com','item','place','content',9999,999);
+insert into count_like(like_count, feed_id) values (0, 1);
 
-insert into feed(is_deleted,is_public,accumulated_amount,created_at,price,
+insert into feed(feed_id, is_deleted,is_public,accumulated_amount,created_at,price,
                  updated_at, image_url, not_purchased_item, place,content,user_id,challenge_id)
-values (false, true, 30000, now(), 3000, now(), 'hsdfa.com','item','place','content',9999,999);
+values (2, false, true, 30000, now(), 3000, now(), 'hsdfa.com','item','place','content',9999,999);
 
-insert into feed(is_deleted,is_public,accumulated_amount,created_at,price,
-                 updated_at, image_url, not_purchased_item, place,content,user_id,challenge_id)
-values (false, true, 30000, now(), 3000, now(), 'hsdfa.com','item','place','content',9999,999);
+insert into count_like(like_count, feed_id) values (0, 2);
 
-insert into feed(is_deleted,is_public,accumulated_amount,created_at,price,
-                 updated_at, image_url, not_purchased_item, place,content,user_id,challenge_id)
-values (false, true, 30000, now(), 3000, now(), 'hsdfa.com','item','place','content',9999,999);
 
-insert into feed(is_deleted,is_public,accumulated_amount,created_at,price,
+insert into feed(feed_id, is_deleted,is_public,accumulated_amount,created_at,price,
                  updated_at, image_url, not_purchased_item, place,content,user_id,challenge_id)
-values (false, true, 30000, now(), 3000, now(), 'hsdfa.com','item','place','content',9999,999);
+values (3, false, true, 30000, now(), 3000, now(), 'hsdfa.com','item','place','content',9999,999);
+
+insert into count_like(like_count, feed_id) values (0, 3);
+
+
+insert into feed(feed_id, is_deleted,is_public,accumulated_amount,created_at,price,
+                 updated_at, image_url, not_purchased_item, place,content,user_id,challenge_id)
+values (4, false, true, 30000, now(), 3000, now(), 'hsdfa.com','item','place','content',9999,999);
+
+insert into count_like(like_count, feed_id) values (0, 4);
+
+insert into feed(feed_id, is_deleted,is_public,accumulated_amount,created_at,price,
+                 updated_at, image_url, not_purchased_item, place,content,user_id,challenge_id)
+values (5, false, true, 30000, now(), 3000, now(), 'hsdfa.com','item','place','content',9999,999);
+
+insert into count_like(like_count, feed_id) values (0, 5);
+
+
+insert into feed(feed_id, is_deleted,is_public,accumulated_amount,created_at,price,
+                 updated_at, image_url, not_purchased_item, place,content,user_id,challenge_id)
+values (6, false, true, 30000, now(), 3000, now(), 'hsdfa.com','item','place','content',9999,999);
+insert into count_like(like_count, feed_id) values (0, 6);
+
 
