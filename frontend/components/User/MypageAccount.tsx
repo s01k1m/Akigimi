@@ -1,7 +1,7 @@
 import Account from "./Account";
 import AccountButton from "./AccountButton";
 
-let logoList: string[] = ["/ssafybank logo.png", "/multi logo.png"];
+let logoList: string[] = ["/images/ssafybank logo.png", "/images/multi logo.png"];
 
 interface AccountProps {
   withdrawBalance: string;

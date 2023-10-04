@@ -10,17 +10,20 @@ import { BiSearchAlt } from "react-icons/bi";
 import axios from "axios";
 import { useEffect } from "react";
 import Footer from "@/app/Footer";
+import { BiSolidPencil } from 'react-icons/bi';
+import { useRouter } from "next/navigation";
 
 interface Friend {
   id: number;
-  imgUrl: string;
-  userName: string;
-  product: string;
-  gage: number;
+  profileImageUrl: string;
+  nickname: string;
+  challengeId: number;
+  accumulatedAmount: number;
 }
 
 type FriendsList = Friend[];
 export default function Mypage() {
+  const router = useRouter();
   const [content, setContent] = useState<string>("account");
   const [withdrawBalance, setWithdrawBalance] = useState<string>("");
   const [depositBalance, setDepositBalance] = useState<string>("");
@@ -28,14 +31,15 @@ export default function Mypage() {
   const [friendsList, setFriendsList] = useState<FriendsList>([]);
   
   // 세션에 저장된 유저 정보 가져오기
-  let nickname: string = "";
-  let profileImage: string = "";
+  const [nickname, setNickName] = useState<string>();
+  const [profileImage, setProfileImage] = useState<string>();
   useEffect(() => {
     if (typeof window !== "undefined") {
-      nickname = window.sessionStorage.getItem("nickname")
-      profileImage = window.sessionStorage.getItem("profileImageUrl")
+      setNickName(window.sessionStorage.getItem("nickname"))
+      setProfileImage(window.sessionStorage.getItem("profileImageUrl"))
     }
   }, [])
+
   // const getUserInfo = () => {
   // }
 
@@ -67,6 +71,8 @@ export default function Mypage() {
   };
 
   // type: FOLLOWING FOLLOWED
+  const [countFollowing, setCountFollowing] = useState<number>();
+  const [countFollowed, setCountFollowed] = useState<number>();
   const getfriendsList = async (type: string) => {
     let token = window.localStorage.getItem("access_token");
 
@@ -78,6 +84,12 @@ export default function Mypage() {
       })
       .then((response) => {
         setFriendsList(response.data.data.friends);
+        console.log(response.data.data.friends)
+        if (type === 'FOLLOWING') {
+          setCountFollowing(response.data.data.friends.length)
+        } else {
+          setCountFollowed(response.data.data.friends.length)
+        }
       });
   };
 
@@ -86,18 +98,28 @@ export default function Mypage() {
     setFriendsList([
       {
         id: 0,
-        imgUrl: "/images/profile.jpg",
-        userName: "SK",
-        product: "유니폼",
-        gage: 80,
+        profileImageUrl: "/images/profile.jpg",
+        nickname: "SK",
+        challengeId: 1,
+        accumulatedAmount: 80,
       },
     ]);
 
     getBalance();
+    // 팔로워 팔로잉 몇명인지 세기 위해 불러옵니다
+    getfriendsList("FOLLOWED"); // 나의 팔로워
+    getfriendsList("FOLLOWING"); // 내가 팔로우한 애들
+    
   }, []); // Empty dependency array means this runs once on component mount
 
   return (
     <div className="w-full flex flex-col justify-center items-center">
+      <BiSolidPencil 
+        size={40} 
+        color={'#757575'} 
+        className="absolute top-10 right-[40px]"
+        onClick={() => router.push('/user/mypage/edit')}
+      />
       <Image
         src={profileImage}
         alt="profile img"
@@ -126,7 +148,7 @@ export default function Mypage() {
             getfriendsList("FOLLOWED");
           }}
         >
-          <FollowerButton total={10} />
+          <FollowerButton total={countFollowed} />
         </div>
         <div
           className="hover:bg-gray1 w-[80px] h-[50px] rounded"
@@ -136,7 +158,7 @@ export default function Mypage() {
             getfriendsList("FOLLOWING");
           }}
         >
-          <FollowingButton total={15} />
+          <FollowingButton total={countFollowing} />
         </div>
       </div>
       <div className="m-4">
@@ -176,13 +198,15 @@ export default function Mypage() {
           </div>
           {friendsList?.map((person) => {
             return (
+              <>
               <FriendCard
                 id={person.id}
-                imgUrl={person.imgUrl}
-                userName={person.userName}
-                product={person.product}
-                gage={person.gage}
+                imgUrl={person.profileImageUrl}
+                userName={person.nickname}
+                challengeId={person.challengeId}
+                gage={person.accumulatedAmount}
               ></FriendCard>
+            </>
             );
           })}
         </div>
@@ -192,10 +216,10 @@ export default function Mypage() {
             return (
               <FriendCard
                 id={person.id}
-                imgUrl={person.imgUrl}
-                userName={person.userName}
-                product={person.product}
-                gage={person.gage}
+                imgUrl={person.profileImageUrl}
+                userName={person.nickname}
+                challengeId={person.challengeId}
+                gage={person.accumulatedAmount}
               ></FriendCard>
             );
           })}
