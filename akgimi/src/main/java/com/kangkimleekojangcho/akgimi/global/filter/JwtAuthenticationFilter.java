@@ -3,10 +3,10 @@ package com.kangkimleekojangcho.akgimi.global.filter;
 
 import com.kangkimleekojangcho.akgimi.global.exception.UnauthorizedException;
 import com.kangkimleekojangcho.akgimi.global.exception.UnauthorizedExceptionCode;
-import com.kangkimleekojangcho.akgimi.jwt.application.CreateJwtTokenService;
+import com.kangkimleekojangcho.akgimi.jwt.application.ConvertToJwtTokenService;
 import com.kangkimleekojangcho.akgimi.jwt.application.ExtractTokenStringService;
 import com.kangkimleekojangcho.akgimi.user.application.port.QueryBlackListPort;
-import com.kangkimleekojangcho.akgimi.user.domain.JwtToken;
+import com.kangkimleekojangcho.akgimi.user.domain.AccessToken;
 import com.kangkimleekojangcho.akgimi.user.domain.UserState;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -23,45 +23,75 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 @Log4j2
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public static final String AUTHORIZATION = "Authorization";
     private final ExtractTokenStringService extractTokenStringService;
-    private final CreateJwtTokenService createJwtTokenService;
+    private final ConvertToJwtTokenService convertToJwtTokenService;
     private final QueryBlackListPort queryBlackListPort;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String requestUriValue = request.getServletPath();
+        String requestUri = request.getServletPath();
         String authorizationHeader = request.getHeader(AUTHORIZATION);
-        String tokenString = extractTokenStringService.extract(authorizationHeader);
-        JwtToken accessToken = createJwtTokenService.create(tokenString);
-        request.setAttribute("accessToken", accessToken);
-
-        if (accessToken.isExpired(new Date())) {
-            throw new UnauthorizedException(UnauthorizedExceptionCode.TOKEN_EXPIRED);
-        }
-        if (accessToken.isAccessToken() && queryBlackListPort.find(tokenString)) {
-            throw new UnauthorizedException(UnauthorizedExceptionCode.LOGOUT_TOKEN);
-        }
-        if(UserState.PENDING.equals(accessToken.getUserState()) &&
-        !isAccessiblePathForPendingUser(requestUriValue)){
-            throw new UnauthorizedException(UnauthorizedExceptionCode.NOT_ENOUGH_INFO);
-        }
-        shouldNotUseApplicationWhenUserHasRefreshToken(requestUriValue, accessToken);
-        shouldNotReissueWhenUserHasRefreshToken(requestUriValue, accessToken);
+        String rawToken = extractTokenStringService.extract(authorizationHeader);
+        AccessToken accessToken = convertToJwtTokenService.convertToAccessToken(rawToken);
+        saveAccessTokenToHttpRequest(request, accessToken);
+        checkTokenIsNotExpired(accessToken);
+        checkTokenIsNotLogouttedToken(accessToken);
+        checkUserCanAccessWithoutCheckingSimplePassword(requestUri,accessToken);
+        checkPendingUserCanAccess(requestUri, accessToken);
         log.info("ID가 '{}'인 유저가 요청 메시지를 보냅니다.", accessToken.getUserId());
         filterChain.doFilter(request, response);
     }
 
-    private boolean isAccessiblePathForPendingUser(String path) {
-        HashSet<String> accessibleSet = new HashSet<>(List.of("/user/accesstoken/reissue",
+    private void checkUserCanAccessWithoutCheckingSimplePassword(String requestUri, AccessToken accessToken) {
+        HashSet<String> set = new HashSet<>(
+                List.of("/user/accesstoken/reissue",
+                        "/user/nickname/duplicate",
+                        "/user/nickname/recommend",
+                        "/user/nickname",
+                        "/account/new",
+                        "/account/new/password",
+                        "/user/password/simple",
+                        "/user/password/simple/check",
+                        "/user/profile",
+                        "/user/activate",
+                        "/user/can-activate"));
+        if(!accessToken.isSimplePasswordChecked() && !set.contains(requestUri)){
+            throw new UnauthorizedException(UnauthorizedExceptionCode.SIMPLE_PASSWORD_IS_NOT_CHECKED);
+        }
+    }
+
+    private void saveAccessTokenToHttpRequest(HttpServletRequest request, AccessToken accessToken) {
+        request.setAttribute("accessToken", accessToken);
+    }
+
+    private void checkPendingUserCanAccess(String requestUriValue, AccessToken accessToken) {
+        if(UserState.PENDING.equals(accessToken.getUserState()) &&
+        !canAccessEvenThoughUserStateIsPending(requestUriValue)){
+            throw new UnauthorizedException(UnauthorizedExceptionCode.NOT_ENOUGH_INFO);
+        }
+    }
+
+    private void checkTokenIsNotLogouttedToken(AccessToken accessToken) {
+        if (queryBlackListPort.find(accessToken.getRawToken())) {
+            throw new UnauthorizedException(UnauthorizedExceptionCode.LOGOUT_TOKEN);
+        }
+    }
+
+    private static void checkTokenIsNotExpired(AccessToken accessToken) {
+        if (accessToken.isExpired(new Date())) {
+            throw new UnauthorizedException(UnauthorizedExceptionCode.TOKEN_EXPIRED);
+        }
+    }
+
+    private boolean canAccessEvenThoughUserStateIsPending(String path) {
+        HashSet<String> set = new HashSet<>(
+                List.of("/user/accesstoken/reissue",
                 "/user/nickname/duplicate",
                 "/user/nickname/recommend",
                 "/user/nickname",
@@ -72,25 +102,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 "/user/profile",
                 "/user/activate",
                 "/user/can-activate"));
-        return accessibleSet.contains(path);
+        return set.contains(path);
     }
 
-    // Access Token 재발급 요청 api 인데, access token을 전달했을 경우인지 체크
-    private void shouldNotReissueWhenUserHasRefreshToken(String path, JwtToken jwtToken) {
-        if (!doesUserRequestReassuranceOfAccessToken(path) && jwtToken.isRefreshToken()) {
-            throw new UnauthorizedException(UnauthorizedExceptionCode.NOT_ACCESS_TOKEN);
-        }
-    }
-
-    // 재발급 요청이 아닌데 refresh token을 전달했을 경우인지 체크
-    private void shouldNotUseApplicationWhenUserHasRefreshToken(String path, JwtToken jwtToken) {
-        if (doesUserRequestReassuranceOfAccessToken(path) && jwtToken.isAccessToken()) {
-            throw new UnauthorizedException(UnauthorizedExceptionCode.NOT_REFRESH_TOKEN);
-        }
-    }
-
-    private boolean doesUserRequestReassuranceOfAccessToken(String path) {
-        return path.startsWith("/token");
+    private boolean canAccessEvenThoughNotSimplePasswordChecked(String path){
+        Set<String> set = new HashSet<>(List.of("/user/password/simple",
+                "user/password/simple/check"));
+        return set.contains(path);
     }
 
 

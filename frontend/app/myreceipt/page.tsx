@@ -4,10 +4,11 @@ import ReceiptCircle from "@/components/WriteReceipt/ReceiptCircle"
 import ReceiptTriangle from "@/components/MyReceipt/ReceiptTriangle"
 import ReceiptList from "@/components/MyReceipt/ReceiptList"
 import { useState } from "react"
+import '@/styles/MainPageButton.css'
 import Footer from "../Footer"
 
 const MyReceipt = () => {
-    const [challengeState, setChallengeState] = useState<number>(0)
+    const [challengeState, setChallengeState] = useState<number>(1)
     return (
         <div className="flex flex-col justify-center items-center">
             <div>
@@ -32,8 +33,7 @@ const MyReceipt = () => {
                 }
                 {challengeState === 1 && 
                 <div>
-                    {/* merge 후 컴포넌트 버튼 사용하기 */}
-                    <button onClick={() => setChallengeState(2)}>다시 도전하러 가기!</button>
+                    <button onClick={() => setChallengeState(2)} className="button-common blue-btn mb-[10vh]">다시 도전하러 가기!</button>
                 </div>
                 }
                 {challengeState === 2 &&

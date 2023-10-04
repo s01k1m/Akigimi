@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import Image from "next/image";
-import MypageTap from "@/components/User/UserTap";
+import MypageTap from "@/components/User/MypageTap";
 import FollowerButton from "@/components/User/FollowerButton";
 import FollowingButton from "@/components/User/FollowingButton";
 import MypageAccouts from "@/components/User/MypageAccount";
@@ -9,6 +9,7 @@ import FriendCard from "@/components/User/FriendCard";
 import { BiSearchAlt } from "react-icons/bi";
 import axios from "axios";
 import { useEffect } from "react";
+import Footer from "@/app/Footer";
 
 interface Friend {
   id: number;
@@ -25,13 +26,24 @@ export default function Mypage() {
   const [depositBalance, setDepositBalance] = useState<string>("");
   const [searchWord, setSearchWord] = useState<string>("");
   const [friendsList, setFriendsList] = useState<FriendsList>([]);
-
-  // const getUserInfo() => {
-
+  
+  // 세션에 저장된 유저 정보 가져오기
+  let nickname: string = "";
+  let profileImage: string = "";
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      nickname = window.sessionStorage.getItem("nickname")
+      profileImage = window.sessionStorage.getItem("profileImageUrl")
+    }
+  }, [])
+  // const getUserInfo = () => {
   // }
 
   const getBalance = async () => {
-    let token = window.localStorage.getItem("access_token");
+    let token: string = "";
+    if (typeof window !== "undefined") {
+      token = window.localStorage.getItem("access_token");
+    }
     axios
       .get("/api/account/amount?accountType=WITHDRAW", {
         headers: {
@@ -87,7 +99,7 @@ export default function Mypage() {
   return (
     <div className="w-full flex flex-col justify-center items-center">
       <Image
-        src="/profile.jpg"
+        src={profileImage}
         alt="profile img"
         width={200} // 실제 이미지의 가로 크기로 설정하세요
         height={200} // 실제 이미지의 세로 크기로 설정하세요
@@ -104,7 +116,7 @@ export default function Mypage() {
           setContent("account");
         }}
       >
-        NAME
+        {nickname}
       </div>
       <div className="w-full flex flex-row justify-around items-center px-[91px] mb-4">
         <div
@@ -189,6 +201,7 @@ export default function Mypage() {
           })}
         </div>
       ) : null}
+      <Footer />
     </div>
   );
 }

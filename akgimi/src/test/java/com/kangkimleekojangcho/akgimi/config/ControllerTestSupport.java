@@ -1,14 +1,15 @@
 package com.kangkimleekojangcho.akgimi.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kangkimleekojangcho.akgimi.challenge.adapter.in.PostscriptController;
+import com.kangkimleekojangcho.akgimi.challenge.application.CreatePostscriptService;
+import com.kangkimleekojangcho.akgimi.challenge.application.GetBunchOfPostscriptService;
 import com.kangkimleekojangcho.akgimi.common.application.MattermostSender;
 import com.kangkimleekojangcho.akgimi.common.domain.application.SubtractUserIdFromAccessTokenService;
 import com.kangkimleekojangcho.akgimi.global.config.WebSecurityConfig;
 import com.kangkimleekojangcho.akgimi.sns.adapter.in.FeedController;
 import com.kangkimleekojangcho.akgimi.sns.adapter.in.ReceiptController;
-import com.kangkimleekojangcho.akgimi.sns.application.CreateFeedService;
-import com.kangkimleekojangcho.akgimi.sns.application.GetBunchOfFeedWrittenByFollowerRequestService;
-import com.kangkimleekojangcho.akgimi.sns.application.GetBunchOfReceiptService;
+import com.kangkimleekojangcho.akgimi.sns.application.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -20,7 +21,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(controllers = {
         FeedController.class,
-        ReceiptController.class
+        ReceiptController.class,
+        PostscriptController.class
 }, excludeFilters = { //!Added!
         @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {
                 SecurityConfig.class,
@@ -41,6 +43,15 @@ public abstract class ControllerTestSupport {
     protected CreateFeedService createFeedService;
     @MockBean
     protected GetBunchOfFeedWrittenByFollowerRequestService getBunchOfFeedWrittenByFollowerRequestService;
+    @MockBean
+    protected CreatePostscriptService createPostscriptService;
+    @MockBean
+    protected GetBunchOfPostscriptService getBunchOfPostscriptService;
+    @MockBean
+    protected MarkLikeToFeedService markLikeToFeedService;
+
+    @MockBean
+    protected CancelLikeService cancelLikeService;
 
     @Autowired
     protected MockMvc mockMvc;

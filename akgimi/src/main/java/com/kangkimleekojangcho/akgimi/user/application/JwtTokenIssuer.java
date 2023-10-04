@@ -1,6 +1,7 @@
 package com.kangkimleekojangcho.akgimi.user.application;
 
 import com.kangkimleekojangcho.akgimi.user.config.JwtConfigProperties;
+import com.kangkimleekojangcho.akgimi.user.domain.User;
 import com.kangkimleekojangcho.akgimi.user.domain.UserState;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -19,18 +20,27 @@ public class JwtTokenIssuer {
 
     private final JwtConfigProperties jwtConfigProperties;
 
-    public String createAccessToken(Long id,UserState userState) {
+    public String createAccessTokenForUnauthorizedUser(User user) {
         Claims claims = Jwts.claims();
-        claims.put("id", id);
-        claims.put("userState", userState.name());
+        claims.put("id", user.getId());
+        claims.put("userState", user.getUserState().name());
+        claims.put("isSimplePasswordChecked",false);
         return createJwt(claims, "ACCESSTOKEN", jwtConfigProperties.getAccessTokenValidTimeInMillisecondUnit());
     }
 
-    public String createRefreshToken(Long id,UserState userState) {
+    public String createAccessTokenForAuthorizedUser(User user) {
         Claims claims = Jwts.claims();
-        claims.put("id", id);
-        claims.put("userState", userState.name());
-        return createJwt(claims, "REFRESHTOKEN", jwtConfigProperties.getRefreshTokenValidTimeInMillisecondUnit());
+        claims.put("id", user.getId());
+        claims.put("userState", user.getUserState().name());
+        claims.put("isSimplePasswordChecked",true);
+        return createJwt(claims, "ACCESSTOKEN", jwtConfigProperties.getAccessTokenValidTimeInMillisecondUnit());
+    }
+
+    public String createRefreshToken(User user) {
+        Claims claims = Jwts.claims();
+        claims.put("id", user.getId());
+        claims.put("userState", user.getUserState().name());
+        return createJwt(claims, "REFRESHTOKEN", jwtConfigProperties.getAccessTokenValidTimeInMillisecondUnit());
     }
 
     private String createJwt(Claims claims, String tokenType, Long tokenValidTime) {

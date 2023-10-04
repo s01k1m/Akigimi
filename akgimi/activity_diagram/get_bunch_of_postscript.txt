@@ -1,0 +1,10 @@
+@startuml
+start
+if (product exist) then (no)
+  #pink:error occur;
+  end
+else (challenge which belong to product contains postscript)
+  #palegreen:get list;
+endif
+stop
+@enduml

@@ -2,7 +2,7 @@ package com.kangkimleekojangcho.akgimi.global.config;
 
 import com.kangkimleekojangcho.akgimi.global.filter.JwtAuthenticationFilter;
 import com.kangkimleekojangcho.akgimi.global.filter.JwtExceptionHandlerFilter;
-import com.kangkimleekojangcho.akgimi.jwt.application.CreateJwtTokenService;
+import com.kangkimleekojangcho.akgimi.jwt.application.ConvertToJwtTokenService;
 import com.kangkimleekojangcho.akgimi.jwt.application.ExtractTokenStringService;
 import com.kangkimleekojangcho.akgimi.user.application.port.QueryBlackListPort;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +31,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WebSecurityConfig {
     private final ExtractTokenStringService extractTokenStringService;
-    private final CreateJwtTokenService createJwtTokenService;
+    private final ConvertToJwtTokenService convertToJwtTokenService;
     private final QueryBlackListPort queryBlackListPort;
 
     @Bean
@@ -44,7 +44,7 @@ public class WebSecurityConfig {
     }
 
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
-        return new JwtAuthenticationFilter(extractTokenStringService,createJwtTokenService,queryBlackListPort);
+        return new JwtAuthenticationFilter(extractTokenStringService, convertToJwtTokenService,queryBlackListPort);
     }
 
     @Bean

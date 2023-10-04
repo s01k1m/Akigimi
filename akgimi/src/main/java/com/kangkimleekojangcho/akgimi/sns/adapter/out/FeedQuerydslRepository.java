@@ -29,11 +29,12 @@ public class FeedQuerydslRepository {
             Integer numberOfFeed
     ) {
 
-        List<BriefFeedInfo> result = jpaQueryFactory.select(
+        return jpaQueryFactory.select(
                         new QBriefFeedInfo(
+                                feed.feedId.as("feedId"),
                                 feed.user.id.as("userId"),
+                                feed.user.profileImageUrl.as("userProfile"),
                                 feed.user.nickname.as("nickname"),
-//                                feed.user.profile.as("userProfile"), TODO: profile 나중에 만들것
                                 feed.price.as("price"),
 //                                feed.like.as("likes"), TODO: like 수 계산해서 가져와야 함.
                                 feed.notPurchasedItem.as("notPurchasedItem"),
@@ -57,7 +58,6 @@ public class FeedQuerydslRepository {
                         follow.follower.id.eq(requestUserId)))
                 .orderBy(feed.feedId.desc())
                 .limit(numberOfFeed).fetch();
-        return result;
     }
 
     public List<BriefReceiptInfo> findReceiptByUser_IdAndLastReceiptIdAndNumberOfReceipt(
@@ -66,6 +66,7 @@ public class FeedQuerydslRepository {
     ) {
         List<BriefReceiptInfo> result = jpaQueryFactory.select(
                         new QBriefReceiptInfo(
+                                feed.feedId.as("receiptId"),
                                 feed.price.as("price"),
                                 feed.notPurchasedItem.as("notPurchasedItem"),
                                 feed.place.as("akgimiPlace"),

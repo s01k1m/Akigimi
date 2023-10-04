@@ -10,4 +10,6 @@ public interface ChallengeJpaRepository extends JpaRepository<Challenge, Long> {
     Optional<Challenge> findChallengeByUserIdAndIsInProgress(Long userId, boolean isInProgress);
     List<Challenge> findAllByUserId(Long userId);
     Integer countByProductIdAndIsInProgress(Long productId, boolean isInProgress);
+
+    Optional<Challenge> findChallengeByIdAndUser_IdAndAchievementState(Long challengeId,Long userId ,boolean b);
 }

@@ -1,7 +1,6 @@
 'use client'
 import MoneyGageBar from "@/components/Main/MoneyGageBar"
 import DayGageBar from "@/components/Main/DayGageBar"
-import GoToSelectItem from "@/components/Main/GoToSelectItem"
 import IconBtn from "@/components/Main/IconBtn"
 import CharacterImg from "@/components/Main/CharacterImg"
 import ChallengeInfo from "@/components/Main/ChallengeInfo"
@@ -25,6 +24,8 @@ const Main = () => {
     const [challengePeriod, setChallengePeriod] = useState<number>(0)
     const [days, setDays] = useState<number>(0)
     const [balance, setBalance] = useState<number>(0)
+    
+    // 토큰
     let token: string = "";
     
     useEffect(() => {
@@ -43,7 +44,7 @@ const Main = () => {
             })
             .then((response) => {
                 console.log('챌린지 조회 성공', response.data)
-                
+        
                 const data = response.data.data
                 console.log('챌린지 상태', response.data.data.characterStatus)
                 setStage(data.characterStatus + 1)
@@ -66,37 +67,6 @@ const Main = () => {
             })
     } 
 
-    // 하드 데이터 용 api
-    // const inProgress = async () => {
-    //     const requestBody = {
-    //         itemId: 1,
-    //         challengePeriod: 50
-    //     };
-    //     console.log('버튼 눌렀을 때 토큰 잘 불러오는지 확인', token)
-    //     await axios
-    //         .post('/api/challenges', requestBody, {
-    //             headers: {
-    //                 'Authorization': `Bearer ${token}`,
-    //                 'Content-Type': 'application/json'
-    //             }
-    //         })
-    //         .then((response) => {
-    //             console.log('챌린지 생성 성공', response.data)
-    //         })
-    //         .catch((error) => {
-    //             if (error.response.data.code === '011') {
-    //                 console.log('자원이 존재하지 않는 경우')
-    //             } else if (error.response.data.code === '017') {
-    //                 console.log('이미 챌린지 진행 중인 경우')
-    //                 challengeData()
-    //                 alert('이미 챌린지를 진행중입니다')
-    //             } else if (error.response.data.code === '012') {
-    //                 alert('챌린지에 참여하세요')
-    //             }
-    //             console.log('챌린지 생성 에러', error)
-    //         })
-    // } 
-
 
     useEffect(() => {
         challengeData()
@@ -118,7 +88,7 @@ const Main = () => {
                     <button 
                         className="go-to-btn"
                         onClick={() => {
-                            router.push('/item')
+                            router.push('/item/search')
                             }}
                         >
                         미닝템 정하러 가기
@@ -137,10 +107,11 @@ const Main = () => {
             }
             {stage === 7 &&
                 <div className="flex justify-center -mt-1.5">
-                <GoToRetryBtn />
+                    {/* 다시 도전하기 버튼 */}
+                    <GoToRetryBtn />
                 </div>
             }
-            <div className="flex" style={{ marginTop: stage >= 5 ? "0px" : (stage === 0 ? "170px" : "23px")}}>
+            <div className="flex" style={{ marginTop: stage >= 6 ? "-25px" : (stage === 0 ? "170px" : "23px")}}>
                 <IconBtn />
                 <CharacterImg stage={stage}  />
             </div>

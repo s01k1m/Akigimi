@@ -9,7 +9,7 @@
 import React, { useRef, useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { redirect, useRouter } from "next/navigation";
-import { BasicButton } from "@/components/login/BasicButton";
+import { BasicButton } from "@/components/Login/BasicButton";
 import styled from "styled-components";
 
 export interface RegisterInfo {
