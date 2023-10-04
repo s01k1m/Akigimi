@@ -12,7 +12,7 @@ public record BriefFeedInfo(
         String notPurchasedItem,
         String akgimiPlace,
         String content,
-//        Boolean isLikedFeed,
+        Boolean isLikedFeed,
         String photo
 ) {
 
