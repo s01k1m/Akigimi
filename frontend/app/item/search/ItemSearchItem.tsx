@@ -16,9 +16,9 @@ const ItemSearchItem: React.FC<ItemSearchPropsType> = ({ itemId, itemName, itemP
                 <Image
                     src={itemImg}
                     alt="itemImg"
-                    width={100}
-                    height={100}
-                    className="mt-2"
+                    width={150}
+                    height={150}
+                    className="mt-3"
                 />
                 <div>
                     <div className="w-full mt-3">{itemName}</div>
