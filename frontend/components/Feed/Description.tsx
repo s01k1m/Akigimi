@@ -23,6 +23,7 @@ const Description: React.FC<DescriptionProps> = ({ isLiked, description, feedId 
                 setToken(storedToken);
             }
         }
+        console.log(feedId, isLiked, '좋아요 눌렀는지 안 눌렀는지')
     }, []);
 
     const handleToggleLike = async () => {
@@ -63,9 +64,9 @@ const Description: React.FC<DescriptionProps> = ({ isLiked, description, feedId 
         }
     };
     return (
-        <div className="flex w-[50%] max-w-xs ms-[5vw]">
+        <div className="flex w-[80%] max-w-[500px] ms-[5vw]">
              <div onClick={handleToggleLike} className="me-[1vw] mb-2">
-            {liked ? (
+            {!liked ? (
                 <AiOutlineHeart 
                      color="#0049F2"
                      size={'40px'}
@@ -78,7 +79,7 @@ const Description: React.FC<DescriptionProps> = ({ isLiked, description, feedId 
             )}
             </div>
 
-            <div className="max-w-[270px] mb-[1vh]"> 
+            <div className="max-w-[220px] mb-[2vh] w-[40vw]"> 
                 {description}
             </div>
         </div>
