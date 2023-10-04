@@ -9,6 +9,8 @@ export default function Login() {
   const [keypadEntries, setKeypadEntries] = useState<string>("");
   const [keypadArray, setKeypadArray] = useState<string[]>([]);
   const [tryLogin, setTryLogin] = useState<Boolean>(false);
+  // TODO: 로그인이 너무 오래걸려서 로딩 화면 넣어야 함
+  const [isLoading, setIsLoding] = useState<boolean>(false);
   const router = useRouter();
   let token: string = "";
   
@@ -28,6 +30,7 @@ export default function Login() {
         },
       })
       .then((response) => {
+        setIsLoding(true)
         console.log(response.data);
         console.log("정보를 가져왔습니다..");
         // TODO: 유저 정보 저장 필요
@@ -37,6 +40,9 @@ export default function Login() {
           response.data.data.profileImageUrl
         );
         window.sessionStorage.setItem("userId", response.data.data.userId);
+        setIsLoding(false)   
+      })
+      .then(() => {
 
         router.push("/main");
       })
@@ -71,15 +77,16 @@ export default function Login() {
           .then((response) => {
             if (response.data.data.isPasswordCorrect === true) {
               console.log("간편로그인을 성공했습니다.. 비밀번호 맞음");
-              // TODO: SESSION 유저 정보 저장 필요 (토큰 접근을 위해 코드 수정했습니다)
+              // TODO: SESSION 유저 정보 저장 필요 
+              // (토큰 접근을 위해 코드 수정했습니다)
               console.log('유저 정보 가져오기 성공',response.data.data)
               window.localStorage.setItem("access_token", response.data.data.accessToken);
               window.sessionStorage.setItem("userId", response.data.data.userId);
             } else {
               alert("비밀번호 틀렸습니다. 다시 입력하세요");
             }
-            getUserInfo();
             setTryLogin(false);
+            getUserInfo();
           })
           .catch(() => {
             setTryLogin(false);
@@ -102,41 +109,49 @@ export default function Login() {
     }
   };
   return (
-    <div className="digit-login relative h-full w-full flex flex-col items-center">
-      <div className="text-center font-bold mt-[30%] mb-[33px]">
-        아끼미를 쓰려면
-        <br />
-        비밀번호를 눌러주세요
-      </div>
-      <div className="flex justify-center items-center">
-        <Circle entered={keypadEntries[0] ? true : false} />
-        <Circle entered={keypadEntries[1] ? true : false} />
-        <Circle entered={keypadEntries[2] ? true : false} />
-        <Circle entered={keypadEntries[3] ? true : false} />
-        <Circle entered={keypadEntries[4] ? true : false} />
-        <Circle entered={keypadEntries[5] ? true : false} />
-      </div>
-      <button className="text-[12px] text-gray0 bg-gray1 mt-[50px] py-2 mb-[10%] w-[120px] rounded">
-        비밀번호를 몰라요
-      </button>
-      <div className="w-full h-full flex justify-center">
-        <Keypad onKeyPressed={handleKeypadKeyPress} />
-      </div>
-      {tryLogin ? (
-        <div
-          style={{
-            position: "absolute",
-            top: 0,
-            width: "100vw",
-            height: "100vh",
-            zIndex: 100,
-            backgroundColor: "pink, 0.8",
-            // display: "none",
-          }}
-        >
-          로그인중
+    <>
+    {!isLoading ? (
+
+      <div className="digit-login relative h-full w-full flex flex-col items-center">
+        <div className="text-center font-bold mt-[30%] mb-[33px]">
+          아끼미를 쓰려면
+          <br />
+          비밀번호를 눌러주세요
         </div>
-      ) : null}
-    </div>
+        <div className="flex justify-center items-center">
+          <Circle entered={keypadEntries[0] ? true : false} />
+          <Circle entered={keypadEntries[1] ? true : false} />
+          <Circle entered={keypadEntries[2] ? true : false} />
+          <Circle entered={keypadEntries[3] ? true : false} />
+          <Circle entered={keypadEntries[4] ? true : false} />
+          <Circle entered={keypadEntries[5] ? true : false} />
+        </div>
+        <button className="text-[12px] text-gray0 bg-gray1 mt-[50px] py-2 mb-[10%] w-[120px] rounded">
+          비밀번호를 몰라요
+        </button>
+        <div className="w-full h-full flex justify-center">
+          <Keypad onKeyPressed={handleKeypadKeyPress} />
+        </div>
+        {tryLogin ? (
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              width: "100vw",
+              height: "100vh",
+              zIndex: 100,
+              backgroundColor: "pink, 0.8",
+              // display: "none",
+            }}
+          >
+            로그인중
+          </div>
+        ) : null}
+
+      </div>
+    ) : (
+      <div>로그인 로딩 중 ~~~</div>
+    )}
+    </>
   );
 }
