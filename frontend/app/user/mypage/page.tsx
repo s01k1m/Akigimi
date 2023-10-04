@@ -196,19 +196,24 @@ export default function Mypage() {
           >
             <BiSearchAlt size="30"></BiSearchAlt>
           </div>
-          {friendsList?.map((person) => {
-            return (
-              <>
-              <FriendCard
-                id={person.id}
-                imgUrl={person.profileImageUrl}
-                userName={person.nickname}
-                challengeId={person.challengeId}
-                gage={person.accumulatedAmount}
-              ></FriendCard>
-            </>
-            );
-          })}
+          <div>
+            
+          </div>
+          <div className="mb-[100px] w-full flex flex-col items-center">
+            {friendsList?.map((person) => {
+              return (
+                <>
+                <FriendCard
+                  id={person.id}
+                  imgUrl={person.profileImageUrl}
+                  userName={person.nickname}
+                  challengeId={person.challengeId}
+                  gage={person.accumulatedAmount}
+                ></FriendCard>
+              </>
+              );
+            })}
+          </div>
         </div>
       ) : content === "following" ? (
         <div className="w-full flex flex-col justify-center items-center">
