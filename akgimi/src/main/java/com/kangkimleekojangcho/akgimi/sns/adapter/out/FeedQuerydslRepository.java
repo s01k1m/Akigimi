@@ -4,8 +4,9 @@ import com.kangkimleekojangcho.akgimi.sns.application.response.BriefFeedInfo;
 import com.kangkimleekojangcho.akgimi.sns.application.response.BriefReceiptInfo;
 import com.kangkimleekojangcho.akgimi.sns.application.response.QBriefFeedInfo;
 import com.kangkimleekojangcho.akgimi.sns.application.response.QBriefReceiptInfo;
-import com.kangkimleekojangcho.akgimi.sns.domain.QCountLike;
+import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -14,11 +15,11 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Objects;
 
-import static com.kangkimleekojangcho.akgimi.sns.domain.QCountLike.countLike;
 import static com.kangkimleekojangcho.akgimi.sns.domain.QFeed.feed;
 import static com.kangkimleekojangcho.akgimi.sns.domain.QLike.like;
 import static com.kangkimleekojangcho.akgimi.user.domain.QFollow.follow;
 import static com.kangkimleekojangcho.akgimi.user.domain.QUser.user;
+import static com.querydsl.core.types.ExpressionUtils.count;
 
 @Log4j2
 @Repository
@@ -44,7 +45,11 @@ public class FeedQuerydslRepository {
                                 feed.notPurchasedItem.as("notPurchasedItem"),
                                 feed.place.as("akgimiPlace"),
                                 feed.content.as("content"),
-                                feed.like.size().eq(1),
+                                ExpressionUtils.as(
+                                        JPAExpressions.select(count(like.likeId))
+                                                .from(like)
+                                                .where(like.user.id.eq(requestUserId).and(like.feed.eq(feed))).eq(1L),"isLiked"
+                                ),
                                 feed.imageUrl.as("photo")
                         )
                 ).distinct()
