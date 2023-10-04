@@ -57,6 +57,16 @@ const Main = () => {
                 setProductImg(data.productImgUrl)
                 setBalance(data.balance.toLocaleString())
                 setIsLoading(false)
+                
+                // 나의 챌린지 상태(첫도전, 재도전) 로컬스토리지에 저장하기
+                window.localStorage.setItem("challengeStage", data.tryCount)
+                // 실패인 경우 로컬스토리지에 저장하기
+                if (data.characterStatus + 1 === 7) {
+                    window.localStorage.setItem("failedChallenge", "1")
+                } else {
+                    window.localStorage.setItem("failedChallenge", "0")
+
+                }
             })
             
             .catch((error) => {
