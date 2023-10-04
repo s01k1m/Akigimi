@@ -7,8 +7,11 @@ import com.kangkimleekojangcho.akgimi.challenge.domain.Challenge;
 import com.kangkimleekojangcho.akgimi.global.exception.BadRequestException;
 import com.kangkimleekojangcho.akgimi.global.exception.BadRequestExceptionCode;
 import com.kangkimleekojangcho.akgimi.product.domain.Product;
+import com.kangkimleekojangcho.akgimi.sns.application.port.CommandCountLikeDbPort;
 import com.kangkimleekojangcho.akgimi.sns.application.port.CommandLikeDbPort;
+import com.kangkimleekojangcho.akgimi.sns.application.port.QueryCountLikeDbPort;
 import com.kangkimleekojangcho.akgimi.sns.application.port.QueryLikeDbPort;
+import com.kangkimleekojangcho.akgimi.sns.domain.CountLike;
 import com.kangkimleekojangcho.akgimi.sns.domain.Feed;
 import com.kangkimleekojangcho.akgimi.sns.domain.Like;
 import com.kangkimleekojangcho.akgimi.user.domain.KakaoNickname;
@@ -38,7 +41,12 @@ class CancelLikeServiceTest extends SnsServiceIntegrationTestSupport {
     private QueryLikeDbPort queryLikeDbPort;
     @Autowired
     private CommandLikeDbPort commandLikeDbPort;
+    @Autowired
+    private CommandCountLikeDbPort commandCountLikeDbPort;
+    @Autowired
+    private QueryCountLikeDbPort queryCountLikeDbPort;
 
+    private static final long ADDED_COUNT_OF_LIKE = 1;
 
     @DisplayName("[happy] 유저가 자신의 게시글에 좋아요 취소 요청 시 정상적으로 좋아요를 완료한다.")
     @ValueSource(booleans = {true, false})
@@ -51,11 +59,19 @@ class CancelLikeServiceTest extends SnsServiceIntegrationTestSupport {
                 .nickname("돌아다니는 카카오")
                 .oauthId("abcde")
                 .build());
+
         Feed feedToLike = prepareForCancelLikeFeed(ownerOfFeed, isPublic);
         commandLikeDbPort.save(Like.builder()
                 .user(ownerOfFeed)
                 .feed(feedToLike)
                 .build());
+
+        commandCountLikeDbPort.save(
+                CountLike.builder()
+                        .feed(feedToLike)
+                        .likeCount(ADDED_COUNT_OF_LIKE)
+                        .build()
+        );
 
         //when
         cancelLikeService.execute(ownerOfFeed.getId(), feedToLike.getFeedId());
@@ -63,6 +79,9 @@ class CancelLikeServiceTest extends SnsServiceIntegrationTestSupport {
 
         //then
         Optional<Like> result = queryLikeDbPort.findByUserIdAndFeedId(ownerOfFeed.getId(), feedToLike.getFeedId());
+        Optional<CountLike> countLike = queryCountLikeDbPort.findByFeed(feedToLike);
+        assertThat(countLike).isPresent();
+        assertThat(countLike.get().getLikeCount()).isEqualTo(ADDED_COUNT_OF_LIKE-1);
         assertThat(result).isEmpty();
     }
 
@@ -90,11 +109,21 @@ class CancelLikeServiceTest extends SnsServiceIntegrationTestSupport {
                 .feed(feedToLike)
                 .build());
 
+        commandCountLikeDbPort.save(
+                CountLike.builder()
+                        .feed(feedToLike)
+                        .likeCount(ADDED_COUNT_OF_LIKE)
+                        .build()
+        );
+
         //when
         cancelLikeService.execute(userWantToCancelLike.getId(), feedToLike.getFeedId());
 
         //then
         Optional<Like> result = queryLikeDbPort.findByUserIdAndFeedId(userWantToCancelLike.getId(), feedToLike.getFeedId());
+        Optional<CountLike> countLike = queryCountLikeDbPort.findByFeed(feedToLike);
+        assertThat(countLike).isPresent();
+        assertThat(countLike.get().getLikeCount()).isEqualTo(ADDED_COUNT_OF_LIKE-1);
         assertThat(result).isEmpty();
     }
 

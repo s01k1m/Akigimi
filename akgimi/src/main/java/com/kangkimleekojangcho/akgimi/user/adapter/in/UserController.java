@@ -42,10 +42,21 @@ public class UserController {
     private final CheckUserCanBeActivatedService checkUserCanBeActivatedService;
 
     @GetMapping("/kakao/loginurl")
-    public ResponseEntity<SuccessResponse<String>> getKakaoLoginUrl() {
+    public ResponseEntity<SuccessResponse<String>> getKakaoLoginUrl(HttpServletRequest servletRequest) {
+        String redirectApi;
+        if(isFromLocalhost(servletRequest)){
+            redirectApi = "http://localhost:3000/kakao/oidc/";
+        } else{
+            redirectApi = "http://akgimi.ddns.net/kakao/oidc/";
+        }
         String loginUrl = String.format("https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=%s&redirect_uri=%s",
-                kakaoProperties.kakaoRestApiKey(), kakaoProperties.kakaoRedirectUrl());
+                kakaoProperties.kakaoRestApiKey(), redirectApi);
         return ResponseFactory.success(loginUrl);
+    }
+
+    private boolean isFromLocalhost(HttpServletRequest servletRequest) {
+        String host = servletRequest.getHeader("Host");
+        return host!=null && host.contains("localhost");
     }
 
 
@@ -152,6 +163,13 @@ public class UserController {
     public ResponseEntity<SuccessResponse<ActivateUserServiceResponse>> activateUser(HttpServletRequest servletRequest) {
         Long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
         ActivateUserServiceResponse response = activateUserService.activate(userId);
+        return ResponseFactory.success(response);
+    }
+
+    @GetMapping("/friends/search")
+    public ResponseEntity<SuccessResponse<FriendsServiceResponse>> searchFriends(@RequestParam("nickname") String nickname, HttpServletRequest servletRequest){
+        Long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
+        FriendsServiceResponse response = getFriendsInfoService.search(userId,nickname);
         return ResponseFactory.success(response);
     }
 }

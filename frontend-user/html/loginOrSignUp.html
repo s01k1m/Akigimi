@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>로그인할까요 아니면 회원가입할까요?</title>
+    <script src="../js/TokenPort.js"></script>
+    <script src="../js/Login.js"></script>
+    <script src="../js/LocalStoragePort.js"></script>
+    <script src="../js/LoginResultPort.js"></script>
+    <script src="../js/FindUnfilledSignUpInfo.js"></script>
+    <script src="../js/FillSignUpInfo.js"></script>
+
+    <script>
+        const API_URL = "http://akgimi.ddns.net/api";
+        let loginModule = new Login(API_URL);
+
+        function goToIndexPage() {
+            window.location.href = './index.html';
+        }
+
+        function goToSimplePasswordCheckPage() {
+            window.location.href = './checkSimplePassword.html';
+        }
+
+
+
+
+        loginModule.login()
+            .then(result=>{
+                let loginResultPort = new LoginResultPort();
+                loginResultPort.save(result);
+            })
+            .then(()=>{
+                let ACCESS_TOKEN = new LoginResultPort().getAccessToken();
+                let findUnfilledSignUpInfoModule = new FindUnfilledSignUpInfo(API_URL,ACCESS_TOKEN);
+                return findUnfilledSignUpInfoModule.ask();
+            })
+            .then((findUnfilledSignUpInfoModule)=>{
+                if(findUnfilledSignUpInfoModule.isAlreadyActive()) {
+                    throw new Error("이미 활성화되어 있습니다.");
+                }
+                let whatIsNotFilled = findUnfilledSignUpInfoModule.whatIsNotFilled();
+                if (whatIsNotFilled.length === 0) {
+                    throw new Error("모두 채워져 있습니다.");
+                }
+                return whatIsNotFilled;
+            })
+            .then((whatIsNotFilled)=>{
+                let fillSignUpInfoModule = new FillSignUpInfo(whatIsNotFilled);
+                fillSignUpInfoModule.fill();
+            },error=>{
+                if(error.message === "모두 채워져 있습니다."){
+                    console.log("모두 채워져 있습니다.")
+                }
+                if(error.message === "이미 활성화되어 있습니다."){
+                    console.log("이미 활성화되어 있습니다.")
+                    goToSimplePasswordCheckPage()
+                }
+            });
+
+
+
+
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>
