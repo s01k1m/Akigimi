@@ -43,7 +43,6 @@ export default function addItem() {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
         setFile(e.target.files?.[0])
-        console.log('file 형식', file, typeof file)
         if (!file) return
 
         const fileReader = new FileReader()
@@ -55,7 +54,6 @@ export default function addItem() {
             
         }
     }
-    console.log('지금 현재 나의 파일', file)
 
     // 토큰 가져오기
     let token: string = "";
@@ -78,7 +76,7 @@ export default function addItem() {
             price: productPrice,
             challengePeriod: inputValue,
             image: file,
-            thumbnail: file,
+            thumbnail: "",
             url: "",
 
         }

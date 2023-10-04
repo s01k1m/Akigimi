@@ -90,7 +90,7 @@ const ReceiptList = () => {
   }, [inView])
 
   return (
-    <div className="flex flex-col items-center mt-6 mb-[30px]">
+    <div className="flex flex-col items-center mt-6 mb-[30px] mt-[40px]">
       {receiptItems.map((item: any) => (
         <ReceiptItem
           key={item.id}
