@@ -91,7 +91,7 @@ export default function addItem() {
             .then((response) => {
                 console.log('물건 직접 추가 성공', response)
                 // 물건 추가 성공하면 물건 조회 페이지로 이동시키기
-                router.push('/item')
+                router.push('/item/search')
             })
             .catch((error) => {
                 console.log('물건 직접 추가 실패', error)
