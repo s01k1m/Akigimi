@@ -4,6 +4,7 @@ import com.kangkimleekojangcho.akgimi.global.exception.BadRequestException;
 import com.kangkimleekojangcho.akgimi.global.exception.BadRequestExceptionCode;
 import com.kangkimleekojangcho.akgimi.sns.application.port.CommandLikeDbPort;
 import com.kangkimleekojangcho.akgimi.sns.application.port.QueryLikeDbPort;
+import com.kangkimleekojangcho.akgimi.sns.domain.Feed;
 import com.kangkimleekojangcho.akgimi.sns.domain.Like;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
@@ -34,5 +35,10 @@ public class LikeJpaAdapter implements CommandLikeDbPort, QueryLikeDbPort {
     @Override
     public void deleteByUserIdAndFeedId(Long id, Long feedId) {
         likeJpaRepository.deleteByUser_idAndFeed_feedId(id, feedId);
+    }
+
+    @Override
+    public Long countInFeed(Feed feed) {
+        return likeJpaRepository.countByFeed(feed);
     }
 }

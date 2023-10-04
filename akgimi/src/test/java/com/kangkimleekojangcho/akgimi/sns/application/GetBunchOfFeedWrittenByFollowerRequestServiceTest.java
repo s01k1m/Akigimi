@@ -5,14 +5,15 @@ import com.kangkimleekojangcho.akgimi.bank.domain.AccountType;
 import com.kangkimleekojangcho.akgimi.bank.domain.Bank;
 import com.kangkimleekojangcho.akgimi.challenge.domain.Challenge;
 import com.kangkimleekojangcho.akgimi.product.domain.Product;
+import com.kangkimleekojangcho.akgimi.sns.application.port.CommandCountLikeDbPort;
 import com.kangkimleekojangcho.akgimi.sns.application.request.GetBunchOfFeedWrittenByFollowerRequestServiceRequest;
 import com.kangkimleekojangcho.akgimi.sns.application.response.BriefFeedInfo;
 import com.kangkimleekojangcho.akgimi.sns.application.response.GetBunchOfFeedWrittenByFollowerServiceResponse;
+import com.kangkimleekojangcho.akgimi.sns.domain.CountLike;
 import com.kangkimleekojangcho.akgimi.sns.domain.Feed;
 import com.kangkimleekojangcho.akgimi.sns.domain.Like;
 import com.kangkimleekojangcho.akgimi.user.domain.*;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -32,7 +33,11 @@ class GetBunchOfFeedWrittenByFollowerRequestServiceTest extends SnsServiceIntegr
     @Autowired
     private GetBunchOfFeedWrittenByFollowerRequestService getBunchOfFeedWrittenByFollowerRequestService;
 
+    @Autowired
+    private CommandCountLikeDbPort commandCountLikeDbPort;
+
     private static final int NUMBER_OF_PUBLIC = 10;
+    private static final Long DEFAULT_LIKE_COUNT = 0L;
 
     @DisplayName("[happy]팔로우 팔로잉이 없는 경우 자신의 글만을 반환한다.")
     @CsvSource(value = {"100:20", "10:10", "0:0"}, delimiter = ':')
@@ -69,19 +74,6 @@ class GetBunchOfFeedWrittenByFollowerRequestServiceTest extends SnsServiceIntegr
         //then
         assertThat(getBunchOfReceiptServiceResponse.bunchOfBriefFeedInfo()).isNotNull();
         assertThat(getBunchOfReceiptServiceResponse.bunchOfBriefFeedInfo().size()).isEqualTo(answer);
-    }
-    private static Stream<Arguments> givenCountAndAnswerWhenNoFollower() {
-        return Stream.of(
-                Arguments.of(
-                        100, 60
-                ),
-                Arguments.of(
-                        0, 0
-                ),
-                Arguments.of(
-                        10, 10
-                )
-        );
     }
 
     @DisplayName("[happy]피드를 요청했을 때 정확한 데이터가 주어지면 요청에 따라 유저와 팔로워의 피드를 최신순으로 반환한다.")
@@ -156,6 +148,7 @@ class GetBunchOfFeedWrittenByFollowerRequestServiceTest extends SnsServiceIntegr
         assertThat(getBunchOfReceiptServiceResponse.bunchOfBriefFeedInfo()).isNotNull();
         assertThat(getBunchOfReceiptServiceResponse.bunchOfBriefFeedInfo().size()).isEqualTo(answer);
     }
+
     private static Stream<Arguments> givenCountAndAnswerWhenFollowOnly() {
         return Stream.of(
                 Arguments.of(
@@ -169,7 +162,6 @@ class GetBunchOfFeedWrittenByFollowerRequestServiceTest extends SnsServiceIntegr
                 )
         );
     }
-
 
 
     @DisplayName("[happy]서로 팔로우 중인 유저들에 대해 정확한 데이터가 주어지면 요청에 따라 유저와 팔로워의 피드를 최신순으로 반환한다.")
@@ -326,7 +318,7 @@ class GetBunchOfFeedWrittenByFollowerRequestServiceTest extends SnsServiceIntegr
                 = getBunchOfFeedWrittenByFollowerRequestService.getBunchOfFeed(
                 follower.getId(), getBunchOfFeedServiceRequest);
 
-        for(BriefFeedInfo info : getBunchOfReceiptServiceResponse.bunchOfBriefFeedInfo()) {
+        for (BriefFeedInfo info : getBunchOfReceiptServiceResponse.bunchOfBriefFeedInfo()) {
             System.out.println(info.isLikedFeed());
         }
         //then
@@ -351,7 +343,8 @@ class GetBunchOfFeedWrittenByFollowerRequestServiceTest extends SnsServiceIntegr
                 )
         );
     }
-    private void prepareForSelectFeedWithLike(User user,User likeUser) {
+
+    private void prepareForSelectFeedWithLike(User user, User likeUser) {
         Product product = Product.builder()
                 .price(500000)
                 .detail("테스트 프로덕트입니다.")
@@ -399,6 +392,7 @@ class GetBunchOfFeedWrittenByFollowerRequestServiceTest extends SnsServiceIntegr
                 .build();
         commandAccountDbPort.save(withdrawalAccount);
 
+
         createPublicFeedWithLike(challenge, user, likeUser);
         createNotPublicFeed(challenge, user);
     }
@@ -419,6 +413,11 @@ class GetBunchOfFeedWrittenByFollowerRequestServiceTest extends SnsServiceIntegr
                             .isPublic(true)
                             .notPurchasedItem("안샀어요")
                             .build());
+
+            commandCountLikeDbPort.save(CountLike.builder()
+                    .likeCount(DEFAULT_LIKE_COUNT + 1)
+                    .feed(feed)
+                    .build());
 
             commandLikeDbPort.save(
                     Like.builder()
@@ -484,7 +483,7 @@ class GetBunchOfFeedWrittenByFollowerRequestServiceTest extends SnsServiceIntegr
 
     private void createPublicFeed(Challenge challenge, User user) {
         for (long i = 0; i < NUMBER_OF_PUBLIC; i++) {
-            commandFeedDbPort.save(
+            Feed feed = commandFeedDbPort.save(
                     Feed.builder()
                             .user(user)
                             .price(100000L)
@@ -497,12 +496,16 @@ class GetBunchOfFeedWrittenByFollowerRequestServiceTest extends SnsServiceIntegr
                             .isPublic(true)
                             .notPurchasedItem("안샀어요")
                             .build());
+            commandCountLikeDbPort.save(CountLike.builder()
+                    .likeCount(DEFAULT_LIKE_COUNT)
+                    .feed(feed)
+                    .build());
         }
     }
 
     private void createNotPublicFeed(Challenge challenge, User user) {
         for (long i = 0; i < NUMBER_OF_PUBLIC; i++) {
-            commandFeedDbPort.save(
+            Feed feed = commandFeedDbPort.save(
                     Feed.builder()
                             .user(user)
                             .price(100000L)
@@ -515,6 +518,10 @@ class GetBunchOfFeedWrittenByFollowerRequestServiceTest extends SnsServiceIntegr
                             .isPublic(false)
                             .notPurchasedItem("안샀어요")
                             .build());
+            commandCountLikeDbPort.save(CountLike.builder()
+                    .likeCount(DEFAULT_LIKE_COUNT)
+                    .feed(feed)
+                    .build());
         }
     }
 }
