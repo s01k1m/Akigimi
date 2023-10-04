@@ -43,6 +43,7 @@ public class CreateChallengeService{
                 .challengeStartDate(LocalDate.now())
                 .challengeEndDate(LocalDate.now().plusDays(request.getChallengePeriod()))
                 .isInProgress(true)
+                .tryCount(0)
                 .build();
         Challenge save = commandChallengePort.save(challenge);
         return CreateChallengeServiceResponse.from(save);

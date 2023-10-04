@@ -37,6 +37,7 @@ public class Challenge extends BaseTimeEntity {
     private LocalDate challengeStartDate;
     private LocalDate challengeEndDate;
     private boolean isInProgress;
+    private Integer tryCount;
 
     public int calculatePercentage(long balance){
         int productPrice = this.getProduct().getPrice();
