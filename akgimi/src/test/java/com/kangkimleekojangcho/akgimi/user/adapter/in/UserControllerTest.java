@@ -54,4 +54,16 @@ class UserControllerTest extends ControllerTestSupport {
                 .andExpect(jsonPath("$.data.loginUrl", Matchers.containsString("http://akgimi.ddns.net")))
                 .andExpect(jsonPath("$.data.redirectUrl", Matchers.containsString("http://akgimi.ddns.net")));
     }
+
+    @Test
+    @DisplayName("loginUrl, redirectUrl의 끝에는 `/`이 붙지 않는다.")
+    void getKakaoUrl3() throws Exception {
+        // then
+        mockMvc.perform(
+                        get("/kakao/loginurl")
+                                .header(HttpHeaders.REFERER,"http://akgimi.ddns.net/api")
+                ).andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.loginUrl", Matchers.matchesPattern(".*[^/]+$")))
+                .andExpect(jsonPath("$.data.redirectUrl", Matchers.matchesPattern(".*[^/]+$")));
+    }
 }
