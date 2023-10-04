@@ -16,6 +16,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,6 +25,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Log4j2
 @SecurityRequirement(name = "bearerAuth")
 public class UserController {
     private final LoginService loginService;
@@ -57,8 +59,9 @@ public class UserController {
     }
 
     private boolean isFromLocalhost(HttpServletRequest servletRequest) {
-        String host = servletRequest.getHeader("Host");
-        return host!=null && host.contains("localhost");
+        String referer = servletRequest.getHeader("referer");
+        log.info("referer: {}",referer);
+        return referer!=null && referer.contains("localhost");
     }
 
 
