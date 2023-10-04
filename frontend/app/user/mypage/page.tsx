@@ -28,6 +28,7 @@ export default function Mypage() {
   const [withdrawBalance, setWithdrawBalance] = useState<string>("");
   const [depositBalance, setDepositBalance] = useState<string>("");
   const [searchWord, setSearchWord] = useState<string>("");
+  const [lastSearchWord, setLastSearchWord] = useState<string>("");
   const [friendsList, setFriendsList] = useState<FriendsList>([]);
   
   // 세션에 저장된 유저 정보 가져오기
@@ -89,6 +90,40 @@ export default function Mypage() {
         }
       });
   };
+
+  // 친구 검색 api
+  const onkeydown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === 'Enter') {
+        setLastSearchWord(searchWord)
+        await getSearchFriendsList();
+      }
+    }
+  
+  const getSearchFriendsList = async () => {
+    let token: string = "";
+      if (typeof window !== "undefined") {
+        token = window.localStorage.getItem("access_token");
+      }
+      await axios
+        .get('/api/friends/search', {
+          params: {
+            nickname: lastSearchWord
+          },
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          
+        })
+        .then((response) => {
+          console.log('친구 검색 성공', response.data.data.friends)
+          setFriendsList(response.data.data.friends)
+        })
+        .catch((error) => {
+          console.log('친구 검색 실패', error)
+        })
+
+  }
 
   useEffect(() => {
     // Moved the initial setFriendsList here
@@ -185,6 +220,7 @@ export default function Mypage() {
               console.log(e.target.value);
               setSearchWord(e.target.value);
             }}
+            onKeyDown={onkeydown}
             className="mb-3 w-[80%] ps-12 h-12 rounded p-2 bg-gray1"
           ></input>
 
