@@ -10,6 +10,9 @@ import com.kangkimleekojangcho.akgimi.global.config.WebSecurityConfig;
 import com.kangkimleekojangcho.akgimi.sns.adapter.in.FeedController;
 import com.kangkimleekojangcho.akgimi.sns.adapter.in.ReceiptController;
 import com.kangkimleekojangcho.akgimi.sns.application.*;
+import com.kangkimleekojangcho.akgimi.user.adapter.in.UserController;
+import com.kangkimleekojangcho.akgimi.user.application.*;
+import com.kangkimleekojangcho.akgimi.user.config.KakaoProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -22,7 +25,8 @@ import org.springframework.test.web.servlet.MockMvc;
 @WebMvcTest(controllers = {
         FeedController.class,
         ReceiptController.class,
-        PostscriptController.class
+        PostscriptController.class,
+        UserController.class
 }, excludeFilters = { //!Added!
         @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {
                 SecurityConfig.class,
@@ -52,6 +56,35 @@ public abstract class ControllerTestSupport {
 
     @MockBean
     protected CancelLikeService cancelLikeService;
+
+    @MockBean
+    private LoginService loginService;
+    @MockBean
+    private CheckDuplicateNicknameService checkDuplicateNicknameService;
+    @MockBean
+    private InputNicknameService setNicknameService;
+    @MockBean
+    private  RecommendNicknamesService recommendNicknamesService;
+    @MockBean
+    private SetSimplePasswordService setSimplePasswordService;
+    @MockBean
+    private  CheckSimplePasswordService authorizeBySimplePasswordService;
+    @MockBean
+    private GetUserInfoService getUserInfoService;
+    @MockBean
+    private  ReissueService reissueService;
+    @MockBean
+    private KakaoProperties kakaoProperties;
+    @MockBean
+    private FollowUserService followUserService;
+    @MockBean
+    private GetFriendsInfoService getFriendsInfoService;
+    @MockBean
+    private SaveUserProfileService saveUserProfileService;
+    @MockBean
+    private ActivateUserService activateUserService;
+    @MockBean
+    private CheckUserCanBeActivatedService checkUserCanBeActivatedService;
 
     @Autowired
     protected MockMvc mockMvc;
