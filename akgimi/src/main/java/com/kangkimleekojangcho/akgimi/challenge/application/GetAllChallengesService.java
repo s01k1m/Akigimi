@@ -12,6 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GetAllChallengesService {
     private final QueryChallengeDbPort queryChallengeDbPort;
+    //TODO : postscript 있는 지 여부
 
     public List<GetAllChallengesServiceResponse> getAllChallenges(Long userId){
         List<Challenge> challenges = queryChallengeDbPort.findAllByUserId(userId);

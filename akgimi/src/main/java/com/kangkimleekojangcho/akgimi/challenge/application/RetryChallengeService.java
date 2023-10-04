@@ -45,6 +45,7 @@ public class RetryChallengeService {
                         .challengePeriod(request.getChallengePeriod())
                         .challengeStartDate(LocalDate.now())
                         .isInProgress(true)
+                        .tryCount(challenge.getTryCount()+1)
                         .build()
         );
 
