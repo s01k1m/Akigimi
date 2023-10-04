@@ -43,7 +43,7 @@ public class MarkLikeToFeedService {
                         .build());
 
         CountLike countLike = queryCountLikeDbPort.getReferenceByFeed(feed);
-        countLike.setCount(queryLikeDbPort.countInFeed(feed));
+        countLike.setLikeCount(queryLikeDbPort.countInFeed(feed));
 
         return MarkLikeToFeedServiceResponse
                 .builder()

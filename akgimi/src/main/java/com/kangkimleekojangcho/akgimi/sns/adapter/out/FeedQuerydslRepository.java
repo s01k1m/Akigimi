@@ -40,7 +40,7 @@ public class FeedQuerydslRepository {
                                 feed.user.profileImageUrl.as("userProfile"),
                                 feed.user.nickname.as("nickname"),
                                 feed.price.as("price"),
-                                feed.countLike.count.as("countOfLike"),
+                                feed.countLike.likeCount.as("countOfLike"),
                                 feed.notPurchasedItem.as("notPurchasedItem"),
                                 feed.place.as("akgimiPlace"),
                                 feed.content.as("content"),

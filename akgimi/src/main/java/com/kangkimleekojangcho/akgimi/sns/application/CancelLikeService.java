@@ -10,7 +10,6 @@ import com.kangkimleekojangcho.akgimi.sns.application.port.QueryLikeDbPort;
 import com.kangkimleekojangcho.akgimi.sns.application.response.CancelLikeServiceResponse;
 import com.kangkimleekojangcho.akgimi.sns.domain.CountLike;
 import com.kangkimleekojangcho.akgimi.sns.domain.Feed;
-import com.kangkimleekojangcho.akgimi.sns.domain.Like;
 import com.kangkimleekojangcho.akgimi.user.application.port.QueryUserDbPort;
 import com.kangkimleekojangcho.akgimi.user.domain.User;
 import lombok.RequiredArgsConstructor;
@@ -49,7 +48,7 @@ public class CancelLikeService {
 
         CountLike countLike = queryCountLikeDbPort.getReferenceByFeed(feed);
 
-        countLike.setCount(queryLikeDbPort.countInFeed(feed));
+        countLike.setLikeCount(queryLikeDbPort.countInFeed(feed));
 
         return CancelLikeServiceResponse
                 .builder()
