@@ -25,7 +25,7 @@ const SuccessLogin = ({ onIncorrectPasswordChange }) => {
     // 랜덤 배열 생성
     const [randomList, setRandomList] = useState<number[]>([]);
     useEffect(() => {
-        const newRandomList = Array.from({length: 9}, (_, i) => i + 1).sort(() => Math.random() - 0.5);
+        const newRandomList = Array.from({length: 10}, (_, i) => i).sort(() => Math.random() - 0.5);
         setRandomList(newRandomList);
     }, []);
 
@@ -101,8 +101,8 @@ const SuccessLogin = ({ onIncorrectPasswordChange }) => {
             })
             .then((response) => {
                 console.log('챌린지 성공 api 호출 성공', response)
+                // TODO 계좌 롤백 됐다고 알려주기
                 router.push('/main')
-                // router.push(`${response.data.data.productUrl}`)
             })
             .catch((error) => {
                 console.log('챌린지 성공 api 호출 실패', error)
@@ -123,7 +123,7 @@ const SuccessLogin = ({ onIncorrectPasswordChange }) => {
             <div className="flex justify-center">
                 <div className="flex justify-center items-center mt-10 w-[30vw] h-8 bg-[#F2F2F2] rounded-md text-[#757575] text-[12px]">비밀번호를 몰라요</div>
             </div>
-            <div className="flex flex-col justify-center items-center mt-20 gap-14">
+            <div className="flex flex-col justify-center items-center mt-10 gap-14">
                 <div className="flex gap-10">
                     <div className="flex justify-center items-center text-[22px] w-20 h-10 font-bold hover:bg-gray-200 rounded-md" onClick={() => handleNumberClick(randomList[0])}>{randomList[0]}</div>
                     <div className="flex justify-center items-center text-[22px] w-20 h-10 font-bold hover:bg-gray-200 rounded-md" onClick={() => handleNumberClick(randomList[1])}>{randomList[1]}</div>
@@ -139,6 +139,8 @@ const SuccessLogin = ({ onIncorrectPasswordChange }) => {
                     <div className="flex justify-center items-center text-[22px] w-20 h-10 font-bold hover:bg-gray-200 rounded-md" onClick={() => handleNumberClick(randomList[7])}>{randomList[7]}</div>
                     <div className="flex justify-center items-center text-[22px] w-20 h-10 font-bold hover:bg-gray-200 rounded-md" onClick={() => handleNumberClick(randomList[8])}>{randomList[8]}</div>
                 </div>
+                <div className="flex gap-10">
+                    <div className="flex justify-center items-center text-[22px] w-20 h-10 font-bold hover:bg-gray-200 rounded-md" onClick={() => handleNumberClick(randomList[9])}>{randomList[9]}</div>                </div>
             </div>
         </div>
     )
