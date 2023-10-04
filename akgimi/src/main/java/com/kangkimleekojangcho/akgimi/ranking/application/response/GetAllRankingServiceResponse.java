@@ -8,8 +8,8 @@ import lombok.RequiredArgsConstructor;
 @Builder
 @RequiredArgsConstructor
 public class GetAllRankingServiceResponse {
-    private String userNickname;
-    private String userImgUrl;
-    private String productName;
-    private Integer percentage;
+    private final String userNickname;
+    private final String userImgUrl;
+    private final String productName;
+    private final Integer percentage;
 }
