@@ -1,4 +1,5 @@
 package com.kangkimleekojangcho.akgimi.challenge.application;
+import com.kangkimleekojangcho.akgimi.challenge.application.port.CommandChallengeDbPort;
 import com.kangkimleekojangcho.akgimi.challenge.application.port.QueryChallengeDbPort;
 import com.kangkimleekojangcho.akgimi.challenge.application.response.UpdateChallengeStatusServiceResponse;
 import com.kangkimleekojangcho.akgimi.challenge.domain.Challenge;
@@ -13,11 +14,14 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 public class UpdateChallengeStatusService {
     private final QueryChallengeDbPort queryChallengeDbPort;
+    private final CommandChallengeDbPort
+    commandChallengeDbPort;
 
     public UpdateChallengeStatusServiceResponse update(Long userId, boolean succeed){
         Challenge challenge = queryChallengeDbPort.findInProgressChallengeByUserId(userId).orElseThrow(()-> new BadRequestException(BadRequestExceptionCode.NOT_PARTICIPATE_IN_CHALLENGE));
         if(succeed){
             challenge.update(true, LocalDate.now(), false);
+            commandChallengeDbPort.save(challenge);
         }
         return  UpdateChallengeStatusServiceResponse.builder()
                 .productUrl(challenge.getProduct().getUrl())
