@@ -48,9 +48,9 @@ public class UserController {
     public ResponseEntity<SuccessResponse<LoginUrlResponse>> getKakaoLoginUrl(HttpServletRequest servletRequest) {
         String redirectApi;
         if(isFromLocalhost(servletRequest)){
-            redirectApi = "http://localhost:3000/kakao/oidc/";
+            redirectApi = "http://localhost:3000/kakao/oidc";
         } else{
-            redirectApi = "http://akgimi.ddns.net/kakao/oidc/";
+            redirectApi = "http://akgimi.ddns.net/kakao/oidc";
         }
         String loginUrl = String.format("https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=%s&redirect_uri=%s",
                 kakaoProperties.kakaoRestApiKey(), redirectApi);
