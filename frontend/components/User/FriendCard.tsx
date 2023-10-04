@@ -20,6 +20,13 @@ const FriendCard: React.FC<FriendProps> = ({
   gage,
 }) => {
   const router = useRouter()
+  const [gageState, setGageStage] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (gage === null) {
+      setGageStage(true)
+    }
+  }, [])
 
   let token: string = "";
   // 챌린지 아이디로 현재 도전 중인 물건 정보 가져와야 함
@@ -64,19 +71,22 @@ const FriendCard: React.FC<FriendProps> = ({
           onClick={() => router.push(`/user/mypage/${id}`)}
         ></Image>
       </div>
-      <div className="ms-[10px]">
-        <div className="text-[13px] font-semibold mb-[0.5vh]">{userName}</div>
-        <div className="text-[13px] text-[#757575] font-normal">{productName}</div>
-
-        <div>
-          <div className="w-[40vw] h-[15px] max-w-[210px] min-w-[180px] bg-white rounded-full">
-            <div
-              className={`w-[10%] h-[15px] max-w-[210px] bg-[#0049F2] rounded-full`}
-            >
+        <div className="ms-[10px]">
+          <div className="text-[13px] font-semibold mb-[0.5vh]">{userName}</div>
+          <div className="text-[13px] text-[#757575] font-normal">{productName}</div>
+          {!gageState ? (
+            <div>
+              <div className="w-[40vw] h-[15px] max-w-[210px] min-w-[180px] bg-white rounded-full">
+                <div
+                  className={`w-[${gage}%] h-[15px] max-w-[210px] bg-[#0049F2] rounded-full`}
+                >
+                </div>
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="text-[12px]">현재 진행 중인 챌린지가 없어요</div>
+          )}
         </div>
-      </div>
     </div>
   );
 };
