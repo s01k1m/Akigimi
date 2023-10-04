@@ -2,17 +2,18 @@
 import ItemSearchItem from "./ItemSearchItem"
 import axios from "axios"
 import { useEffect, useState } from "react"
+import '@/styles/MainPageButton.css'
+
+interface Item {
+    id: number
+    name: string
+    price: number
+    image: string
+}
 
 const ItemSearchList = ({ value, category, range }) => {
-    console.log(value, category, range)
-
-    const ItemList = [
-        {itemId: 1, itemName: '닌텐도 스위치', itemPrice: 150000, itemImg: '/images/heart.png'},    
-        {itemId: 2, itemName: '닌텐도 스위치', itemPrice: 150000, itemImg: '/images/heart.png'},    
-        {itemId: 3, itemName: '닌텐도 스위치', itemPrice: 150000, itemImg: '/images/heart.png'},    
-        {itemId: 4, itemName: '닌텐도 스위치', itemPrice: 150000, itemImg: '/images/heart.png'},    
-    ]
-    const [Items, setItems] = useState<[]>([]);
+    
+    const [Items, setItems] = useState<Item[]>([]);
 
     let token: string = "";
     const getItemList = async () => {
@@ -27,12 +28,12 @@ const ItemSearchList = ({ value, category, range }) => {
                 params: {
                     name: value,
                     startMoney: range[0],
-                    endMondy: range[1]
+                    endMoney: range[1]
                 }
             })
             .then((response) => {
-                console.log('물건 검색 조회 성공', response.data.data.list)
-                setItems(response.data.data.list)
+                console.log('물건 검색 조회 성공', response.data)
+                setItems(response.data.data.searchProductResponseList)
             })
             .catch((error) => {
                 console.log('물건 검색 조회 실패', error.response)
@@ -40,19 +41,24 @@ const ItemSearchList = ({ value, category, range }) => {
     }
     
     useEffect(() => {
+        console.log(value, category, range)
         getItemList()
     }, [value, range])
 
     return (
         <div className="flex flex-wrap gap-5 justify-center mt-5 mb-[100px]">
-            {ItemList.map((item) => 
-                <ItemSearchItem
-                    key={item.itemId}
-                    itemId={item.itemId}
-                    itemName={item.itemName}
-                    itemPrice={item.itemPrice}
-                    itemImg={item.itemImg}
-                />
+            {Items.length > 0 ?  (
+                Items.map((item) => 
+                    <ItemSearchItem
+                        key={item.id}
+                        itemId={item.id}
+                        itemName={item.name}
+                        itemPrice={item.price}
+                        itemImg={item.image}
+                    />
+                )
+            ) : (
+                <div>Loading...</div>
             )}
         </div>
     )
