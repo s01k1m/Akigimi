@@ -76,7 +76,7 @@ export default function addItem() {
             price: productPrice,
             challengePeriod: inputValue,
             image: file,
-            thumbnail: "",
+            thumbnail: file,
             url: "",
 
         }
