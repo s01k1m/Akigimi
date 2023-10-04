@@ -40,9 +40,6 @@ export default function Mypage() {
     }
   }, [])
 
-  // const getUserInfo = () => {
-  // }
-
   const getBalance = async () => {
     let token: string = "";
     if (typeof window !== "undefined") {
@@ -125,6 +122,7 @@ export default function Mypage() {
         alt="profile img"
         width={200} // 실제 이미지의 가로 크기로 설정하세요
         height={200} // 실제 이미지의 세로 크기로 설정하세요
+        layout="fixed"
         // layout="fill" // 이미지 크기를 유지하도록 설정
         // className="w-full h-auto height-auto"
         className="rounded-full mt-[43px]"
@@ -165,7 +163,7 @@ export default function Mypage() {
         <MypageTap></MypageTap>
       </div>
       {content === "account" ? (
-        <div className="w-full">
+        <div className="w-full mb-[100px]">
           <div className="w-full px-[44px] text-left font-black text-[20px] mt-[32px] mb-[21px] ">
             계좌
           </div>
