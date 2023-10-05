@@ -32,7 +32,7 @@ const Title = () => {
      useEffect(() => {
          challengeData()
      }, [])
-    const [item, setItem] = useState<string>("닌텐도")
+    const [item, setItem] = useState<string>()
     return (
         <div className='flex flex-col items-center mt-10' id='my-receipt'>
             <div><span>{item}</span>를 위한</div>
