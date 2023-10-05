@@ -10,7 +10,14 @@ import org.springframework.data.annotation.CreatedDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "follow")
+@Table(name = "follow",
+        uniqueConstraints={
+                @UniqueConstraint(
+                        name="FOLLOW_UNIQUE",
+                        columnNames={"follower_id", "followee_id"}
+                )
+        }
+)
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Follow{
