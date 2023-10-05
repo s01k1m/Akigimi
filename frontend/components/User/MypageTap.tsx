@@ -59,7 +59,7 @@ const MypageTap = () => {
               id="value3"
               type="radio"
               onClick={() => {
-                router.push("/mypage/myitems");
+                alert('추후 공개될 예정입니다')
               }}
               checked={selectedValue === "goods"}
             />
