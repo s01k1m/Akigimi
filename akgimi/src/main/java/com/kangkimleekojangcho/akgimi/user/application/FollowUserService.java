@@ -7,6 +7,7 @@ import com.kangkimleekojangcho.akgimi.user.application.port.QueryUserDbPort;
 import com.kangkimleekojangcho.akgimi.user.domain.Follow;
 import com.kangkimleekojangcho.akgimi.user.domain.User;
 import jakarta.transaction.Transactional;
+import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,11 @@ public class FollowUserService {
                 .followee(followee)
                 .followTime(LocalDateTime.now())
                 .build();
-        commandFollowDbPort.save(follow);
+        try {
+            commandFollowDbPort.save(follow);
+        }catch (ConstraintViolationException e){
+            throw new BadRequestException(BadRequestExceptionCode.ALREADY_FOLLOW);
+        }
         return true;
     }
 }

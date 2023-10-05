@@ -33,7 +33,8 @@ public enum BadRequestExceptionCode {
     CANNOT_ACTIVATE("024", "회원을 활성화할 수 없습니다."),
     ALREADY_PARTICIPATE_IN_POSTSCRIPT("025", "이미 후기를 작성했습니다"),
     NOT_FEED("026", "피드가 존재하지 않습니다."),
-    DUPLICATE_LIKE_REQUEST("027", "중복된 좋아요 요청입니다.");
+    DUPLICATE_LIKE_REQUEST("027", "중복된 좋아요 요청입니다."),
+    ALREADY_FOLLOW("028","이미 팔로우하고 있습니다.");
 
     private final String code;
     private final String descriptionMessage;
