@@ -57,7 +57,7 @@ export default function RootLayout({
       <head></head>
       <body className={inter.className} suppressHydrationWarning={true}>
         <Centering>
-          <FixedWidth id="layout" className="border-2 border-amber-300">
+          <FixedWidth id="layout">
             {children}
           </FixedWidth>
         </Centering>
