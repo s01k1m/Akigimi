@@ -3,7 +3,6 @@ import ReceiptItem from "./ReceiptItem";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useInView } from "react-intersection-observer";
-import { dividerClasses } from "@mui/material";
 
 type ReceiptItem = {
   price: number;
@@ -67,7 +66,7 @@ const ReceiptList = () => {
         const data: [] = response.data.data.list;
         const length: number = data.length;
         setLastViewId(data[data.length-1]['receiptId'])
-        if (data.length < 5) {
+        if (data.length < 4) {
           setCount(0)
         }
         console.log("마지막 피드의 아이디 값은?", lastViewId);

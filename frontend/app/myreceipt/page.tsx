@@ -35,7 +35,7 @@ const MyReceipt = () => {
                     <ReceiptCircle />
                 </div>
                  }
-                {failedChallenge ? (
+                {/* {failedChallenge ? (
                     <>
                         <div className="flex flex-col justify-center transform -translate-y-2/3">
                             <ReceiptTriangle />
@@ -46,13 +46,13 @@ const MyReceipt = () => {
                         </div>
                     </>
                 ): (
+                    null
+                    )}
+                
                     <div>
                         <div className="retry-sticker flex items-center ps-2 -mt-2 show">재도전 중이에요</div>
                     </div>
-                    
-
-                )}
-                
+                     */}
                 <Footer />
             </div>
     )
