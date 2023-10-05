@@ -8,7 +8,8 @@ interface ChallengeInfoProps {
     itemImg: string
 }
 
-const ChallengeInfo: React.FC<ChallengeInfoProps> = ({ item, day, date, itemImg}) => {
+const ChallengeInfo: React.FC<ChallengeInfoProps> = ({ item, day, date, itemImg }) => {
+    console.log('아이템 이미지', itemImg)
     return (
         <div className="flex flex-col items-center message">
             <div>
