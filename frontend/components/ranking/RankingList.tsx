@@ -6,6 +6,8 @@ interface RankingPropsType {
     selectedValue: string
 }
 
+
+
 const RankingList: React.FC<RankingPropsType> = ({ selectedValue }) => {
     const [rankingList, setRankingList] = useState<[]>([])
     let token: string = "";
@@ -15,14 +17,14 @@ const RankingList: React.FC<RankingPropsType> = ({ selectedValue }) => {
     // api 받아 오기 selectedValue로 구분 지어서 부르기
     const getRankingList = async () => {
         await axios
-            .get(`/api/ranking/${selectedValue}`, {
+            .get(`/api/ranking`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                   },
             })
             .then((response) => {
-                console.log('랭킹 리스트 조회 성공')
-                setRankingList(response.data.data.list)
+                console.log('랭킹 리스트 조회 성공', response.data.data)
+                setRankingList(response.data.data)
             })
             .catch((error) => {
                 console.log('랭킹 리스트 조회 실패', error)
@@ -32,25 +34,16 @@ const RankingList: React.FC<RankingPropsType> = ({ selectedValue }) => {
     useEffect(() => {
         getRankingList()
     }, [])
-    // 무한 스크롤
-    const rankingData = [
-        {id: 1, imgUrl: '/ssafybank logo.png', userName: '영혼없는 고서영', product: '나이키 어쩌구 신발', gage: 80},
-        {id: 2, imgUrl: '/ssafybank logo.png', userName: '영혼없는 고서영', product: '나이키 어쩌구 신발', gage: 70},
-        {id: 3, imgUrl: '/ssafybank logo.png', userName: '영혼없는 고서영', product: '나이키 어쩌구 신발', gage: 60},
-        {id: 4, imgUrl: '/ssafybank logo.png', userName: '영혼없는 고서영', product: '나이키 어쩌구 신발', gage: 80},
-        {id: 5, imgUrl: '/ssafybank logo.png', userName: '영혼없는 고서영', product: '나이키 어쩌구 신발', gage: 80},
-        {id: 6, imgUrl: '/ssafybank logo.png', userName: '영혼없는 고서영', product: '나이키 어쩌구 신발', gage: 80},
-    ]
     return (
         <div>
-            {rankingData.map((item: any) => (
+            {rankingList.map((item: any, index) => (
                     <RankingItem
                         key={item.id}
-                        id={item.id}
-                        imgUrl={item.imgUrl}
-                        userName={item.userName}
-                        product={item.product}
-                        gage={item.gage}
+                        id={index+1}
+                        imgUrl={item.userImgUrl}
+                        userName={item.userNickname}
+                        product={item.productName}
+                        gage={item.percentage}
                     />
             ))
 

@@ -19,15 +19,18 @@ const RankingItem: React.FC<rankingItemProps> = ({ id, imgUrl, userName, product
 
           }
            <div className="flex items-center bg-[#F5F5F5] rounded-lg w-[60vw] max-w-[300px] min-w-[280px] h-[12vh] ms-[5vw] mb-[2vh]">
+            <div className="w-[65px]"></div>
+            <div className="absolute ms-[10px]" style={{width: '55px', height: '55px', overflow:'hidden'}}>
                 <div className="ms-[10px]">
                   <Image
                     src={imgUrl}
                     alt="유저 프로필"
-                    width={55}
-                    height={55}
+                    layout="fill"
+                    objectFit="cover"
                     className="rounded-full"
                   />  
                 </div>
+            </div>
                 <div className="ms-[10px]">
                   <div className="text-[13px] font-semibold mb-[0.5vh]">{userName}</div>
                   <div className="text-[13px] text-[#757575] font-normal">{product}</div>

@@ -7,7 +7,7 @@ interface FeedImgProps {
 const FeedImg: React.FC<FeedImgProps> = ({ image }) => {
     return (
         <>
-        <div className="absolute flex justify-center rounded-md" style={{ width: '285px', height: '150px', overflow: 'hidden' }}>
+        <div className="absolute flex justify-center rounded-md" style={{ width: '270px', height: '150px', overflow: 'hidden' }}>
             <Image
                 src={image}
                 alt="유저가 올린 사진"
