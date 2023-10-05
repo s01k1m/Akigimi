@@ -124,7 +124,7 @@ public class UserController {
     @GetMapping("/user/info")
     public ResponseEntity<SuccessResponse<GetUserInfoServiceResponse>> getUserInfo(HttpServletRequest servletRequest) {
         Long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
-        GetUserInfoServiceResponse response = getUserInfoService.get(userId);
+        GetUserInfoServiceResponse response = getUserInfoService.get(userId,userId);
         return ResponseFactory.success(response);
     }
 
@@ -185,8 +185,9 @@ public class UserController {
     }
 
     @GetMapping("/friends/info")
-    public ResponseEntity<SuccessResponse<GetUserInfoServiceResponse>> getFriendsInfo(@RequestParam("id") Long id){
-        GetUserInfoServiceResponse response = getUserInfoService.get(id);
+    public ResponseEntity<SuccessResponse<GetUserInfoServiceResponse>> getFriendsInfo(@RequestParam("id") Long id, HttpServletRequest servletRequest){
+        Long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
+        GetUserInfoServiceResponse response = getUserInfoService.get(id,userId);
         return ResponseFactory.success(response);
     }
 }
