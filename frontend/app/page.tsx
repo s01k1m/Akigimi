@@ -1,10 +1,18 @@
+'use client'
 import Link from "next/link";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Script from "next/script";
 
 export default function Home() {
+  const router = useRouter();
+  useEffect(() => {
+    router.push('/kakao')
+  }, [])
+
   return (
     <main>
-      <span>스켈레톤 코드</span>
+      {/* <span>스켈레톤 코드</span>
       <br></br>
       <Link href="/kakao">카카오 간편로그인</Link>
       <br />
@@ -18,7 +26,7 @@ export default function Home() {
       <Link href="/main">챌린지</Link> <br></br>
       <Link href="/feed">피드</Link> <br></br>
       <Link href="/write/receipt">피드 작성하기</Link> <br></br>
-      <Link href="/myreceipt">내 영수증 보기</Link> <br></br>
+      <Link href="/myreceipt">내 영수증 보기</Link> <br></br> */}
     </main>
   )
 }
