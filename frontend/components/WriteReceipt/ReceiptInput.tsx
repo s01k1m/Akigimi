@@ -271,7 +271,7 @@ const ReceiptInput = () => {
             <div className='flex justify-center z-0 -mt-4'>
                 <ReceiptCircle />
             </div>
-            <div className='flex justify-center mt-2'>
+            <div className='flex justify-center mt-2 mb-[100px]'>
                 <button type="button" className="button-common-small blue-btn" onClick={handleSubmit}>기록 남기기</button>
             </div>
 
