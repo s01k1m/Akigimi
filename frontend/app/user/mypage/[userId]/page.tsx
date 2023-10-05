@@ -230,7 +230,7 @@ export default function page({ params }: { params: PageParams }) {
                             id={person.id}
                             imgUrl={person.profileImageUrl}
                             userName={person.nickname}
-                            challengeId={person.challengeId}
+                            productId={person.productId}
                             gage={person.accumulatedAmount}
                             ></FriendCard>
                         </>
