@@ -24,15 +24,17 @@ const ChallengeInfo: React.FC<ChallengeInfoProps> = ({ item, day, date, itemImg 
                 <span className="day">{date}</span>
                 일차
             </div>
-            <div>
+            <div className="h-[250px]"></div>
+            <div className="absolute top-[40vh]" style={{width: '250px', height: '150px', overflow: 'hidden'}}>
                 <Image
                     src={itemImg}
                     alt="item"
-                    width={250}
-                    height={150}
+                    layout="fill"
+                    objectFit="cover"
                     className="rounded-lg backdrop-blur-sm"
                 />
             </div>  
+            
         </div>
     )
 }
