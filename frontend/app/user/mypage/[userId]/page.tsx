@@ -46,7 +46,8 @@ export default function page({ params }: { params: PageParams }) {
     const getSpecialUserInfo = async () => {
         if (typeof window !== "undefined") {
             token = window.localStorage.getItem("access_token");
-            }
+        }
+        console.log('유저 정보를 가져오기 위한 토큰', token)
         await axios
             .get(`/api/friends/info?id=${userId}`, {
                 headers: {
@@ -157,13 +158,13 @@ export default function page({ params }: { params: PageParams }) {
         })
     };
   
-    useEffect(() => {
-        getfriendsList();
-    }, [friendsType])
+    // useEffect(() => {
+    //     getfriendsList();
+    // }, [friendsType])
 
     useEffect(() => {
         getSpecialUserInfo();
-        receiptData()
+        // receiptData()
     }, [])
     
     return (
