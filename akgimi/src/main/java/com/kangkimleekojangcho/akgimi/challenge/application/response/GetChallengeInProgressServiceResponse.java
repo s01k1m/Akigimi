@@ -29,7 +29,7 @@ public class GetChallengeInProgressServiceResponse {
                 .characterStatus(characterStatus)
                 .productName(challenge.getProduct().getName())
                 .productPrice(challenge.getProduct().getPrice())
-                .productImgUrl(challenge.getProduct().getUrl())
+                .productImgUrl(challenge.getProduct().getImage())
                 .challengePeriod(challenge.getChallengePeriod())
                 .days(days)
                 .tryCount(challenge.getTryCount())
