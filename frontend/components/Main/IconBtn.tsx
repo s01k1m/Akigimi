@@ -9,7 +9,7 @@ const IconBtn = () => {
     const router = useRouter()
     return (
         <>
-        <div className="flex flex-col w-16 -mt-[55px]" style={{width: `20%`}}>
+        <div className="flex flex-col w-16 -mt-[55px] mb-[30px]" style={{width: `20%`}}>
             <span className="flex flex-col items-center"
                 onClick={() => router.push('/myreceipt')}
             >
