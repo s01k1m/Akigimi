@@ -148,6 +148,12 @@ public class UserController {
         return ResponseFactory.success(response);
     }
 
+    @GetMapping("/friends/follow")
+    public ResponseEntity<SuccessResponse<FriendsServiceResponse>> getFriendsFollowInfo(@RequestParam("friendType") String friendType, @RequestParam("friendId") Long id){
+        FriendsServiceResponse response = getFriendsInfoService.get(id,friendType);
+        return ResponseFactory.success(response);
+    }
+
     @PostMapping("/user/profile")
     public void uploadProfile(@RequestParam("files") List<MultipartFile> files, HttpServletRequest servletRequest) {
         if(files.size()!=1){
@@ -175,6 +181,12 @@ public class UserController {
     public ResponseEntity<SuccessResponse<FriendsServiceResponse>> searchFriends(@RequestParam("nickname") String nickname, HttpServletRequest servletRequest){
         Long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
         FriendsServiceResponse response = getFriendsInfoService.search(userId,nickname);
+        return ResponseFactory.success(response);
+    }
+
+    @GetMapping("/friends/info")
+    public ResponseEntity<SuccessResponse<GetUserInfoServiceResponse>> getFriendsInfo(@RequestParam("id") Long id){
+        GetUserInfoServiceResponse response = getUserInfoService.get(id);
         return ResponseFactory.success(response);
     }
 }
