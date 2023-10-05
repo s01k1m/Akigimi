@@ -87,7 +87,7 @@ export default function page({ params }: { params: PageParams }) {
     }, [])
 return (
     <div>
-        <div className="flex flex-col items-center mt-[10vh]">
+        <div className="flex flex-col items-center mt-[2vh]">
             <div className="z-10 -mb-[15px]">
                 <ReceiptCircle />
             </div>
@@ -96,7 +96,7 @@ return (
                 <div className="w-[70%] h-[7%] ps-[10px] rounded-lg bg-[#FFF] flex items-center text-[#757575] tracking-wide ps-[5px] mt-[4vh]">{productName}</div>
                 <div className="w-[70%] h-[7%] ps-[10px] rounded-lg bg-[#FFF] flex items-center text-[#757575] tracking-wide ps-[5px] mt-[1vh]">{productPrice}</div>
                 <div className="h-[120px]"></div>
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-lg" style={{ width: '220px', height: '100px'}}>
+                <div className="absolute mt-[30vh] rounded-lg" style={{ width: '220px', height: '100px'}}>
                     <Image
                         src={productImg}
                         alt="아이템 물건"
