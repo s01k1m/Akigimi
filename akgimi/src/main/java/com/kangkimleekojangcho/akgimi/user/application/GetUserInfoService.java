@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,8 +23,8 @@ public class GetUserInfoService {
     public GetUserInfoServiceResponse get(Long id, Long userId) {
         User followee = queryUserDbPort.findById(id).orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NOT_USER));
         User follower = queryUserDbPort.findById(userId).orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NOT_USER));
-        Optional<Follow> isFollowed = queryFollowDbPort.isFollowed(followee, follower);
-        if(isFollowed.isPresent()){
+        List<Follow> isFollowed = queryFollowDbPort.isFollowed(followee, follower);
+        if(isFollowed.size()>=1){
             return new GetUserInfoServiceResponse(followee, true);
         }else{
             return new GetUserInfoServiceResponse(followee, false);

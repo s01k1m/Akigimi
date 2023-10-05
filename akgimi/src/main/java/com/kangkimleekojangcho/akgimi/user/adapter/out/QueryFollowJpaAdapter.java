@@ -24,7 +24,7 @@ public class QueryFollowJpaAdapter implements QueryFollowDbPort {
     }
 
     @Override
-    public Optional<Follow> isFollowed(User followee, User follower) {
+    public List<Follow> isFollowed(User followee, User follower) {
         return followJpaRepository.findByFollowerAndFollowee(follower, followee);
     }
 }

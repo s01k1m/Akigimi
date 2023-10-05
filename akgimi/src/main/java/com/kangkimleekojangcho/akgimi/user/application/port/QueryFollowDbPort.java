@@ -11,5 +11,5 @@ public interface QueryFollowDbPort {
 
     List<User> getFollowee(User user);
 
-    Optional<Follow> isFollowed(User followee, User follower);
+    List<Follow> isFollowed(User followee, User follower);
 }
