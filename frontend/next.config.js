@@ -28,7 +28,7 @@ const nextConfig = {
     return [
       {
         source: "/api/:path*",
-        destination: `http://akgimi.ddns.net/api/:path*`,
+        destination: `https://akgimi.ddns.net/api/:path*`,
       },
     ];
   },
