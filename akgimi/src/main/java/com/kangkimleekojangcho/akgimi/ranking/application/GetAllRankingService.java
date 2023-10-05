@@ -13,6 +13,7 @@ import com.kangkimleekojangcho.akgimi.user.application.port.QueryUserDbPort;
 import com.kangkimleekojangcho.akgimi.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,6 +28,7 @@ public class GetAllRankingService {
     private final QueryChallengeDbPort queryChallengeDbPort;
     private final QueryAccountDbPort queryAccountDbPort;
 
+    @Transactional(readOnly = true)
     public List<GetAllRankingServiceResponse> get(Long userId){
         List<GetAllRankingServiceResponse> ret = new ArrayList<>();
         User user = queryUserDbPort.findById(userId).orElseThrow(()->new BadRequestException(BadRequestExceptionCode.NOT_USER));
