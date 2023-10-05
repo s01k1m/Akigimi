@@ -15,11 +15,11 @@ type PageParams = {
   }
 
 interface Friend {
-id: number;
-profileImageUrl: string;
-nickname: string;
-challengeId: number;
-accumulatedAmount: number;
+    id: number;
+    profileImageUrl: string;
+    nickname: string;
+    challengeId: number;
+    accumulatedAmount: number;
 }
 
 type FriendsList = Friend[];
@@ -39,7 +39,9 @@ export default function page({ params }: { params: PageParams }) {
     const [nickname, setNickName] = useState<string>();
     // 유저의 프로필 이미지
     const [profileImage, setProfileImage] = useState<string>();
-    // 유저의 
+    
+    // 내가 이 유저를 팔로우 하고 있는가?
+    const [userFollwedSpecialUser, setUserFollwedSpecialUser] = useState<boolean>(false);
 
     // useId로 유저 정보를 불러옵니다
     let token: string = "";
@@ -56,9 +58,10 @@ export default function page({ params }: { params: PageParams }) {
             })
             .then((response) => {
                 console.log('특정 유저의 상세 정보 조회', response.data)
-                console.log('지금 내가 얘를 팔로우 햇나?', response.data.data)
+                console.log('지금 내가 얘를 팔로우 햇나?', response.data.data.isFollowed)
                 setProfileImage(response.data.data.profileImageUrl)
                 setNickName(response.data.data.nickname)
+                setUserFollwedSpecialUser(response.data.data.isFollowed)
             })
             .catch((error) => {
                 console.log('유저 정보 조회 실패', error)
@@ -114,7 +117,9 @@ export default function page({ params }: { params: PageParams }) {
             })
             .then((response) => {
                 console.log('친구 추가 성공', response.data)
+                // true 이면 친구임(팔로잉), false이면 친구 아님(팔로우)
                 setFriendsState(true)
+
             })
             .catch((error) => {
                 console.log('친구 추가 실패', error)
@@ -164,8 +169,9 @@ export default function page({ params }: { params: PageParams }) {
 
     useEffect(() => {
         getSpecialUserInfo();
-        receiptData()
-    }, [])
+        receiptData();
+        console.log('내가 지금 팔로우 하고 있나?+++++++++', userFollwedSpecialUser)
+    }, [friendsState, ])
     
     return (
         <div>
@@ -210,7 +216,7 @@ export default function page({ params }: { params: PageParams }) {
                 
                     </div>
                     <div className="flex flex-col w-[60vw] items-center mb-5">
-                        {!friendsState ? (
+                        {!userFollwedSpecialUser ? (
                             <button className="button-common-small blue-btn" onClick={getFriend}>팔로우</button>
                         ) : (
                             <button className="border-tossblue border-solid text-tossblue w-[80%] font-semibold text-[25px] rounded-lg flex justify-center items-center border-2 h-[6vh] tracking-wider">팔로잉</button>
