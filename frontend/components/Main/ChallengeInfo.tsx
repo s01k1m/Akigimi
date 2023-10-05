@@ -30,6 +30,7 @@ const ChallengeInfo: React.FC<ChallengeInfoProps> = ({ item, day, date, itemImg 
                     alt="item"
                     width={250}
                     height={150}
+                    className="rounded-lg backdrop-blur-sm"
                 />
             </div>  
         </div>

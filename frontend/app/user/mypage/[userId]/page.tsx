@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useState } from "react"
 import Footer from "@/app/Footer"
+import Image from "next/image"
 
 type PageParams = {
     userId: number
@@ -19,7 +20,16 @@ export default function page({ params }: { params: PageParams }) {
     
     return (
         <div>
-            {userId}의 마이페이지
+            <div className="h-[230px]"></div>
+            <div className="absolute top-0 rounded-full mt-[33px]" style={{ width: '200px', height: '200px', overflow: 'hidden' }}>
+                <Image
+                src={profileImage}
+                alt="profile img"
+                layout="fill"
+                objectFit="cover"
+                className="rounded-full"
+                ></Image>
+            </div>
             <Footer />
         </div>
     )
