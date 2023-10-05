@@ -21,6 +21,15 @@ const ReceiptItem: React.FC<itemProps> = ({ akimPlace, saving, date, imgUrl }) =
 
     const formattedDate = `${year}. ${month}. ${day}`;
 
+    const [savingLength, setSavingLength] = useState<boolean>(false)
+
+    // useEffect(() => {
+    //     // 금액이 100000이상인 이유
+    //     if (saving >= 100000) {
+    //         setSavingLength(true)
+    //     }
+    // })
+
     return (
         <div>
             {date? (
@@ -39,8 +48,8 @@ const ReceiptItem: React.FC<itemProps> = ({ akimPlace, saving, date, imgUrl }) =
                         </div>
                         <div className="flex flex-col align-bottom justify-end mt-[30px]">
                             <div className="receipt-place">{akimPlace}</div>
-                            <div>
-                                <span className="receipt-saving">{saving}</span>
+                            <div className="">
+                                <span className="receipt-saving">{saving.toLocaleString()}</span>
                                 <span className="receipt-saving black">원</span> 절약</div>
                         </div>
                 </div>

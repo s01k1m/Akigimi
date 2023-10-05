@@ -158,13 +158,13 @@ export default function page({ params }: { params: PageParams }) {
         })
     };
   
-    // useEffect(() => {
-    //     getfriendsList();
-    // }, [friendsType])
+    useEffect(() => {
+        getfriendsList();
+    }, [friendsType])
 
     useEffect(() => {
         getSpecialUserInfo();
-        // receiptData()
+        receiptData()
     }, [])
     
     return (
