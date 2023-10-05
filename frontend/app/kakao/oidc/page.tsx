@@ -65,11 +65,17 @@ export default function Login() {
   };
 
   const verifyOurUser = async () => {
+    console.log('로그인 함수 실행 되고 있음')
     let data = {
       idToken: id_token,
     };
+    console.log('idToken', id_token)
+    console.log(data)
     await axios
-      .post("/api/kakao/login", JSON.stringify(data), {
+      // .post("/api/kakao/login", JSON.stringify(data), {
+      .post("/api/kakao/login", {
+        idToken: id_token
+      }, {
         // json을 json타입의 text로 변환
         headers: {
           "Content-Type": `application/json`, // application/json 타입 선언
@@ -100,38 +106,39 @@ export default function Login() {
       })
       .catch((error) => {
         // 회원이 아니면 400 Bad Request를 반환하므로 회원가입으로 페이지 전환해야됨
-        getSignup();
-        console.log("회원이 아니래요");
+        // getSignup();
+        console.log("회원이 아니래요", error);
       });
   };
 
   // getSignup: 새 유저에게 JWT 토큰을 발급합니다
-  const getSignup = async () => {
-    let data = {
-      idToken: id_token,
-    };
+  // const getSignup = async () => {
+  //   let data = {
+  //     idToken: id_token,
+  //   };
+  
 
-    await axios
-      .post("/api/kakao/signup", JSON.stringify(data), {
-        // json을 json타입의 text로 변환
-        headers: {
-          "Content-Type": `application/json`, // application/json 타입 선언
-        },
-      })
-      .then((response) => {
-        const access_token: string = response.data.data.accessToken;
-        const refresh_token: string = response.data.data.refreshToken;
-        window.localStorage.setItem("access_token", access_token);
-        window.localStorage.setItem("refresh_token", refresh_token);
-        console.log("JWT 발급해줄게요");
-      })
-      .then(() => {
-        router.replace("/login/register");
-      })
-      .catch((error) => {
-        console.error("getSignup HTTP 요청 중 오류 발생:", error);
-      });
-  };
+  //   await axios
+  //     .post("/api/kakao/signup", JSON.stringify(data), {
+  //       // json을 json타입의 text로 변환
+  //       headers: {
+  //         "Content-Type": `application/json`, // application/json 타입 선언
+  //       },
+  //     })
+  //     .then((response) => {
+  //       const access_token: string = response.data.data.accessToken;
+  //       const refresh_token: string = response.data.data.refreshToken;
+  //       window.localStorage.setItem("access_token", access_token);
+  //       window.localStorage.setItem("refresh_token", refresh_token);
+  //       console.log("JWT 발급해줄게요");
+  //     })
+  //     .then(() => {
+  //       router.replace("/login/register");
+  //     })
+  //     .catch((error) => {
+  //       console.error("getSignup HTTP 요청 중 오류 발생:", error);
+  //     });
+  // };
 
   useEffect(() => {
     console.log("순서1");
