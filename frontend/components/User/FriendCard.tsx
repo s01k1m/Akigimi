@@ -8,7 +8,7 @@ interface FriendProps {
   id: number;
   imgUrl: string;
   userName: string;
-  challengeId: null | number;
+  productId: null | number;
   gage: number;
 }
 
@@ -16,27 +16,29 @@ const FriendCard: React.FC<FriendProps> = ({
   id,
   imgUrl,
   userName,
-  challengeId,
+  productId,
   gage,
 }) => {
   const router = useRouter()
   const [gageState, setGageStage] = useState<boolean>(false);
+  const [lastGage, setLastGage] = useState<number>(gage);
 
   useEffect(() => {
     if (gage === null) {
       setGageStage(true)
     }
+    console.log(userName, gage)
   }, [])
 
   let token: string = "";
-  // 챌린지 아이디로 현재 도전 중인 물건 정보 가져와야 함
+  // 물건 아이디로 친구가 도전하고 있는 물건 조회하기
   const [productName, setProductName] = useState<string>();
   const getProductName = async () => {
     if (typeof window !== "undefined") {
       token = window.localStorage.getItem("access_token");
       }
     await axios
-      .get('/api/challenges/in-progress', {
+      .get(`api/product/detail?id=${productId}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -78,7 +80,7 @@ const FriendCard: React.FC<FriendProps> = ({
             <div>
               <div className="w-[40vw] h-[15px] max-w-[210px] min-w-[180px] bg-white rounded-full">
                 <div
-                  className={`w-[${gage}%] h-[15px] max-w-[210px] bg-[#0049F2] rounded-full`}
+                  className={`w-[${lastGage}%] h-[15px] max-w-[210px] bg-[#0049F2] rounded-full`}
                 >
                 </div>
               </div>

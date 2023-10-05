@@ -82,6 +82,7 @@ export default function Mypage() {
       })
       .then((response) => {
         setFriendsList(response.data.data.friends);
+        console.log(response.data.data.friends)
         if (type === 'FOLLOWING') {
           setCountFollowing(response.data.data.friends.length)
         } else {
@@ -242,7 +243,7 @@ export default function Mypage() {
                   id={person.id}
                   imgUrl={person.profileImageUrl}
                   userName={person.nickname}
-                  challengeId={person.challengeId}
+                  productId={person.productId}
                   gage={person.accumulatedAmount}
                 ></FriendCard>
               </>
@@ -258,7 +259,7 @@ export default function Mypage() {
                 id={person.id}
                 imgUrl={person.profileImageUrl}
                 userName={person.nickname}
-                challengeId={person.challengeId}
+                productId={person.productId}
                 gage={person.accumulatedAmount}
               ></FriendCard>
             );
