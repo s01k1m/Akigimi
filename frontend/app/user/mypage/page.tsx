@@ -225,10 +225,11 @@ export default function Mypage() {
           <div
             className="absolute top-2 left-16"
             onClick={() => {
-              console.log("친구검색");
+              setLastSearchWord(searchWord);
+              getSearchFriendsList();
             }}
           >
-            <BiSearchAlt size="30"></BiSearchAlt>
+            <BiSearchAlt size="35" className="pe-[10px]"></BiSearchAlt>
           </div>
           <div>
             
