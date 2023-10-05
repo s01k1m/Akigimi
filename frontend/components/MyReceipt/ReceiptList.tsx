@@ -13,14 +13,19 @@ type ReceiptItem = {
 };
 
 const ReceiptList = () => {
-  let userId: number = 0;
+  // let userId: number = 0;
 
   let token: string = "";
 
+  const [userId, setUserId] = useState<number>()
+  
   useEffect(() => {
     if (typeof window !== "undefined") {
       token = window.localStorage.getItem("access_token");
-      userId = parseInt(window.sessionStorage.getItem("userId"))
+      setUserId(parseInt(window.sessionStorage.getItem("userId")))
+      if (userId === null) {
+        setUserId(parseInt(window.sessionStorage.getItem("userId")))
+      }
     }
     receiptData();
   }, []);
@@ -44,6 +49,8 @@ const ReceiptList = () => {
   // api 데이터 불러오기
   const receiptData = async () => {
     setLoading(true)
+    console.log('api 요청 전 마지막 피드의 아이디 값을 알려주세요', lastViewId)
+    console.log('api 요청 전 유저의 아이디 값을 알려주세요--------------------------------------------', userId)
     if (typeof window !== "undefined") {
       token = window.localStorage.getItem("access_token");
       }
@@ -51,7 +58,7 @@ const ReceiptList = () => {
       .get(`/api/receipts/${userId}`, {
         params: {
           lastReceiptId: lastViewId,
-          numberOfReceipt: count,
+          numberOfReceipt: 5,
         },
         headers: {
           Authorization: `Bearer ${token}`,
@@ -66,10 +73,13 @@ const ReceiptList = () => {
         const data: [] = response.data.data.list;
         const length: number = data.length;
         setLastViewId(data[data.length-1]['receiptId'])
-        if (data.length < 4) {
-          setCount(0)
-        }
-        console.log("마지막 피드의 아이디 값은?", lastViewId);
+        console.log(lastViewId)
+        console.log(data[data.length-1]['receiptId'])
+        let viewId: number = data[data.length-1]['receiptId'];
+        // if (data.length < 4) {
+        //   setCount(0)
+        // }
+        console.log("마지막 영수증의 아이디 값은?", lastViewId);
       })
       .catch((error) => {
         console.log("피드 조회 실패", error);
