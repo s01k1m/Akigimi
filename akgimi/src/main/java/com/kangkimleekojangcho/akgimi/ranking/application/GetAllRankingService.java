@@ -13,8 +13,10 @@ import com.kangkimleekojangcho.akgimi.user.application.port.QueryUserDbPort;
 import com.kangkimleekojangcho.akgimi.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,13 +28,15 @@ public class GetAllRankingService {
     private final QueryChallengeDbPort queryChallengeDbPort;
     private final QueryAccountDbPort queryAccountDbPort;
 
+    @Transactional(readOnly = true)
     public List<GetAllRankingServiceResponse> get(Long userId){
         List<GetAllRankingServiceResponse> ret = new ArrayList<>();
         User user = queryUserDbPort.findById(userId).orElseThrow(()->new BadRequestException(BadRequestExceptionCode.NOT_USER));
+        // 팔로우 하고 있는 유저들을 가져온다.
         List<User> followees = queryFollowDbPort.getFollowee(user);
         for(User followee : followees){
             Optional<Challenge> challengeInProgress = queryChallengeDbPort.findInProgressChallengeByUserId(followee.getId());
-            Account depositAccount = queryAccountDbPort.findByUserAndAccountType(user, AccountType.DEPOSIT).orElseThrow(()-> new BadRequestException(BadRequestExceptionCode.NO_BANK_ACCOUNT));
+            Account depositAccount = queryAccountDbPort.findByUserAndAccountType(followee, AccountType.DEPOSIT).orElseThrow(()-> new BadRequestException(BadRequestExceptionCode.NO_BANK_ACCOUNT));
             if (challengeInProgress.isPresent()){
                 ret.add(
                         GetAllRankingServiceResponse.builder()
@@ -43,6 +47,17 @@ public class GetAllRankingService {
                                 .build());
             }
         }
+        Optional<Challenge> userChallengeInProgress = queryChallengeDbPort.findInProgressChallengeByUserId(user.getId());
+        Account userDepositAccount = queryAccountDbPort.findByUserAndAccountType(user, AccountType.DEPOSIT).orElseThrow(()-> new BadRequestException(BadRequestExceptionCode.NO_BANK_ACCOUNT));
+        ret.add(
+                GetAllRankingServiceResponse.builder()
+                        .userNickname(user.getNickname())
+                        .userImgUrl(user.getProfileImageUrl())
+                        .productName(userChallengeInProgress.get().getProduct().getName())
+                        .percentage(userChallengeInProgress.get().calculatePercentage(userDepositAccount.getBalance()))
+                        .build()
+        );
+        Collections.sort(ret);
         return ret;
     }
 }
