@@ -8,6 +8,7 @@ import com.kangkimleekojangcho.akgimi.ranking.application.response.GetAllRanking
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,11 +21,11 @@ public class RankingController {
     private final SubtractUserIdFromAccessTokenService subtractUserIdFromAccessTokenService;
     private final GetAllRankingService getAllRankingService;
 
+    @GetMapping
     public ResponseEntity<SuccessResponse<List<GetAllRankingServiceResponse>>> getAllRanking(
             HttpServletRequest servletRequest
     ){
         Long userId = subtractUserIdFromAccessTokenService.subtract(servletRequest);
-        //TODO : 기간 입력
         return ResponseFactory.success(getAllRankingService.get(userId));
     }
 }
