@@ -92,7 +92,7 @@ public class FeedQuerydslRepository {
                 )
                 .from(feed)
                 .where(ltFeedId(lastReceiptId),
-                        feed.user.id.eq(requestUserId), isMine(requestUserId, receiptOwnerId))
+                        feed.user.id.eq(receiptOwnerId), isMine(requestUserId, receiptOwnerId))
                 .orderBy(feed.feedId.desc())
                 .limit(numberOfReceipt).fetch();
         return result;
