@@ -27,7 +27,7 @@ const ReceiptItem: React.FC<itemProps> = ({ akimPlace, saving, date, imgUrl }) =
                 null
             ) : null}
             <div className="text-[20px] font-bold mb-1">{formattedDate}</div>
-            <div className="flex flex-col mb-[2vh] bg-white w-[50vw] rounded-xl h-[100px] max-w-[280px] min-w-[200px]">
+            <div className="flex flex-col mb-[2vh] bg-white w-[50vw] rounded-xl h-[100px] max-w-[280px] min-w-[230px]">
                 <div className="flex flex-end align-bottom ms-[5%] mt-[1vh]">
                     <div className="w-[100px]"></div>
                         <div style={{ width: '80px', height: '80px', overflow: 'hidden' }} className="me-2 flex absolute rounded-lg">

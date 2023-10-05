@@ -12,23 +12,23 @@ const ItemSearchItem: React.FC<ItemSearchPropsType> = ({ itemId, itemName, itemP
     const router = useRouter();
     return (
         <div>
-            <div className="w-[40vw] h-[25vh] max-w-[200px] min-[170px] rounded-lg bg-[#F5F5F5] flex flex-col items-center">
+            <div className="w-[42vw] h-[23vh] max-w-[200px] min-[170px] rounded-lg bg-[#F5F5F5] flex flex-col items-center">
                 <div className="h-[120px]"></div>
-                <div className="absolute rounded-lg" style={{width: '170px', height: '120px', overflow:'hidden'}}>
+                <div className="absolute rounded-lg" style={{width: '130px', height: '100px', overflow:'hidden'}}>
                     <Image
                         src={itemImg}
                         alt="itemImg"
                         layout="fill"
                         objectFit="cover"
-                        className="mt-3"
+                        className="mt-3 rounded-lg"
                     />
                 </div>
                 <div>
-                    <div className="w-full mt-3">{itemName}</div>
+                    <div className="w-full mt-3 font-semibold">{itemName}</div>
                     <div className="w-full flex mt-1">
-                        <div>{itemPrice.toLocaleString()}원</div>
+                        <div className="text-[12px]">{itemPrice.toLocaleString()}원</div>
                         <button 
-                            className="bg-tossblue rounded-xl text-white px-3 ms-2"
+                            className="bg-tossblue rounded-xl text-white px-3 ms-2 text-[12px]"
                             onClick={() => {
                                 router.push(`/item/start/${itemId}`)
                             }}
