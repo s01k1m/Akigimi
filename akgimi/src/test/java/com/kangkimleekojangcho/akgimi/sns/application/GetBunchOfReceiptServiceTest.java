@@ -77,7 +77,7 @@ class GetBunchOfReceiptServiceTest extends SnsServiceIntegrationTestSupport {
                         .build();
         requestUser = commandUserDbPort.save(requestUser);
         receiptOwner = commandUserDbPort.save(receiptOwner);
-        prepareForSelectReceipt(requestUser);
+        prepareForSelectReceipt(receiptOwner);
 
         //when
         GetBunchOfReceiptServiceResponse getBunchOfReceiptServiceResponse
