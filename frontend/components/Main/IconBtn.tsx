@@ -31,7 +31,10 @@ const IconBtn = () => {
                 <span>랭킹</span>
             </span>
             <span className="flex flex-col items-center"
-                onClick={() => router.push('/feed/review')}
+                onClick={() => 
+                    // router.push('/feed/review')
+                    alert('추후 공개 될 서비스 입니다')
+                }
             >
                 <HiPencilAlt 
                     size={50}
