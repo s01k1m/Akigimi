@@ -33,7 +33,7 @@ const Categories = ({ setSelectedCategory }) => {
   ];
 
   return (
-    <div className='flex justify-center gap-10'>
+    <div className='flex justify-center gap-4'>
       {categories.map((category, index) => (
         <CategoryItem
           key={index}
