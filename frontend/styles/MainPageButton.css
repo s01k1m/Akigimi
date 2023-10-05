@@ -63,8 +63,12 @@
     background: linear-gradient(181deg, #EFF4BA 0.5%, rgba(217, 217, 217, 0.00) 71.06%);
 }
 
-.background-5 {
+.background-4 {
     background: linear-gradient(181deg, #C6EAFF 0.5%, rgba(217, 217, 217, 0.00) 71.06%);
+}
+
+.background-5 {
+    background: linear-gradient(181deg, #b7e9da 0.5%, rgba(217, 217, 217, 0.00) 71.06%);
 }
 
 .background-6 {

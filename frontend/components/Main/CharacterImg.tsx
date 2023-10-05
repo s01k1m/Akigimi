@@ -5,11 +5,15 @@ interface CharacterImgProps {
 }
 
 const CharacterImg: React.FC<CharacterImgProps> = ({ stage }) => {
+
     if (stage === 1) {
         stage = 0
     }
+    
+    
     return (
-        <div className="m-auto pe-14">
+        <div className="ms-5 z-0">
+            <div className="h-[30px]"></div>
             <Image
                 src={`/images/character${stage}.png`}
                 alt="character"

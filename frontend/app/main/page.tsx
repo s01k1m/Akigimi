@@ -106,24 +106,27 @@ const Main = () => {
                 </div>
             }
             {stage !== 0 &&
-                <div className="flex justify-center mt-10">
+                <div className="flex justify-center">
                     <ChallengeInfo item={productName} day={challengePeriod} date={days} itemImg={productImg} />
                 </div>
             }
             {stage === 6 &&
                 <div className="flex justify-center -mt-1.5">
+                    <div className="h-[30px]"></div>
                     <GoToBuyBtn />
                 </div>
             }
             {stage === 7 &&
-                <div className="flex justify-center -mt-1.5">
-                    {/* 다시 도전하기 버튼 */}
+                <div className="flex justify-center -mt-5">
+                <div className="h-[30px]"></div>
                     <GoToRetryBtn />
-                </div>
+            </div>
             }
-            <div className="flex" style={{ marginTop: stage >= 6 ? "-25px" : (stage === 0 ? "170px" : "23px")}}>
+            <div className="flex mb-[50px]" style={{ marginTop: stage >= 6 ? "-25px" : (stage === 0 ? "190px" : "0px")}}>
                 <IconBtn />
-                <CharacterImg stage={stage}  />
+                <div className="flex justify-center">
+                    <CharacterImg stage={stage}  />
+                </div>
             </div>
             
             <div className="flex justify-center w-[100%]">
